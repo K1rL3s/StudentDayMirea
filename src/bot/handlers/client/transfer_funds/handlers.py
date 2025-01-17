@@ -1,4 +1,4 @@
-from aiogram.types import KeyboardButton, Message, ReplyKeyboardMarkup
+from aiogram.types import Message
 from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.input import MessageInput
 from dishka import FromDishka
@@ -16,13 +16,14 @@ from database.repos.users import UsersRepo
 @inject
 async def id_input_handler(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
+    user_id: UserId,
     dialog_manager: DialogManager,
     users_repo: FromDishka[UsersRepo],
 ) -> None:
     receiver_id = int(message.text)
 
-    if receiver_id == message.from_user.id:
+    if receiver_id == user_id:
         text = "😢  Нельзя сделать перевод самому себе"
         await message.answer(text=text)
         return
@@ -57,13 +58,8 @@ async def amount_input_handler(
     receiver_id: UserId = dialog_manager.dialog_data["receiver_id"]
     await users_service.transfer_funds(user.id, receiver_id, int(amount))
 
-    keyboard = ReplyKeyboardMarkup(
-        keyboard=[[KeyboardButton(text="/start")]],
-        one_time_keyboard=True,
-        resize_keyboard=True,
-    )
     text = f"💵 Вам перевели {amount} Пятаков!"
-    await broadcaster.one_notify(text=text, user_id=receiver_id, reply_markup=keyboard)
+    await broadcaster.one_notify(text=text, user_id=receiver_id)
 
     text = "💵 Перевод прошёл успешно!"
     await broadcaster.one_notify(text=text, user_id=user.id)

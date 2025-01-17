@@ -2,7 +2,7 @@
 
 Revision ID: 0001
 Revises:
-Create Date: 2024-12-10 19:44:53.007704
+Create Date: 2025-01-18 00:25:50.020758
 
 """
 
@@ -27,6 +27,7 @@ def upgrade() -> None:
         sa.Column("description", sa.String(length=2048), nullable=True),
         sa.Column("price", sa.Integer(), nullable=False),
         sa.Column("stock", sa.Integer(), nullable=False),
+        sa.Column("qrcode_image_id", sa.String(length=128), nullable=True),
         sa.Column(
             "created_at",
             sa.DateTime(),
@@ -43,14 +44,57 @@ def upgrade() -> None:
         sa.UniqueConstraint("name", name=op.f("uq_products_name")),
     )
     op.create_table(
+        "secrets",
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("phrase", sa.String(length=256), nullable=False),
+        sa.Column("reward", sa.Integer(), nullable=False),
+        sa.Column("activation_limit", sa.Integer(), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
+        sa.PrimaryKeyConstraint("id", name=op.f("pk_secrets")),
+        sa.UniqueConstraint("phrase", name=op.f("uq_secrets_phrase")),
+    )
+    op.create_table(
+        "tasks",
+        sa.Column("id", sa.String(length=8), nullable=False),
+        sa.Column("title", sa.String(length=256), nullable=False),
+        sa.Column("description", sa.String(length=2048), nullable=False),
+        sa.Column("reward", sa.Integer(), nullable=False),
+        sa.Column("end_phrase", sa.String(length=256), nullable=False),
+        sa.Column("qrcode_image_id", sa.String(length=128), nullable=True),
+        sa.Column(
+            "created_at",
+            sa.DateTime(),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
+        sa.PrimaryKeyConstraint("id", name=op.f("pk_tasks")),
+    )
+    op.create_table(
         "users",
-        sa.Column("id", sa.BigInteger(), nullable=False),
-        sa.Column("name", sa.String(length=256), nullable=False),
+        sa.Column(
+            "id",
+            sa.Integer(),
+            sa.Identity(always=False, start=1000),
+            autoincrement=True,
+            nullable=False,
+        ),
+        sa.Column("tg_id", sa.BigInteger(), nullable=False),
+        sa.Column("name", sa.String(length=256), nullable=True),
         sa.Column("balance", sa.Integer(), nullable=False),
-        sa.Column("stage", sa.Integer(), nullable=False),
-        sa.Column("is_admin", sa.Boolean(), nullable=False),
-        sa.Column("can_pay", sa.Boolean(), nullable=False),
-        sa.Column("can_clear_purchases", sa.Boolean(), nullable=False),
+        sa.Column("is_active", sa.Boolean(), nullable=False),
+        sa.Column("role", sa.String(length=64), nullable=True),
+        sa.Column("qrcode_image_id", sa.String(length=128), nullable=True),
         sa.Column(
             "created_at",
             sa.DateTime(),
@@ -64,11 +108,13 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_users")),
+        sa.UniqueConstraint("qrcode_image_id", name=op.f("uq_users_qrcode_image_id")),
+        sa.UniqueConstraint("tg_id", name=op.f("uq_users_tg_id")),
     )
     op.create_table(
         "logs",
         sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("user_id", sa.BigInteger(), nullable=False),
+        sa.Column("user_id", sa.Integer(), nullable=False),
         sa.Column("description", sa.String(length=4096), nullable=False),
         sa.Column(
             "created_at",
@@ -80,13 +126,28 @@ def upgrade() -> None:
             ["user_id"],
             ["users.id"],
             name=op.f("fk_logs_user_id_users"),
+            ondelete="CASCADE",
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_logs")),
     )
     op.create_table(
+        "lottery_tickets",
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("fio", sa.String(length=256), nullable=False),
+        sa.Column("group", sa.String(length=32), nullable=False),
+        sa.Column("user_id", sa.Integer(), nullable=False),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            ["users.id"],
+            name=op.f("fk_lottery_tickets_user_id_users"),
+        ),
+        sa.PrimaryKeyConstraint("id", name=op.f("pk_lottery_tickets")),
+        sa.UniqueConstraint("user_id", name=op.f("uq_lottery_tickets_user_id")),
+    )
+    op.create_table(
         "purchases",
         sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("user_id", sa.BigInteger(), nullable=False),
+        sa.Column("user_id", sa.Integer(), nullable=False),
         sa.Column("product_id", sa.Integer(), nullable=False),
         sa.Column("quantity", sa.Integer(), nullable=False),
         sa.Column(
@@ -105,21 +166,87 @@ def upgrade() -> None:
             ["product_id"],
             ["products.id"],
             name=op.f("fk_purchases_product_id_products"),
+            ondelete="CASCADE",
         ),
         sa.ForeignKeyConstraint(
             ["user_id"],
             ["users.id"],
             name=op.f("fk_purchases_user_id_users"),
+            ondelete="CASCADE",
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_purchases")),
+    )
+    op.create_table(
+        "users_to_secrets",
+        sa.Column("user_id", sa.Integer(), nullable=False),
+        sa.Column("secret_id", sa.Integer(), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
+        sa.ForeignKeyConstraint(
+            ["secret_id"],
+            ["secrets.id"],
+            name=op.f("fk_users_to_secrets_secret_id_secrets"),
+            ondelete="CASCADE",
+        ),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            ["users.id"],
+            name=op.f("fk_users_to_secrets_user_id_users"),
+            ondelete="CASCADE",
+        ),
+        sa.PrimaryKeyConstraint(
+            "user_id",
+            "secret_id",
+            name=op.f("pk_users_to_secrets"),
+        ),
+    )
+    op.create_table(
+        "users_to_tasks",
+        sa.Column("user_id", sa.Integer(), nullable=False),
+        sa.Column("task_id", sa.String(length=8), nullable=False),
+        sa.Column("status", sa.Boolean(), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
+        sa.ForeignKeyConstraint(
+            ["task_id"],
+            ["tasks.id"],
+            name=op.f("fk_users_to_tasks_task_id_tasks"),
+            ondelete="CASCADE",
+        ),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            ["users.id"],
+            name=op.f("fk_users_to_tasks_user_id_users"),
+            ondelete="CASCADE",
+        ),
+        sa.PrimaryKeyConstraint("user_id", "task_id", name=op.f("pk_users_to_tasks")),
     )
     # ### end Alembic commands ###
 
 
 def downgrade() -> None:
     # ### commands auto generated by Alembic - please adjust! ###
+    op.drop_table("users_to_tasks")
+    op.drop_table("users_to_secrets")
     op.drop_table("purchases")
+    op.drop_table("lottery_tickets")
     op.drop_table("logs")
     op.drop_table("users")
+    op.drop_table("tasks")
+    op.drop_table("secrets")
     op.drop_table("products")
     # ### end Alembic commands ###

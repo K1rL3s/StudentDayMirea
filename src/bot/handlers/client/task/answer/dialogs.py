@@ -25,7 +25,7 @@ wait_answer_window = Window(
 
 ok_answer_window = Window(
     Const("🎉 Верно!"),
-    Format("Вы получили {start_data[reward]} Пятаков за задание «start_data[title]»"),
+    Format("Вы получили {start_data[reward]} Пятаков за задание «{start_data[title]}»"),
     GoToMenuButton(),
     state=AnswerTaskStates.ok,
 )
@@ -33,7 +33,7 @@ ok_answer_window = Window(
 
 fail_answer_window = Window(
     Const("😢 Не правильно..."),
-    Const("Проверьте регистр и язык и попробуйте ещё раз"),
+    Const("Попробуйте ещё раз"),
     GoToTaskButton(),
     GoToMenuButton(),
     getter=get_active_task,

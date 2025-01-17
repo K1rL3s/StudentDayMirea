@@ -9,6 +9,7 @@ from core.services.qrcodes import QRCodeService
 from core.services.roles import RolesService
 from core.services.secrets import SecretsService
 from core.services.tasks import TasksService
+from core.services.tickets import TicketsService
 from core.services.users import UsersService
 
 
@@ -29,3 +30,4 @@ class ServicesProvider(Provider):
     tasks_service = provide(TasksService)
     purchases_service = provide(PurchasesService)
     roles_service = provide(RolesService)
+    tickets_service = provide(TicketsService)

@@ -1,5 +1,6 @@
+from aiogram import F
 from aiogram_dialog import Dialog, Window
-from aiogram_dialog.widgets.text import Format
+from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToMenuButton
 
@@ -11,6 +12,11 @@ cart_window = Window(
         "🧺 Куплено {total_products} наименований в количестве {total_purchases} штук\n"
         "Чтобы их забрать, подойдите к <u>магазину</u> или в <u>Отделение А-337</u>\n\n"
         "{formated_info}",
+        when=F["total_purchases"],
+    ),
+    Const(
+        "🧺 Корзина пустая",
+        when=~F["total_purchases"],
     ),
     GoToMenuButton(),
     getter=get_purchases,

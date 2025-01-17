@@ -42,11 +42,12 @@ async def register_confirm(
     dialog_manager: DialogManager,
     users_repo: FromDishka[UsersRepo],
 ) -> None:
-    user_id = callback.from_user.id
+    tg_id = callback.from_user.id
     full_name = dialog_manager.dialog_data["full_name"]
-    owner_id: UserId = dialog_manager.middleware_data["owner_id"]
+    bot_owner_id: UserId = dialog_manager.middleware_data["owner_id"]
+    user_id: UserId = dialog_manager.middleware_data["user_id"]
 
-    role = RightsRole.ADMIN if user_id == owner_id else None
+    role = RightsRole.ADMIN if tg_id == bot_owner_id else None
     await users_repo.update(user_id, full_name, role)
 
     await callback.message.answer_sticker(PANDA_NICE)
@@ -55,8 +56,8 @@ async def register_confirm(
 
 
 async def register_disconfirm(
-    callback: CallbackQuery,
-    button: Button,
+    _: CallbackQuery,
+    __: Button,
     dialog_manager: DialogManager,
 ) -> None:
     await dialog_manager.start(state=StartStates.name, data={"retry": True})

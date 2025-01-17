@@ -4,7 +4,7 @@ from uuid import uuid4
 from aiogram import Bot
 from aiogram.types import BufferedInputFile
 
-from core.ids import ProductId, TaskId, UserId
+from core.ids import ProductId, TaskId, TgId, UserId
 from core.services.qrcodes import QRCodeService
 from database.repos.products import ProductsRepo
 from database.repos.tasks import TasksRepo
@@ -30,7 +30,7 @@ class QRCodeSaver:
         self,
         caption: str,
         save_to: UserId,
-        send_to: UserId,
+        send_to: TgId,
     ) -> None:
         qrcode = self.qrcode_service.user_id_qrcode(save_to)
         qrcode_image_id = await self._send(caption, send_to, qrcode)
@@ -40,7 +40,7 @@ class QRCodeSaver:
         self,
         caption: str,
         task_id: TaskId,
-        send_to: UserId,
+        send_to: TgId,
     ) -> None:
         qrcode = self.qrcode_service.task_id_qrcode(task_id)
         qrcode_image_id = await self._send(caption, send_to, qrcode)
@@ -50,13 +50,13 @@ class QRCodeSaver:
         self,
         caption: str,
         product_id: ProductId,
-        send_to: UserId,
+        send_to: TgId,
     ) -> None:
         qrcode = self.qrcode_service.product_id_qrcode(product_id)
         qrcode_image_id = await self._send(caption, send_to, qrcode)
         await self.products_repo.set_qrcode_image_id(product_id, qrcode_image_id)
 
-    async def _send(self, caption: str, send_to: UserId, qrcode: BytesIO) -> str:
+    async def _send(self, caption: str, send_to: TgId, qrcode: BytesIO) -> str:
         photo = BufferedInputFile(qrcode.getvalue(), f"qrcode_{uuid4()!s}.png")
         bot_message = await self.bot.send_photo(
             chat_id=send_to,

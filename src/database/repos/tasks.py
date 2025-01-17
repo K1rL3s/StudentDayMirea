@@ -37,10 +37,6 @@ class TasksRepo(BaseAlchemyRepo):
         await self.session.execute(query)
         await self.session.flush()
 
-    async def is_available(self, task_id: TaskId) -> bool:
-        task = await self.get_by_id(task_id)
-        return task and task.status
-
     async def link_user_to_task(
         self,
         user_id: UserId,

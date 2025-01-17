@@ -11,7 +11,6 @@ from .client import (
     include_register_routers,
 )
 from .exceptions import router as exceptions_router
-from .unknown_message import router as unknown_message_router
 
 
 def include_routers(root_router: Router) -> None:
@@ -20,7 +19,7 @@ def include_routers(root_router: Router) -> None:
     include_register_routers(root_router)
     include_admin_dialogs(root_router)
     include_client_dialogs(root_router)
-    root_router.include_routers(unknown_message_router, exceptions_router)
+    root_router.include_routers(exceptions_router)
 
     manager_factory = MyManagerFactory(
         message_manager=MessageManager(),

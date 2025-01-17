@@ -1,6 +1,5 @@
 from core.exceptions import (
     ActiveTaskNotFound,
-    TaskInactive,
     TaskNotFound,
     UserNotFound,
     WrongTaskAnswer,
@@ -50,8 +49,6 @@ class TasksService:
         new_task = await self.tasks_repo.get_by_id(task_id)
         if new_task is None:
             raise TaskNotFound(task_id)
-        if not new_task.status:  # Задание деактивировано
-            raise TaskInactive(new_task.id)
 
         old_task = await self.tasks_repo.get_active_task(user_id)
         if old_task:
@@ -97,22 +94,22 @@ class TasksService:
 
     async def reward_for_task_by_stager(
         self,
-        user_id: UserId,
+        slave_id: UserId,
         master_id: UserId,
     ) -> tuple[str, int]:
-        user = await self.users_repo.get_by_id(user_id)
+        user = await self.users_repo.get_by_id(slave_id)
         if user is None:
-            raise UserNotFound(user_id)
+            raise UserNotFound(slave_id)
 
         await self.roles_service.is_stager(master_id)
 
-        task = await self.tasks_repo.get_active_task(user_id)
+        task = await self.tasks_repo.get_active_task(slave_id)
         if task is None:
-            raise ActiveTaskNotFound(user_id)
+            raise ActiveTaskNotFound(slave_id)
 
-        await self.tasks_repo.set_users_to_tasks_status(user_id, task.id, True)
+        await self.tasks_repo.set_users_to_tasks_status(slave_id, task.id, True)
 
         new_balance = user.balance + task.reward
-        await self.users_repo.set_balance(user_id, new_balance)
+        await self.users_repo.set_balance(slave_id, new_balance)
 
         return task.title, task.reward

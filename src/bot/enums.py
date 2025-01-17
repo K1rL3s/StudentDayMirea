@@ -17,6 +17,7 @@ class SlashCommand(StrEnum):
     ID = "id"
     TASKS = "tasks"
     TASK = "task"
+    QUEST = "quest"
 
 
 class TextCommand(StrEnum):

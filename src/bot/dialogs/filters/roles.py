@@ -7,7 +7,7 @@ from core.enums import RightsRole
 from database.models import UserModel
 
 
-class RoleAccessDialogs:
+class DialogsRoleAccess:
     def __init__(self, roles: list[RightsRole]) -> None:
         self.roles = roles
 
@@ -21,26 +21,26 @@ class RoleAccessDialogs:
         return user.role in self.roles
 
 
-class IsAdmin(RoleAccessDialogs):
+class IsAdmin(DialogsRoleAccess):
     def __init__(self) -> None:
         super().__init__([RightsRole.ADMIN])
 
 
-class IsSeller(RoleAccessDialogs):
+class IsSeller(DialogsRoleAccess):
     def __init__(self) -> None:
         super().__init__([RightsRole.SELLER, RightsRole.ADMIN])
 
 
-class IsStager(RoleAccessDialogs):
+class IsStager(DialogsRoleAccess):
     def __init__(self) -> None:
         super().__init__([RightsRole.STAGER, RightsRole.ADMIN])
 
 
-class IsLottery(RoleAccessDialogs):
+class IsLottery(DialogsRoleAccess):
     def __init__(self) -> None:
         super().__init__([RightsRole.LOTTERY, RightsRole.ADMIN])
 
 
-class IsWithRole(RoleAccessDialogs):
+class IsWithRole(DialogsRoleAccess):
     def __init__(self) -> None:
         super().__init__(RightsRole.values())

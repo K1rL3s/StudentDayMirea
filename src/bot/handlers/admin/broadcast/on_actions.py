@@ -8,6 +8,7 @@ from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
 from bot.dialogs.on_actions import on_go_to_admin_panel
+from core.ids import UserId
 from core.services.broadcast import Broadcaster
 
 MAX_MESSAGE_LEN = 1024 * 3
@@ -33,11 +34,12 @@ async def start_broadcast(
 ) -> None:
     await callback.answer("⏳ Рассылка началась!", show_alert=True)
 
-    broadcast_message = dialog_manager.dialog_data["broadcast_message"]
-    result = await broadcaster.broadcast(broadcast_message)
+    broadcast_message: str = dialog_manager.dialog_data["broadcast_message"]
+    user_id: UserId = dialog_manager.middleware_data["user_id"]
+    result = await broadcaster.broadcast(broadcast_message, user_id)
     logging.info(
         "Broadcast from %d: ok=%d fail=%d",
-        callback.from_user.id,
+        user_id,
         result.ok,
         result.fail,
     )

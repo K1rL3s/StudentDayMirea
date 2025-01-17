@@ -19,14 +19,11 @@ async def show_my_id_as_qrcode(
     user: UserModel,
     qrcode_saver: FromDishka[QRCodeSaver],
 ) -> None:
-    text = (
-        "Покажи это организатору =)\n\n"
-        f"ID: <code>{message.from_user.id}</code> ({message.from_user.id:_})\n\n"
-    )
+    text = f"Покажи это организатору =)\n\nID: <code>{user.id}</code>"
 
     if user.qrcode_image_id:
         await message.answer_photo(photo=user.qrcode_image_id, caption=text)
     else:
-        await qrcode_saver.user(text, user.id, user.id)
+        await qrcode_saver.user(text, user.id, message.from_user.id)
 
     await dialog_manager.start(state=MenuStates.menu)

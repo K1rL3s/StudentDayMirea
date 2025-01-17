@@ -6,17 +6,19 @@ from dishka.integrations.aiogram_dialog import inject
 
 from core.ids import TaskId
 from core.services.tasks import TasksService
+from database.models import UserModel
 
 from ..view.states import ViewTaskStates
 
 
 @inject
 async def on_start_task(
-    callback: CallbackQuery,
+    _: CallbackQuery,
     __: Button,
     dialog_manager: DialogManager,
     tasks_service: FromDishka[TasksService],
 ) -> None:
+    user: UserModel = dialog_manager.middleware_data["user"]
     task_id: TaskId = dialog_manager.dialog_data["task_id"]
-    await tasks_service.start(task_id, callback.from_user.id)
+    await tasks_service.start(task_id, user.id)
     await dialog_manager.start(ViewTaskStates.task)

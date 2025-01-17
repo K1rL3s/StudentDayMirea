@@ -17,8 +17,10 @@ view_available_products_window = Window(
     Format(
         "В наличии <b>{products_len}</b> наименований "
         "в количестве <b>{total_stock}</b> штук",
+        when=F["total_stock"],
     ),
-    Format("Баланс: {middleware_data[user].balance} Пятаков"),
+    Const("Товаров в наличии нет", when=~F["total_stock"]),
+    Format("Баланс: {middleware_data[user].balance} Пятаков", when=F["total_stock"]),
     ScrollingGroup(
         Select(
             Format("{item.name} — {item.price} Пятаков"),
@@ -31,17 +33,16 @@ view_available_products_window = Window(
         width=1,
         height=10,
         hide_on_single_page=True,
-        when=F["products"].is_not(None),
         id="products_group",
     ),
-    EmptyButton(when=F["products"].is_not(None)),
+    EmptyButton(when=F["products"]),
     GoToMenuButton(),
     state=ShopStates.list,
     getter=get_available_products,
 )
 
 view_one_product_window = Window(
-    Format("<b>{product.id})</b> {product.name}"),
+    Format("<b>{product.name}</b>\n"),
     Format("Цена: {product.price} Пятаков"),
     Format("В наличии {product.stock} шт.\n"),
     Format("{product.description}"),
@@ -57,7 +58,6 @@ final_window = Window(
     GoToMenuButton(),
     state=ShopStates.final,
 )
-
 
 shop_dialog = Dialog(
     view_available_products_window,

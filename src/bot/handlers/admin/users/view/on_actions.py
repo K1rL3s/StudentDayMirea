@@ -106,6 +106,6 @@ async def on_set_lottery_info(
 ) -> None:
     user_id: UserId = dialog_manager.dialog_data["view_user_id"]
     await dialog_manager.start(
-        LotteryUserStates.student_id,
+        LotteryUserStates.ticket_id,
         data={"view_user_id": user_id},
     )

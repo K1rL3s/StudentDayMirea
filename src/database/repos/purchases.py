@@ -17,12 +17,12 @@ class PurchasesInfo:
 class PurchasesRepo(BaseAlchemyRepo):
     async def create(
         self,
-        tg_id: UserId,
+        user_id: UserId,
         product_id: ProductId,
         quantity: int,
     ) -> PurchaseModel:
         purchase = PurchaseModel(
-            user_id=tg_id,
+            user_id=user_id,
             product_id=product_id,
             quantity=quantity,
         )
@@ -32,17 +32,17 @@ class PurchasesRepo(BaseAlchemyRepo):
 
     async def get_user_purchases(
         self,
-        tg_id: UserId,
+        user_id: UserId,
     ) -> list[tuple[ProductModel, PurchaseModel]]:
         query = (
             select(ProductModel, PurchaseModel)
             .join(PurchaseModel, PurchaseModel.product_id == ProductModel.id)
-            .where(PurchaseModel.user_id == tg_id)
+            .where(PurchaseModel.user_id == user_id)
         )
         return list(await self.session.execute(query))
 
-    async def clear_purchases(self, tg_id: UserId) -> None:
-        query = delete(PurchaseModel).where(PurchaseModel.user_id == tg_id)
+    async def clear_purchases(self, user_id: UserId) -> None:
+        query = delete(PurchaseModel).where(PurchaseModel.user_id == user_id)
         await self.session.execute(query)
         await self.session.flush()
 
@@ -61,7 +61,7 @@ class PurchasesRepo(BaseAlchemyRepo):
 
         formated_purchases = "\n".join(
             [
-                f"<b>{key[1]}</b> — <i>x{value}</i>"
+                f"<b>{key[1]}</b>: {value}"
                 for key, value in sorted(
                     product_to_purchases.items(),
                     key=lambda x: x[0],

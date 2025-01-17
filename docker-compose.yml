@@ -6,7 +6,6 @@ x-local: &local
     PYTHONDONTWRITEBYTECODE: 1
   links:
     - database
-    - redis
   depends_on:
     database:
       condition: service_healthy

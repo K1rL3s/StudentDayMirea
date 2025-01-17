@@ -1,5 +1,5 @@
 from core.enums import RightsRole
-from core.ids import ProductId, TaskId, UserId
+from core.ids import ProductId, TaskId, TicketId, UserId
 
 
 class ServiceException(Exception):
@@ -20,6 +20,25 @@ class EntityAlreadyExists(ServiceException):
 class SecretAlreadyExists(EntityAlreadyExists):
     def __init__(self, phrase: str) -> None:
         super().__init__(f'Секрет с фразой "{phrase}" уже существует')
+
+
+class TicketAlreadyExists(EntityAlreadyExists):
+    @classmethod
+    def ticket(cls, ticket_id: TicketId) -> "TicketAlreadyExists":
+        return cls(message=f"Билет с номером {ticket_id} уже зарегистрирован")
+
+    @classmethod
+    def user(cls, user_id: UserId) -> "TicketAlreadyExists":
+        return cls(message=f"Юзер с айди {user_id} уже участвует в лотереи")
+
+    @classmethod
+    def unknown(cls, ticket_id: TicketId, user_id: UserId) -> "TicketAlreadyExists":
+        message = (
+            f"Ошибка при привязке билета №{ticket_id} для юзера {user_id}\n"
+            "Либо билет уже занят, либо юзер уже участвует в лотерее."
+            "Попробуйте повторить регистрацию ещё раз"
+        )
+        return cls(message=message)
 
 
 class EntityNotFound(ServiceException):
@@ -69,11 +88,6 @@ class NotEnoughMoney(ServiceException):
 
 class InvalidValue(ServiceException):
     pass
-
-
-class TaskInactive(InvalidValue):
-    def __init__(self, task_id: TaskId) -> None:
-        super().__init__(f'Задание "{task_id}" неактивно')
 
 
 class WrongTaskAnswer(InvalidValue):

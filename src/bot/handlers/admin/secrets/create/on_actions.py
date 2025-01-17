@@ -6,12 +6,13 @@ from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
 from bot.handlers.admin.secrets.view.states import ViewSecretsStates
+from core.ids import UserId
 from core.services.secrets import SecretsService
 
 
 async def secret_phrase_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     phrase = message.text.strip()
@@ -21,7 +22,7 @@ async def secret_phrase_input(
 
 async def secret_reward_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     reward = int(message.text.strip())
@@ -31,7 +32,7 @@ async def secret_reward_input(
 
 async def secret_activation_limit_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     activation_limit = int(message.text.strip())
@@ -41,7 +42,7 @@ async def secret_activation_limit_input(
 
 @inject
 async def confirm_create_secret(
-    callback: CallbackQuery,
+    _: CallbackQuery,
     __: Button,
     dialog_manager: DialogManager,
     secrets_service: FromDishka[SecretsService],
@@ -49,7 +50,7 @@ async def confirm_create_secret(
     phrase: str = dialog_manager.dialog_data["phrase"]
     reward: int = dialog_manager.dialog_data["reward"]
     activation_limit: int = dialog_manager.dialog_data["activation_limit"]
-    creator_id = callback.from_user.id
+    creator_id: UserId = dialog_manager.middleware_data["user_id"]
     secret_id = await secrets_service.create(
         phrase,
         reward,

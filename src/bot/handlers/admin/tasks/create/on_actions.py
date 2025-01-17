@@ -6,6 +6,7 @@ from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
 from bot.handlers.admin.tasks.view.states import ViewTasksStates
+from core.ids import UserId
 from core.services.tasks import TasksService
 
 
@@ -51,7 +52,7 @@ async def task_end_phrase_input(
 
 @inject
 async def confirm_create_task(
-    callback: CallbackQuery,
+    _: CallbackQuery,
     __: Button,
     dialog_manager: DialogManager,
     tasks_service: FromDishka[TasksService],
@@ -60,7 +61,7 @@ async def confirm_create_task(
     description: str = dialog_manager.dialog_data["description"]
     reward: int = dialog_manager.dialog_data["reward"]
     end_phrase: str = dialog_manager.dialog_data["end_phrase"]
-    creator_id = callback.from_user.id
+    creator_id: UserId = dialog_manager.middleware_data["user_id"]
 
     task_id = await tasks_service.create(
         title,

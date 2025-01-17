@@ -1,21 +1,22 @@
-from sqlalchemy import BigInteger, Boolean, Integer, String, UniqueConstraint
+from sqlalchemy import BigInteger, Boolean, Identity, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from core.ids import UserId
+from core.ids import TgId, UserId
 from database.models._mixins import CreatedAtMixin, UpdatedAtMixin
 from database.models.base import BaseAlchemyModel
 
 
 class UserModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
     __tablename__ = "users"
-    __table_args__ = (
-        UniqueConstraint("student_id", postgresql_nulls_not_distinct=True),
-    )
 
-    id: Mapped[UserId] = mapped_column(BigInteger, primary_key=True)
-    name: Mapped[str] = mapped_column(String(256), nullable=False)
-    student_id: Mapped[str] = mapped_column(String(8), nullable=True, unique=True)
-    group: Mapped[str] = mapped_column(String(10), nullable=True)
+    id: Mapped[UserId] = mapped_column(
+        Integer,
+        Identity(start=1000),
+        primary_key=True,
+        autoincrement=True,
+    )
+    tg_id: Mapped[TgId] = mapped_column(BigInteger, nullable=False, unique=True)
+    name: Mapped[str] = mapped_column(String(256), nullable=True)
     balance: Mapped[int] = mapped_column(Integer, nullable=False)
 
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)

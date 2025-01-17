@@ -12,18 +12,21 @@ from core.services.tasks import TasksService
 
 @inject
 async def on_confirm_task(
-    callback: CallbackQuery,
-    _: Button,
+    _: CallbackQuery,
+    __: Button,
     dialog_manager: DialogManager,
     tasks_service: FromDishka[TasksService],
     broadcaster: FromDishka[Broadcaster],
 ) -> None:
-    user_id: UserId = dialog_manager.dialog_data["view_user_id"]
-    master_id: UserId = callback.from_user.id
+    view_user_id: UserId = dialog_manager.dialog_data["view_user_id"]
+    master_id: UserId = dialog_manager.middleware_data["user_id"]
 
-    title, reward = await tasks_service.reward_for_task_by_stager(user_id, master_id)
+    title, reward = await tasks_service.reward_for_task_by_stager(
+        view_user_id,
+        master_id,
+    )
 
     text = f"💵 Задание «{title}» завершено! Начислено {reward} Пятаков"
-    await broadcaster.one_notify(text, user_id)
+    await broadcaster.one_notify(text, view_user_id)
 
-    await dialog_manager.start(ViewUserStates.one, data={"view_user_id": user_id})
+    await dialog_manager.start(ViewUserStates.one, data={"view_user_id": view_user_id})

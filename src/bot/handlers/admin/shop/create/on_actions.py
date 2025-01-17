@@ -6,6 +6,7 @@ from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
 from bot.handlers.admin.shop.view.states import ViewProductsStates
+from core.ids import UserId
 from core.services.products import ProductsService
 
 
@@ -51,7 +52,7 @@ async def product_stock_input(
 
 @inject
 async def confirm_create_product(
-    callback: CallbackQuery,
+    _: CallbackQuery,
     __: Button,
     dialog_manager: DialogManager,
     products_service: FromDishka[ProductsService],
@@ -60,15 +61,9 @@ async def confirm_create_product(
     description: str = dialog_manager.dialog_data["description"]
     price: int = dialog_manager.dialog_data["price"]
     stock: int = dialog_manager.dialog_data["stock"]
-    creator_id = callback.from_user.id
+    user_id: UserId = dialog_manager.middleware_data["user_id"]
 
-    product_id = await products_service.create(
-        name,
-        description,
-        price,
-        stock,
-        creator_id,
-    )
+    product_id = await products_service.create(name, description, price, stock, user_id)
 
     await dialog_manager.start(
         state=ViewProductsStates.one,

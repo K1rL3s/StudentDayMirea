@@ -5,27 +5,42 @@ from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
 from bot.handlers.admin.users.view.states import ViewUserStates
-from core.ids import UserId
-from core.services.users import UsersService
-from database.repos.users import UsersRepo
+from core.ids import TicketId, UserId
+from core.services.tickets import TicketsService
+from database.repos.tickets import TicketsRepo
 
 
 @inject
-async def student_id_input_handler(
+async def ticket_id_input_handler(
     message: Message,
     _: MessageInput,
     dialog_manager: DialogManager,
-    users_repo: FromDishka[UsersRepo],
+    tickets_repo: FromDishka[TicketsRepo],
 ) -> None:
-    student_id = message.text.strip()
-    view_user_id = dialog_manager.dialog_data["view_user_id"]
-    user = await users_repo.get_by_student_id(student_id)
-    if user and user.id != view_user_id:
-        text = f"Такой номер студенческого уже занят: {user.id} {user.name}"
+    ticket_id = message.text.strip()
+    if not ticket_id.isdigit():
+        text = "Номер билета должен быть числом"
         await message.answer(text=text)
-    else:
-        dialog_manager.dialog_data["student_id"] = student_id
-        await dialog_manager.next()
+        return
+
+    ticket_id = int(ticket_id)
+    if ticket := await tickets_repo.get_by_id(ticket_id):
+        text = f"Такой номер билета уже занят: {ticket.user_id} {ticket.fio}"
+        await message.answer(text=text)
+        return
+
+    dialog_manager.dialog_data["ticket_id"] = ticket_id
+    await dialog_manager.next()
+
+
+async def fio_input_handler(
+    message: Message,
+    _: MessageInput,
+    dialog_manager: DialogManager,
+) -> None:
+    fio = message.text.strip()[:256]
+    dialog_manager.dialog_data["fio"] = fio
+    await dialog_manager.next()
 
 
 @inject
@@ -33,17 +48,15 @@ async def group_input_handler(
     message: Message,
     _: MessageInput,
     dialog_manager: DialogManager,
-    users_service: FromDishka[UsersService],
+    tickets_service: FromDishka[TicketsService],
 ) -> None:
-    group = message.text.strip()
-    student_id: str = dialog_manager.dialog_data["student_id"]
+    ticket_id: TicketId = dialog_manager.dialog_data["ticket_id"]
     view_user_id: UserId = dialog_manager.dialog_data["view_user_id"]
+    fio: str = dialog_manager.dialog_data["fio"]
+    group = message.text.strip()[:32]
 
-    await users_service.set_lottery_info(
-        view_user_id,
-        student_id,
-        group,
-        message.from_user.id,
-    )
+    master_id: UserId = dialog_manager.middleware_data["user_id"]
+
+    await tickets_service.create(ticket_id, view_user_id, fio, group, master_id)
 
     await dialog_manager.start(ViewUserStates.one, data={"view_user_id": view_user_id})

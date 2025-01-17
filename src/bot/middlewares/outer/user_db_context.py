@@ -20,16 +20,12 @@ class UserDbContextMiddleware(BaseMiddleware):
         if from_user is not None:
             container: AsyncContainer = data["dishka_container"]
             users_repo = await container.get(UsersRepo)
-            db_user = await users_repo.get_by_id(from_user.id)
+            db_user = await users_repo.get_by_tg_id(from_user.id)
             if db_user is None:
-                db_user = await users_repo.create(
-                    tg_id=from_user.id,
-                    name="",
-                    balance=0,
-                )
+                db_user = await users_repo.create(tg_id=from_user.id)
             elif not db_user.is_active:
                 await users_repo.change_active(db_user.id, True)
 
-            data["user"] = db_user
+            data.update({"user": db_user, "user_id": db_user.id})
 
         return await handler(event, data)

@@ -1,4 +1,5 @@
 from .logs import LogsModel
+from .lottery import TicketModel
 from .products import ProductModel
 from .purchases import PurchaseModel
 from .secret import SecretModel
@@ -16,4 +17,5 @@ __all__ = (
     "UsersToSecretsModel",
     "TaskModel",
     "UsersToTasksModel",
+    "TicketModel",
 )

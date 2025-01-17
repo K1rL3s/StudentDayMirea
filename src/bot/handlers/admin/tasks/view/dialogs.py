@@ -50,7 +50,6 @@ tasks_list_window = Window(
 view_one_task_window = Window(
     Format(
         "id={task.id}\n"
-        "status={task.status}\n"
         "title={task.title}\n"
         "description={task.description}\n"
         "end_phrase={task.end_phrase}",

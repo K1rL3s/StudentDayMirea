@@ -23,7 +23,7 @@ transfer_wait_id_window = Window(
 
 transfer_wait_amount_window = Window(
     Format(
-        "Перевод будет отправлен юзеру с именем <b>{dialog_data[receiver_name]}</b>\n\n"
+        "Имя получателя: <b>{dialog_data[receiver_name]}</b>\n\n"
         "Если всё верно, то введите сумму перевода\n"
         "Ваш баланс: {middleware_data[user].balance} Пятаков",
     ),
