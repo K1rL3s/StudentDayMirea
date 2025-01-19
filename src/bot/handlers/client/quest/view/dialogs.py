@@ -26,6 +26,12 @@ view_quests_window = Window(
             on_click=on_quest_selected,
         ),
     ),
+    Button(
+        Const("🏁 Финальное задание"),
+        id="final",
+        on_click=None,
+        when=F["final"],
+    ),
     GoToMenuButton(),
     getter=get_all_known_quests,
     state=ViewQuestsStates.list,

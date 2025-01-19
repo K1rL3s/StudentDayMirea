@@ -6,7 +6,7 @@ from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToMenuButton
 
-from .handlers import amount_input_handler, id_input_handler
+from .on_actions import amount_input_handler, id_input_handler
 from .states import TransferFundsStates
 
 transfer_wait_id_window = Window(

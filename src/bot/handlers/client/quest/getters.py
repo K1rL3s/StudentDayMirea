@@ -17,7 +17,15 @@ async def get_all_known_quests(
 ) -> dict[str, list[tuple[QuestModel, UsersToQuestsModel]]]:
     user_id: UserId = dialog_manager.middleware_data["user_id"]
     quests = await quests_repo.get_known_quests(user_id)
-    return {"quests": quests}
+
+    # TODO нормально сделать финальное задание
+    all_quests = await quests_repo.get_all()
+    if len(quests) == len(all_quests) and all(pair[1].status for pair in quests):
+        final = True
+    else:
+        final = False
+
+    return {"quests": quests, "final": final}
 
 
 @inject
