@@ -7,6 +7,7 @@ from aiogram_dialog.widgets.kbd import Button
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from bot.dialogs.flags import FORCE_GET_USER_KEY
 from bot.stickers import PANDA_NICE
 from core.enums import RightsRole
 from core.ids import UserId
@@ -52,7 +53,7 @@ async def register_confirm(
 
     await callback.message.answer_sticker(PANDA_NICE)
     await callback.message.answer(text=SUCCESS_TEXT.format(user_id=user_id))
-    await dialog_manager.start(state=MenuStates.menu)
+    await dialog_manager.start(state=MenuStates.menu, data={FORCE_GET_USER_KEY: None})
 
 
 async def register_disconfirm(

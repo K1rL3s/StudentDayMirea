@@ -5,6 +5,7 @@ from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
 from bot.handlers.admin.users.view.states import ViewUserStates
+from bot.translate import translate_role
 from core.enums import ALL_ROLES
 from core.ids import UserId
 from core.services.users import UsersService
@@ -17,8 +18,9 @@ async def on_role_selected(
     dialog_manager: DialogManager,
     item_id: int,
 ) -> None:
-    role = ALL_ROLES[item_id][1]
+    role = ALL_ROLES[item_id]
     dialog_manager.dialog_data["new_role"] = role
+    dialog_manager.dialog_data["role_name"] = translate_role(role)
     await dialog_manager.next()
 
 

@@ -112,14 +112,14 @@ quest_answer_window = Window(
 )
 
 confirm_create_quest_window = Window(
-    Const("❓ Создать задание?"),
+    Const("Создать задание❓\n"),
     Format("Порядковый номер: {dialog_data[order]}"),
-    Format("Название: {dialog_data[title]}"),
-    Format("Описание: {dialog_data[description]}"),
-    Format("Задание: {dialog_data[task]}"),
+    Format("Название:\n{dialog_data[title]}\n"),
+    Format("Описание:\n{dialog_data[description]}\n"),
+    Format("Задание:\n{dialog_data[task]}\n"),
     Format("Изображение: {dialog_data[image_id]}", when=F["dialog_data"]["image_id"]),
     Format("Награда: {dialog_data[reward]}"),
-    Format("Ответ: {dialog_data[answer]}"),
+    Format("Ответ:\n{dialog_data[answer]}\n"),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_create",

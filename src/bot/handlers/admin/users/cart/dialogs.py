@@ -1,3 +1,4 @@
+from aiogram import F
 from aiogram_dialog import Dialog, Window
 from aiogram_dialog.widgets.kbd import Back, Button, Next, Row
 from aiogram_dialog.widgets.text import Const, Format
@@ -14,9 +15,18 @@ from .states import CartUserStates
 
 user_cart_window = Window(
     _UserIdNameText,
-    Format("Куплено {total_products} наименований в количестве {total_purchases} штук"),
+    Format(
+        "Куплено {total_products} наименований в количестве {total_purchases} штук",
+        when=F["total_purchases"],
+    ),
+    Format("Корзина пустая", when=~F["total_purchases"]),
     Format("\n{formated_info}"),
-    Button(Const("🗑️ Очистить корзину"), id="clear_cart", on_click=Next()),
+    Button(
+        Const("🗑️ Очистить корзину"),
+        id="clear_cart",
+        on_click=Next(),
+        when=F["total_purchases"],
+    ),
     GoToUserButton,
     GoToAdminPanelButton(),
     GoToMenuButton(),

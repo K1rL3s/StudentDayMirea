@@ -26,7 +26,6 @@ class TasksRepo(BaseAlchemyRepo):
             description=description,
             reward=reward,
             answer=answer,
-            status=True,
         )
         self.session.add(task)
         await self.session.flush()

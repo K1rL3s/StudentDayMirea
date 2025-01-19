@@ -8,4 +8,4 @@ class RightsRole(StrEnum, ValuesEnum):
     LOTTERY = "lottery"
 
 
-ALL_ROLES = (*enumerate(RightsRole.values()), (len(RightsRole.values()), None))
+ALL_ROLES = (*RightsRole.values(), None)

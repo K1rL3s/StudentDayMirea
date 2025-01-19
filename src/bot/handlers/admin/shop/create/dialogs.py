@@ -26,6 +26,7 @@ product_name_window = Window(
         filter=F.text,
     ),
     GoToProductsButton(),
+    GoToAdminPanelButton(),
     state=CreateProductStates.name,
 )
 
@@ -68,13 +69,12 @@ product_stock_window = Window(
     state=CreateProductStates.stock,
 )
 
-
 confirm_create_product_window = Window(
     Const("Создать товар❓\n"),
-    Format("Название: {dialog_data[name]}"),
+    Format("Название:\n{dialog_data[name]}\n"),
+    Format("Описание:\n{dialog_data[description]}"),
     Format("Цена: {dialog_data[price]}"),
     Format("В наличии: {dialog_data[stock]}"),
-    Format("Описание:\n{dialog_data[description]}"),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_create",
@@ -85,7 +85,6 @@ confirm_create_product_window = Window(
     GoToAdminPanelButton(),
     state=CreateProductStates.confirm,
 )
-
 
 create_product_dialog = Dialog(
     product_name_window,

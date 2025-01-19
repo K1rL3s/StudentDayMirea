@@ -63,7 +63,7 @@ view_one_secret_window = Window(
 )
 
 confirm_delete_secret_window = Window(
-    Format("❓ Вы уверены, что хотите удалить секрет ID={secret.id}?"),
+    Format("Вы уверены, что хотите удалить секрет ID={secret.id}❓"),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_delete",

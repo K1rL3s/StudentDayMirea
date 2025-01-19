@@ -127,7 +127,7 @@ class UsersService:
 
         await self.roles_service.is_admin(master_id)
 
-        if role is not None and role not in ALL_ROLES:
+        if role not in ALL_ROLES:
             raise RoleNotFound(role)
 
         await self.users_repo.set_role(slave_id, role)

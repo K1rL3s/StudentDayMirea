@@ -6,13 +6,14 @@ from typing import Any
 from aiogram import Bot
 from aiogram.exceptions import TelegramForbiddenError, TelegramNotFound
 
-from core.ids import UserId
+from core.ids import TgId, UserId
 from core.services.roles import RolesService
+from database.models import UserModel
 from database.repos.users import UsersRepo
 
 logger = logging.getLogger(__name__)
 
-NOTIFIES_PER_BATCH = 20
+NOTIFIES_PER_BATCH = 15
 
 
 @dataclass
@@ -40,18 +41,18 @@ class Broadcaster:
         await self.roles_service.is_admin(master_id)
 
         users = await self.users_repo.get_active()
-        return await self._broadcast(message, [user.id for user in users])
+        return await self._broadcast(message, users)
 
     async def _broadcast(
         self,
         text: str,
-        users: list[UserId],
+        users: list[UserModel],
     ) -> BroadcastResult:
         ok = 0
         for i in range(0, len(users), NOTIFIES_PER_BATCH):
             tasks = [
-                asyncio.create_task(self.one_notify(text, user_id))
-                for user_id in users[i : i + NOTIFIES_PER_BATCH]
+                asyncio.create_task(self.one_notify(text, user.id, user.tg_id))
+                for user in users[i : i + NOTIFIES_PER_BATCH]
             ]
             timer = asyncio.create_task(asyncio.sleep(1))
             results = await asyncio.gather(*tasks)
@@ -65,10 +66,11 @@ class Broadcaster:
         self,
         text: str,
         user_id: UserId,
+        tg_id: TgId,
         **kwargs: Any,
     ) -> bool:
         try:
-            await self.bot.send_message(text=text, chat_id=user_id, **kwargs)
+            await self.bot.send_message(text=text, chat_id=tg_id, **kwargs)
         except (TelegramNotFound, TelegramForbiddenError):
             await self.users_repo.change_active(user_id, is_active=False)
             return False

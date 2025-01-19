@@ -34,7 +34,7 @@ user_role_window = Window(
 
 set_role_window = Window(
     Format(
-        '❓ Уверены, что хотите установить роль "{dialog_data[new_role]}" '
+        '❓ Уверены, что хотите установить роль "{dialog_data[role_name]}" '
         "пользователю {view_user.id} - {view_user.name}?",
     ),
     Button(Const("✅ Подтвердить"), id="confirm", on_click=on_role_confirm),

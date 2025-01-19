@@ -47,7 +47,7 @@ quests_list_window = Window(
 
 view_one_quest_window = Window(
     Format("ID: {quest.id}"),
-    Format("Название: {quest.title}"),
+    Format("Название:\n{quest.title}\n"),
     Format("Награда: {quest.reward}"),
     Format("Описание:\n{quest.description}\n"),
     Format("Задание:\n{quest.task}\n"),

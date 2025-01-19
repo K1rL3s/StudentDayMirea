@@ -70,7 +70,7 @@ task_answer_window = Window(
 
 
 confirm_create_task_window = Window(
-    Const("❓ Создать задание?"),
+    Const("Создать задание❓\n"),
     Format("Название: {dialog_data[title]}"),
     Format("Награда: {dialog_data[reward]}\n"),
     Format("Описание:\n{dialog_data[description]}\n"),

@@ -69,7 +69,7 @@ async def on_view_qrcode(
 ) -> None:
     user_id: UserId = dialog_manager.dialog_data["view_user_id"]
     user = await users_repo.get_by_id(user_id)
-    text = f"Юзер, ID: <code>{user.id}</code> ({user.id:_})\n\n"
+    text = f"Юзер, ID: <code>{user.id}</code>"
     if user.qrcode_image_id:
         await callback.message.answer_photo(photo=user.qrcode_image_id, caption=text)
     else:
