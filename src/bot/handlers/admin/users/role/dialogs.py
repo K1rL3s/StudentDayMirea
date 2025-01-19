@@ -1,5 +1,3 @@
-import operator
-
 from aiogram_dialog import Dialog, Window
 from aiogram_dialog.widgets.kbd import Back, Button, Group, Select
 from aiogram_dialog.widgets.text import Const, Format
@@ -20,7 +18,7 @@ user_role_window = Window(
         Select(
             Format("{item[1]}"),
             id="select_roles",
-            item_id_getter=operator.itemgetter(0),
+            item_id_getter=lambda item: item[0],
             items="roles",
             type_factory=int,
             on_click=on_role_selected,
@@ -36,7 +34,7 @@ user_role_window = Window(
 
 set_role_window = Window(
     Format(
-        'Уверены, что хотите установить роль "{dialog_data[new_role]}" '
+        '❓ Уверены, что хотите установить роль "{dialog_data[new_role]}" '
         "пользователю {view_user.id} - {view_user.name}?",
     ),
     Button(Const("✅ Подтвердить"), id="confirm", on_click=on_role_confirm),

@@ -1,5 +1,3 @@
-import operator
-
 from aiogram_dialog import Dialog, Window
 from aiogram_dialog.widgets.kbd import Back, Button, ScrollingGroup, Select
 from aiogram_dialog.widgets.text import Const, Format
@@ -26,7 +24,7 @@ secrets_list_window = Window(
             id="secrets_select",
             items="secrets",
             on_click=on_secret_selected,
-            item_id_getter=operator.attrgetter("id"),
+            item_id_getter=lambda item: item.id,
             type_factory=int,
         ),
         width=1,

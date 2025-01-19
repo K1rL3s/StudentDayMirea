@@ -9,18 +9,23 @@ from .lottery.dialogs import lottery_user_id_dialog
 from .money.router import router as money_router
 from .panel.dialogs import admin_panel_dialog
 from .panel.router import router as admin_panel_router
+from .quest.dialogs import create_quest_dialog, view_quests_dialog
+from .quest.router import router as quest_router
 from .secrets.dialogs import create_secret_dialog, view_secrets_dialog
 from .secrets.router import router as secrets_router
 from .shop.dialogs import create_product_dialog, view_products_dialog
 from .shop.router import router as products_routes
-from .tasks.create.dialogs import create_task_dialog
+from .tasks.dialogs import create_task_dialog, view_tasks_dialog
 from .tasks.router import router as tasks_router
-from .tasks.view.dialogs import view_tasks_dialog
 from .users.cart.dialogs import user_cart_dialog
 from .users.lottery.dialogs import set_lottery_info_dialog
 from .users.role.dialogs import user_role_dialog
 from .users.router import router as users_router
-from .users.task import cancel_task_dialog, confirm_task_dialog, view_user_task_dialog
+from .users.task.dialogs import (
+    cancel_task_dialog,
+    confirm_task_dialog,
+    view_user_task_dialog,
+)
 from .users.view.dialogs import view_user_dialog
 
 
@@ -43,7 +48,10 @@ def include_admin_routers(root_router: Router) -> None:
     stager_router = Router(name=__file__)
     for observer in stager_router.observers.values():
         observer.filter(IsStager())
-    stager_router.include_routers(tasks_router)
+    stager_router.include_routers(
+        tasks_router,
+        quest_router,
+    )
 
     with_role_router = Router(name=__file__)
     for observer in with_role_router.observers.values():
@@ -88,6 +96,8 @@ def include_admin_dialogs(root_router: Router) -> None:
         view_user_task_dialog,
         cancel_task_dialog,
         confirm_task_dialog,
+        create_quest_dialog,
+        view_quests_dialog,
     )
 
     lottery_router = Router(name=__file__)

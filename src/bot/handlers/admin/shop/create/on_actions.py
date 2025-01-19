@@ -1,5 +1,5 @@
 from aiogram.types import CallbackQuery, Message
-from aiogram_dialog import DialogManager
+from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button
 from dishka import FromDishka
@@ -17,7 +17,7 @@ async def product_name_input(
 ) -> None:
     name = message.html_text.strip()[:64]
     dialog_manager.dialog_data["name"] = name
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 async def product_description_input(
@@ -27,7 +27,7 @@ async def product_description_input(
 ) -> None:
     description = message.html_text.strip()[:2048]
     dialog_manager.dialog_data["description"] = description
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 async def product_price_input(
@@ -37,7 +37,7 @@ async def product_price_input(
 ) -> None:
     price = int(message.text)
     dialog_manager.dialog_data["price"] = price
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 async def product_stock_input(
@@ -47,7 +47,7 @@ async def product_stock_input(
 ) -> None:
     stock = int(message.text)
     dialog_manager.dialog_data["stock"] = stock
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 @inject

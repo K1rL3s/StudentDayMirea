@@ -9,6 +9,7 @@ from .getters import get_user_info
 from .on_actions import (
     on_go_to_broadcast,
     on_go_to_lottery,
+    on_go_to_quest,
     on_go_to_secrets,
     on_go_to_shop,
     on_go_to_tasks,
@@ -47,6 +48,12 @@ admin_panel_window = Window(
             Const("🧠 Задания"),
             id="tasks",
             on_click=on_go_to_tasks,
+            when=IsStager(),
+        ),
+        Button(
+            Const("🗺️ Квест"),
+            id="quest",
+            on_click=on_go_to_quest,
             when=IsStager(),
         ),
         Button(

@@ -9,7 +9,7 @@ from core.ids import UserId
 from core.services.qrcodes import QuestIdPrefix
 from core.services.quests import QuestsService
 
-from ..view.states import ViewQuestStates
+from ..view.states import ViewQuestsStates
 
 router = Router(name=__file__)
 
@@ -27,8 +27,12 @@ async def start_quest_by_deeplink(
 ) -> None:
     quest_id = quest_deeplink.lstrip(QuestIdPrefix)
     try:
-        await quests_service.start(quest_id, user_id)
+        quest = await quests_service.start(quest_id, user_id)
     except QuestNotFound:
         return
 
-    await dialog_manager.start(ViewQuestStates.one, data={"quest_id": quest_id})
+    if quest.image_id:
+        caption = f"Задание «{quest.title}»"
+        await message.answer_photo(quest.image_id, caption)
+
+    await dialog_manager.start(ViewQuestsStates.one, data={"quest_id": quest_id})

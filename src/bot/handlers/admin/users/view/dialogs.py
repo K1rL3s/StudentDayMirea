@@ -22,7 +22,7 @@ from .on_actions import (
 from .states import ViewUserStates
 
 wait_user_id_window = Window(
-    Const("Введите ID человека, которого хотите увидеть"),
+    Const("🆔 Введите ID человека, которого хотите увидеть"),
     GoToAdminPanelButton(),
     GoToMenuButton(),
     MessageInput(

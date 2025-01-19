@@ -19,7 +19,7 @@ from .on_actions import (
 from .states import CreateProductStates
 
 product_name_window = Window(
-    Const("Введите название товара (64 символа)"),
+    Const("1️⃣ Введите название товара (64 символа)"),
     MessageInput(
         func=product_name_input,
         content_types=ContentType.TEXT,
@@ -30,7 +30,7 @@ product_name_window = Window(
 )
 
 product_description_window = Window(
-    Const("Введите описание товара (2048 символов)"),
+    Const("2️⃣ Введите описание товара (2048 символов)"),
     MessageInput(
         func=product_description_input,
         content_types=ContentType.TEXT,
@@ -43,7 +43,7 @@ product_description_window = Window(
 )
 
 product_price_window = Window(
-    Const("Цена товара? Число больше нуля"),
+    Const("3️⃣ Цена товара? Число больше нуля"),
     MessageInput(
         func=product_price_input,
         content_types=ContentType.TEXT,
@@ -56,7 +56,7 @@ product_price_window = Window(
 )
 
 product_stock_window = Window(
-    Const("Сколько доступно товара (в наличии)? Число больше нуля"),
+    Const("4️⃣ Сколько доступно товара (в наличии)? Число больше нуля"),
     MessageInput(
         func=product_stock_input,
         content_types=ContentType.TEXT,

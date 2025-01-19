@@ -10,9 +10,8 @@ from ..on_actions import on_go_user_task
 from .on_actions import on_confirm_task
 from .states import ConfirmTaskStates
 
-# TODO: подтверждение задания
 confirm_task_window = Window(
-    Const("Уверены, что хотите засчитать выполнение задания?"),
+    Const("❓ Уверены, что хотите засчитать выполнение задания?"),
     Button(Const("✅ Подтвердить"), id="confirm", on_click=on_confirm_task),
     Button(Const("⏪ Задание"), id="task", on_click=on_go_user_task),
     Button(Const("⏪ Юзер"), id="user", on_click=on_go_view_user),

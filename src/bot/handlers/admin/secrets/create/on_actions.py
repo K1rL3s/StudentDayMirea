@@ -1,5 +1,5 @@
 from aiogram.types import CallbackQuery, Message
-from aiogram_dialog import DialogManager
+from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button
 from dishka import FromDishka
@@ -17,7 +17,7 @@ async def secret_phrase_input(
 ) -> None:
     phrase = message.text.strip()
     dialog_manager.dialog_data["phrase"] = phrase
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 async def secret_reward_input(
@@ -27,7 +27,7 @@ async def secret_reward_input(
 ) -> None:
     reward = int(message.text.strip())
     dialog_manager.dialog_data["reward"] = reward
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 async def secret_activation_limit_input(
@@ -37,7 +37,7 @@ async def secret_activation_limit_input(
 ) -> None:
     activation_limit = int(message.text.strip())
     dialog_manager.dialog_data["activation_limit"] = activation_limit
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 @inject

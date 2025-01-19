@@ -19,7 +19,7 @@ router = Router(name=__file__)
     MagicData(F.command.args.as_("product_deeplink")),
     IsSeller(),
 )
-async def start_task_by_deeplink(
+async def open_product_by_deeplink(
     message: Message,
     product_deeplink: str,
     dialog_manager: DialogManager,
@@ -33,8 +33,6 @@ async def start_task_by_deeplink(
                 ViewProductsStates.one,
                 data={"product_id": product_id},
             )
-
-    await message.delete()
 
 
 @router.message(Command("stock"), StateFilter(None))

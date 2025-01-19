@@ -1,7 +1,7 @@
 import logging
 
 from aiogram.types import CallbackQuery, Message
-from aiogram_dialog import DialogManager
+from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button
 from dishka import FromDishka
@@ -19,10 +19,9 @@ async def on_input_broadcast_message(
     message_input: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
-    dialog_manager.dialog_data["broadcast_message"] = message.html_text[
-        :MAX_MESSAGE_LEN
-    ]
-    await dialog_manager.next()
+    broadcast_message = message.html_text[:MAX_MESSAGE_LEN]
+    dialog_manager.dialog_data["broadcast_message"] = broadcast_message
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 @inject

@@ -27,6 +27,7 @@ class QuestsRepo(BaseAlchemyRepo):
                 isouter=True,
             )
             .where(UsersToQuestsModel.user_id == user_id)
+            .order_by(QuestModel.order.asc())
         )
         results = await self.session.execute(query)
         return list(results.all())

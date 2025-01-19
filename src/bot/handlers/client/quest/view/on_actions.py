@@ -1,7 +1,7 @@
 from tkinter import Button
 
 from aiogram.types import CallbackQuery
-from aiogram_dialog import DialogManager
+from aiogram_dialog import DialogManager, ShowMode
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
@@ -12,14 +12,25 @@ from database.repos.quests import QuestsRepo
 from ..answer.states import AnswerQuestStates
 
 
+@inject
 async def on_quest_selected(
-    _: CallbackQuery,
+    callback: CallbackQuery,
     __: Button,
     dialog_manager: DialogManager,
     item_id: str,
+    quests_repo: FromDishka[QuestsRepo],
 ) -> None:
-    dialog_manager.dialog_data["quest_id"] = item_id
-    await dialog_manager.next()
+    quest_id = dialog_manager.dialog_data["quest_id"] = item_id
+
+    quest = await quests_repo.get_by_id(quest_id)
+    if quest.image_id:
+        caption = f"Задание «{quest.title}»"
+        await callback.message.answer_photo(quest.image_id, caption)
+        show_mode = ShowMode.DELETE_AND_SEND
+    else:
+        show_mode = None
+
+    await dialog_manager.next(show_mode=show_mode)
 
 
 @inject

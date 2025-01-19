@@ -54,11 +54,10 @@ secret_activation_limit_window = Window(
 )
 
 confirm_create_secret_window = Window(
-    Format(
-        "❓ Создать секрет с фразой <code>{dialog_data[phrase]}</code>, "
-        "наградой в <code>{dialog_data[reward]}</code> Пятаков "
-        "и <code>{dialog_data[activation_limit]}</code> активациями?",
-    ),
+    Const("❓ Создать секрет?"),
+    Format("Фраза: <code>{dialog_data[phrase]}</code>"),
+    Format("Награда: {dialog_data[reward]}"),
+    Format("Активаций: {dialog_data[activation_limit]}"),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_create_secret",

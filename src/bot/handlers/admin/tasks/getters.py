@@ -10,7 +10,6 @@ from database.repos.tasks import TasksRepo
 
 @inject
 async def get_all_tasks(
-    dialog_manager: DialogManager,
     tasks_repo: FromDishka[TasksRepo],
     **__: Any,
 ) -> dict[str, Any]:
@@ -19,7 +18,7 @@ async def get_all_tasks(
 
 
 @inject
-async def get_one_task(
+async def get_task_by_id(
     dialog_manager: DialogManager,
     tasks_repo: FromDishka[TasksRepo],
     **__: Any,

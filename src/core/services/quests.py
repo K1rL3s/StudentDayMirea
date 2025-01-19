@@ -58,13 +58,13 @@ class QuestsService:
         if user is None:
             raise UserNotFound(user_id)
 
-        new_quest = await self.quests_repo.get_by_id(quest_id)
-        if new_quest is None:
+        quest = await self.quests_repo.get_by_id(quest_id)
+        if quest is None:
             raise QuestNotFound(quest_id)
 
         await self.quests_repo.link_user_to_quest(user_id, quest_id)
 
-        return new_quest
+        return quest
 
     async def reward_for_quest_by_pharse(
         self,

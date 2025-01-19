@@ -5,7 +5,7 @@ from aiogram_dialog.widgets.kbd import Button
 from bot.handlers.client.cart.states import CartStates
 from bot.handlers.client.help.states import HelpStates
 from bot.handlers.client.lottery.states import ViewLotteryStates
-from bot.handlers.client.quest.view.states import ViewQuestStates
+from bot.handlers.client.quest.view.states import ViewQuestsStates
 from bot.handlers.client.shop.states import ShopStates
 from bot.handlers.client.task.view.states import ViewTaskStates
 from bot.handlers.client.transfer_funds.states import TransferFundsStates
@@ -64,4 +64,4 @@ async def on_quest(
     __: Button,
     dialog_manager: DialogManager,
 ) -> None:
-    await dialog_manager.start(state=ViewQuestStates.list)
+    await dialog_manager.start(state=ViewQuestsStates.list)

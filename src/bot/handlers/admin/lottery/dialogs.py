@@ -10,7 +10,7 @@ from .on_actions import user_id_input_handler
 from .states import LotteryStartInputStates
 
 user_id_window = Window(
-    Const("Введите айди пользователя в боте"),
+    Const("ℹ️ Введите айди пользователя в боте"),
     MessageInput(
         user_id_input_handler,
         content_types=ContentType.TEXT,

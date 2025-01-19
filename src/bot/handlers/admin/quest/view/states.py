@@ -1,6 +1,7 @@
 from aiogram.fsm.state import State, StatesGroup
 
 
-class ViewQuestsStates(StatesGroup):
+class AdminViewQuestsStates(StatesGroup):
     list = State()
     one = State()
+    confirm = State()

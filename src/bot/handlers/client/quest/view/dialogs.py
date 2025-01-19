@@ -8,7 +8,7 @@ from bot.dialogs.on_actions import on_start_update_dialog_data
 
 from ..getters import get_all_known_quests, get_quest_by_id
 from .on_actions import on_answer, on_quest_selected
-from .states import ViewQuestStates
+from .states import ViewQuestsStates
 
 view_quests_window = Window(
     Const("Найденные квестовые записки"),
@@ -28,7 +28,7 @@ view_quests_window = Window(
     ),
     GoToMenuButton(),
     getter=get_all_known_quests,
-    state=ViewQuestStates.list,
+    state=ViewQuestsStates.list,
 )
 
 view_quest_window = Window(
@@ -48,7 +48,7 @@ view_quest_window = Window(
     Back(Const("⏪ Все записки")),
     GoToMenuButton(),
     getter=get_quest_by_id,
-    state=ViewQuestStates.one,
+    state=ViewQuestsStates.one,
 )
 
 view_quests_dialog = Dialog(

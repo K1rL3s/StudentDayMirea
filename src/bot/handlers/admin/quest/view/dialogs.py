@@ -6,51 +6,51 @@ from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
 from bot.dialogs.filters.roles import IsStager
 from bot.dialogs.on_actions import on_start_update_dialog_data
 
-from ..buttons import GoToTasksButton
-from ..getters import get_all_tasks, get_task_by_id
+from ..buttons import GoToQuestsButton
+from ..getters import get_all_quests, get_quest_by_id
 from .on_actions import (
-    on_confirm_delete_task,
-    on_create_task,
-    on_task_selected,
+    on_confirm_delete_quest,
+    on_create_quest,
+    on_quest_selected,
     on_view_qrcode,
 )
-from .states import ViewTasksStates
+from .states import AdminViewQuestsStates
 
-tasks_list_window = Window(
-    Const("🧠 Все задания"),
+quests_list_window = Window(
+    Const("🗺️ Все квестовые задания"),
     ScrollingGroup(
         Select(
-            Format("{item.id} | {item.status} | {item.title}"),
-            id="tasks_select",
-            items="tasks",
-            on_click=on_task_selected,
+            Format("{item.order} | {item.id} | {item.title}"),
+            id="quests_select",
+            items="quests",
+            on_click=on_quest_selected,
             item_id_getter=lambda item: item.id,
             type_factory=str,
         ),
         width=1,
         height=10,
         hide_on_single_page=True,
-        id="tasks_group",
+        id="quests_group",
     ),
     Button(
         Const("✏️ Создать задание"),
-        id="create_task",
-        on_click=on_create_task,
+        id="create_quest",
+        on_click=on_create_quest,
         when=IsStager(),
     ),
-    GoToTasksButton(),
+    GoToQuestsButton(),
     GoToAdminPanelButton(),
     GoToMenuButton(),
-    getter=get_all_tasks,
-    state=ViewTasksStates.list,
+    getter=get_all_quests,
+    state=AdminViewQuestsStates.list,
 )
 
-view_one_task_window = Window(
+view_one_quest_window = Window(
     Format(
-        "id={task.id}\n"
-        "title={task.title}\n"
-        "description={task.description}\n"
-        "end_phrase={task.end_phrase}",
+        "id={quest.id}\n"
+        "title={quest.title}\n"
+        "description={quest.description}\n"
+        "answer={quest.answer}",
     ),
     Button(
         Const("🖼️ Куркод задания"),
@@ -65,27 +65,27 @@ view_one_task_window = Window(
     ),
     Back(Const("⏪ Задания")),
     GoToAdminPanelButton(),
-    getter=get_task_by_id,
-    state=ViewTasksStates.one,
+    getter=get_quest_by_id,
+    state=AdminViewQuestsStates.one,
 )
 
-confirm_delete_task_window = Window(
-    Format("❓ Вы уверены, что хотите удалить задание id={task.id}? "),
+confirm_delete_quest_window = Window(
+    Format("❓ Вы уверены, что хотите удалить задание id={quest.id}? "),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_delete",
-        on_click=on_confirm_delete_task,
+        on_click=on_confirm_delete_quest,
     ),
     Back(Const("⏪ Отмена")),
-    GoToTasksButton(),
+    GoToQuestsButton(),
     GoToAdminPanelButton(),
-    getter=get_task_by_id,
-    state=ViewTasksStates.confirm,
+    getter=get_quest_by_id,
+    state=AdminViewQuestsStates.confirm,
 )
 
-view_tasks_dialog = Dialog(
-    tasks_list_window,
-    view_one_task_window,
-    confirm_delete_task_window,
+view_quests_dialog = Dialog(
+    quests_list_window,
+    view_one_quest_window,
+    confirm_delete_quest_window,
     on_start=on_start_update_dialog_data,
 )

@@ -1,5 +1,5 @@
 from aiogram.types import CallbackQuery, Message
-from aiogram_dialog import DialogManager
+from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button
 from dishka import FromDishka
@@ -17,7 +17,7 @@ async def task_title_input(
 ) -> None:
     title = message.html_text.strip()[:256]
     dialog_manager.dialog_data["title"] = title
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 async def task_description_input(
@@ -27,7 +27,7 @@ async def task_description_input(
 ) -> None:
     description = message.html_text.strip()[:2048]
     dialog_manager.dialog_data["description"] = description
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 async def task_reward_input(
@@ -37,7 +37,7 @@ async def task_reward_input(
 ) -> None:
     reward = int(message.text)
     dialog_manager.dialog_data["reward"] = reward
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 async def task_end_phrase_input(
@@ -47,7 +47,7 @@ async def task_end_phrase_input(
 ) -> None:
     end_phrase = message.text.strip()[:256]
     dialog_manager.dialog_data["end_phrase"] = end_phrase
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 @inject
