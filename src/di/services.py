@@ -6,6 +6,7 @@ from core.services.products import ProductsService
 from core.services.purchases import PurchasesService
 from core.services.qrcode_saver import QRCodeSaver
 from core.services.qrcodes import QRCodeService
+from core.services.quests import QuestsService
 from core.services.roles import RolesService
 from core.services.secrets import SecretsService
 from core.services.tasks import TasksService
@@ -31,3 +32,4 @@ class ServicesProvider(Provider):
     purchases_service = provide(PurchasesService)
     roles_service = provide(RolesService)
     tickets_service = provide(TicketsService)
+    quests_service = provide(QuestsService)

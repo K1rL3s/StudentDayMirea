@@ -1,5 +1,5 @@
 from core.enums import RightsRole
-from core.ids import ProductId, TaskId, TicketId, UserId
+from core.ids import ProductId, QuestId, SecretId, TaskId, TicketId, UserId
 
 
 class ServiceException(Exception):
@@ -50,6 +50,11 @@ class UserNotFound(EntityNotFound):
         super().__init__(f"Пользователь с айди {user_id} не найден")
 
 
+class SecretNotFound(EntityNotFound):
+    def __init__(self, pharse: str) -> None:
+        super().__init__(f'Секрет по фразе "{pharse}" не найден')
+
+
 class ProductNotFound(EntityNotFound):
     def __init__(self, product_id: ProductId) -> None:
         super().__init__(f"Товар с айди {product_id} не найден")
@@ -62,12 +67,17 @@ class RoleNotFound(EntityNotFound):
 
 class TaskNotFound(EntityNotFound):
     def __init__(self, task_id: TaskId) -> None:
-        super().__init__(f'Задание с айди "{task_id}" не найдена')
+        super().__init__(f'Задание с айди "{task_id}" не найдено')
 
 
 class ActiveTaskNotFound(EntityNotFound):
     def __init__(self, user_id: UserId) -> None:
         super().__init__(f'Активное задание у юзера {user_id}" не найдено')
+
+
+class QuestNotFound(EntityNotFound):
+    def __init__(self, quest_id: QuestId) -> None:
+        super().__init__(f'Квестовое задание с айди "{quest_id}" не найдено')
 
 
 class NotEnoughStock(ServiceException):
@@ -94,13 +104,12 @@ class WrongTaskAnswer(InvalidValue):
     pass
 
 
-class InvalidValueAfterUpdate(InvalidValue):
+class WrongQuestAnswer(InvalidValue):
     pass
 
 
-class StudentIdAlreadyExists(InvalidValueAfterUpdate):
-    def __init__(self, student_id: str) -> None:
-        super().__init__(f"Номер студенческого {student_id} уже занят")
+class InvalidValueAfterUpdate(InvalidValue):
+    pass
 
 
 class NotEnoughRights(ServiceException):
@@ -115,3 +124,37 @@ class NotRightRole(NotEnoughRights):
 class NotAdmin(NotRightRole):
     def __init__(self, user_id: UserId) -> None:
         super().__init__(user_id, RightsRole.ADMIN)
+
+
+class QuestNotKnown(NotEnoughRights):
+    def __init__(self, user_id: UserId, quest_id: QuestId) -> None:
+        super().__init__(f"Пользователь {user_id} не активировал квест {quest_id}")
+
+
+class RewardAlreadyClaimed(ServiceException):
+    pass
+
+
+class SecretRewardAlreadyClaimed(RewardAlreadyClaimed):
+    def __init__(self, user_id: UserId, secret_id: SecretId) -> None:
+        super().__init__(
+            f"Пользователь {user_id} уже забрал награду за секрет {secret_id}",
+        )
+
+
+class TaskRewardAlreadyClaimed(RewardAlreadyClaimed):
+    def __init__(self, user_id: UserId, task_id: TaskId) -> None:
+        super().__init__(
+            f"Пользователь {user_id} уже забрал награду за квест {task_id}",
+        )
+
+
+class QuestRewardAlreadyClaimed(RewardAlreadyClaimed):
+    def __init__(self, user_id: UserId, quest_id: QuestId) -> None:
+        super().__init__(
+            f"Пользователь {user_id} уже забрал награду за задание {quest_id}",
+        )
+
+
+class ActivationLimitReached(ServiceException):
+    pass

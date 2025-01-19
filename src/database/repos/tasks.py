@@ -81,7 +81,7 @@ class TasksRepo(BaseAlchemyRepo):
         await self.session.execute(query)
         await self.session.flush()
 
-    async def is_task_claimed(
+    async def is_task_reward_claimed(
         self,
         user_id: UserId,
         task_id: TaskId,

@@ -1,6 +1,7 @@
 from core.exceptions import (
     ActiveTaskNotFound,
     TaskNotFound,
+    TaskRewardAlreadyClaimed,
     UserNotFound,
     WrongTaskAnswer,
 )
@@ -81,6 +82,9 @@ class TasksService:
         task = await self.tasks_repo.get_active_task(user_id)
         if task is None:
             raise ActiveTaskNotFound(user_id)
+
+        if await self.tasks_repo.is_task_reward_claimed(user_id, task.id):
+            raise TaskRewardAlreadyClaimed(user_id, task.id)
 
         if phrase != task.end_phrase:
             raise WrongTaskAnswer

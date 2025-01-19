@@ -1,6 +1,13 @@
 from sqlalchemy.exc import IntegrityError
 
-from core.exceptions import InvalidValue, SecretAlreadyExists, UserNotFound
+from core.exceptions import (
+    ActivationLimitReached,
+    InvalidValue,
+    SecretAlreadyExists,
+    SecretNotFound,
+    SecretRewardAlreadyClaimed,
+    UserNotFound,
+)
 from core.ids import SecretId, UserId
 from core.services.roles import RolesService
 from database.repos.logs import LogsRepo
@@ -21,26 +28,28 @@ class SecretsService:
         self.logs_repo = logs_repo
         self.role_service = role_service
 
-    async def reward_for_secret(self, user_id: UserId, phrase: str) -> int | None:
+    async def reward_for_secret(self, user_id: UserId, phrase: str) -> int:
         user = await self.users_repo.get_by_id(user_id)
         if user is None:
             raise UserNotFound(user_id)
 
         secret = await self.secrets_repo.get_by_phrase(phrase)
         if secret is None:
-            return None
+            raise SecretNotFound(phrase)
 
         if not await self.secrets_repo.is_activation_available(
             secret.id,
             secret.activation_limit,
         ):
-            return None
+            raise ActivationLimitReached
 
         if await self.secrets_repo.is_secret_claimed(user_id, secret.id):
-            return None
+            raise SecretRewardAlreadyClaimed(user_id, secret.id)
 
         await self.secrets_repo.link_user_to_secret(user_id, secret.id)
-        await self.users_repo.set_balance(user_id, user.balance + secret.reward)
+
+        new_balance = user.balance + secret.reward
+        await self.users_repo.set_balance(user_id, new_balance)
 
         await self.logs_repo.log_action(
             user_id,

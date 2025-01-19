@@ -27,7 +27,7 @@ async def start_task_by_deeplink(
 ) -> None:
     task_id = task_deeplink.lstrip(TaskIdPrefix)
     if await task_repo.get_by_id(task_id):
-        if not await task_repo.is_task_claimed(user_id, task_id):
+        if not await task_repo.is_task_reward_claimed(user_id, task_id):
             await dialog_manager.start(StartTaskStates.wait, data={"task_id": task_id})
 
 

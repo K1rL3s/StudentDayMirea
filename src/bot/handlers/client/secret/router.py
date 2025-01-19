@@ -7,6 +7,11 @@ from dishka import FromDishka
 from bot.dialogs.flags import FORCE_GET_USER_KEY
 from bot.enums import SlashCommand
 from bot.handlers.client.menu.states import MenuStates
+from core.exceptions import (
+    ActivationLimitReached,
+    SecretNotFound,
+    SecretRewardAlreadyClaimed,
+)
 from core.ids import UserId
 from core.services.secrets import SecretsService
 
@@ -22,10 +27,13 @@ async def check_secret_handler(
     secrets_service: FromDishka[SecretsService],
 ) -> None:
     if secret_phrase := command.args.strip():
-        reward = await secrets_service.reward_for_secret(user_id, secret_phrase)
-        if reward is not None:
-            await message.answer(f"🕵 Секрет найден! Начислено {reward} Пятаков 💰")
-            await dialog_manager.start(
-                state=MenuStates.menu,
-                data={FORCE_GET_USER_KEY: None},
-            )
+        try:
+            reward = await secrets_service.reward_for_secret(user_id, secret_phrase)
+        except (SecretNotFound, SecretRewardAlreadyClaimed, ActivationLimitReached):
+            return
+
+        await message.answer(f"🕵 Секрет найден! Начислено {reward} Пятаков 💰")
+        await dialog_manager.start(
+            state=MenuStates.menu,
+            data={FORCE_GET_USER_KEY: None},
+        )

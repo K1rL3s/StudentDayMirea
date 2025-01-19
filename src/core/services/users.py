@@ -1,12 +1,9 @@
-from sqlalchemy.exc import IntegrityError
-
 from core.enums import ALL_ROLES
 from core.exceptions import (
     InvalidValue,
     InvalidValueAfterUpdate,
     NotEnoughMoney,
     RoleNotFound,
-    StudentIdAlreadyExists,
     UserNotFound,
 )
 from core.ids import UserId
@@ -134,21 +131,3 @@ class UsersService:
             raise RoleNotFound(role)
 
         await self.users_repo.set_role(slave_id, role)
-
-    async def set_lottery_info(
-        self,
-        slave_id: UserId,
-        student_id: str,
-        group: str,
-        master_id: UserId,
-    ) -> None:
-        user = await self.users_repo.get_by_id(slave_id)
-        if user is None:
-            raise UserNotFound(slave_id)
-
-        await self.roles_service.is_lottery(master_id)
-
-        try:
-            await self.users_repo.set_lottery_info(slave_id, student_id, group)
-        except IntegrityError as e:  # TODO убрать отсюда импорт ошибки алхимии?
-            raise StudentIdAlreadyExists(student_id) from e

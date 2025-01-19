@@ -3,6 +3,7 @@ from dishka import Provider, Scope, provide
 from database.repos.logs import LogsRepo
 from database.repos.products import ProductsRepo
 from database.repos.purchases import PurchasesRepo
+from database.repos.quests import QuestsRepo
 from database.repos.secrets import SecretsRepo
 from database.repos.tasks import TasksRepo
 from database.repos.tickets import TicketsRepo
@@ -19,3 +20,4 @@ class ReposProvider(Provider):
     secrets_repo = provide(SecretsRepo)
     tasks_repo = provide(TasksRepo)
     tickets_repo = provide(TicketsRepo)
+    quests_repo = provide(QuestsRepo)

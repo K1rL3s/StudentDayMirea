@@ -17,6 +17,4 @@ async def menu_handler(
     dialog_manager: DialogManager,
 ) -> None:
     await message.answer_sticker(sticker=PANDA_WINK)
-    await dialog_manager.start(
-        state=MenuStates.menu,
-    )
+    await dialog_manager.start(state=MenuStates.menu)
