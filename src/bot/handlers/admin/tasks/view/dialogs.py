@@ -46,12 +46,10 @@ tasks_list_window = Window(
 )
 
 view_one_task_window = Window(
-    Format(
-        "id={task.id}\n"
-        "title={task.title}\n"
-        "description={task.description}\n"
-        "end_phrase={task.end_phrase}",
-    ),
+    Format("ID: {task.id}"),
+    Format("Название:\n{task.title}\n"),
+    Format("Описание:\n{task.description}\n"),
+    Format("Ответ:\n{task.answer}\n"),
     Button(
         Const("🖼️ Куркод задания"),
         id="qrcode",
@@ -70,7 +68,7 @@ view_one_task_window = Window(
 )
 
 confirm_delete_task_window = Window(
-    Format("❓ Вы уверены, что хотите удалить задание id={task.id}? "),
+    Format("❓ Вы уверены, что хотите удалить задание ID={task.id}? "),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_delete",

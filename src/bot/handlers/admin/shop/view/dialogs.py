@@ -45,13 +45,11 @@ products_list_window = Window(
 )
 
 view_one_product_window = Window(
-    Format(
-        "id={product.id}\n"
-        "name={product.name}\n"
-        "price={product.price}\n"
-        "stock={product.stock}\n"
-        "description={product.description}\n",
-    ),
+    Format("ID: {product.id}"),
+    Format("Название:\n{product.name}\n"),
+    Format("Описание:\n{product.description}\n"),
+    Format("Цена: {product.price}"),
+    Format("В наличии: {product.stock}\n"),
     Button(
         Const("🖼️ Куркод товара"),
         id="qrcode",
@@ -70,7 +68,7 @@ view_one_product_window = Window(
 )
 
 confirm_delete_product_window = Window(
-    Format("❓ Вы уверены, что хотите удалить товар id={product.id}? "),
+    Format("❓ Вы уверены, что хотите удалить товар ID={product.id}? "),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_delete",

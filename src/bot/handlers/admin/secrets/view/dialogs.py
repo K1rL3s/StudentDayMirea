@@ -45,13 +45,11 @@ secrets_list_window = Window(
 )
 
 view_one_secret_window = Window(
-    Format(
-        "id={secret.id}\n"
-        "phrase={secret.phrase}\n"
-        "reward={secret.reward}\n"
-        "activation_limit={secret.activation_limit}\n"
-        "total_activations={total_activations}",
-    ),
+    Format("ID: {secret.id}"),
+    Format("Фраза:\n{secret.phrase}\n"),
+    Format("Награда: {secret.reward}"),
+    Format("Лимит активаций: {secret.activation_limit}"),
+    Format("Всего активаций: {total_activations}"),
     Button(
         Const("🗑️ Удалить"),
         id="delete",
@@ -65,7 +63,7 @@ view_one_secret_window = Window(
 )
 
 confirm_delete_secret_window = Window(
-    Format("❓ Вы уверены, что хотите удалить секрет id={secret.id}? "),
+    Format("❓ Вы уверены, что хотите удалить секрет ID={secret.id}?"),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_delete",

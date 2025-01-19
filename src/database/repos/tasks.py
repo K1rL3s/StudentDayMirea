@@ -19,13 +19,13 @@ class TasksRepo(BaseAlchemyRepo):
         title: str,
         description: str,
         reward: int,
-        end_phrase: str,
+        answer: str,
     ) -> TaskModel:
         task = TaskModel(
             title=title,
             description=description,
             reward=reward,
-            end_phrase=end_phrase,
+            answer=answer,
             status=True,
         )
         self.session.add(task)

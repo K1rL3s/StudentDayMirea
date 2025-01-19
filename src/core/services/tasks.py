@@ -31,11 +31,11 @@ class TasksService:
         title: str,
         description: str,
         reward: int,
-        end_phrase: str,
+        answer: str,
         creator_id: UserId,
     ) -> TaskId:
         await self.roles_service.is_stager(creator_id)
-        task = await self.tasks_repo.create(title, description, reward, end_phrase)
+        task = await self.tasks_repo.create(title, description, reward, answer)
         return task.id
 
     async def delete(self, task_id: TaskId, master_id: UserId) -> None:
@@ -86,7 +86,7 @@ class TasksService:
         if await self.tasks_repo.is_task_reward_claimed(user_id, task.id):
             raise TaskRewardAlreadyClaimed(user_id, task.id)
 
-        if phrase != task.end_phrase:
+        if phrase != task.answer:
             raise WrongTaskAnswer
 
         await self.tasks_repo.set_users_to_tasks_status(user_id, task.id, True)

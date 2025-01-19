@@ -16,7 +16,7 @@ from ..menu.states import MenuStates
 from .states import StartStates
 
 SUCCESS_TEXT = """
-Вы успешно зарегистрировались! 🎉\n\n<b>Ваш id: <code>{user_id}</code></b>
+Вы успешно зарегистрировались! 🎉\n\n<b>Ваш ID: <code>{user_id}</code></b>
 """.strip()
 
 

@@ -40,13 +40,13 @@ async def task_reward_input(
     await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
-async def task_end_phrase_input(
+async def task_answer_input(
     message: Message,
     message_input: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
-    end_phrase = message.text.strip()[:256]
-    dialog_manager.dialog_data["end_phrase"] = end_phrase
+    answer = message.text.strip()[:256]
+    dialog_manager.dialog_data["answer"] = answer
     await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
@@ -60,14 +60,14 @@ async def confirm_create_task(
     title: str = dialog_manager.dialog_data["title"]
     description: str = dialog_manager.dialog_data["description"]
     reward: int = dialog_manager.dialog_data["reward"]
-    end_phrase: str = dialog_manager.dialog_data["end_phrase"]
+    answer: str = dialog_manager.dialog_data["answer"]
     creator_id: UserId = dialog_manager.middleware_data["user_id"]
 
     task_id = await tasks_service.create(
         title,
         description,
         reward,
-        end_phrase,
+        answer,
         creator_id,
     )
 

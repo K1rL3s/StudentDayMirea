@@ -11,8 +11,8 @@ from bot.dialogs.on_actions import on_start_update_dialog_data
 from ..buttons import GoToTasksButton
 from .on_actions import (
     confirm_create_task,
+    task_answer_input,
     task_description_input,
-    task_end_phrase_input,
     task_reward_input,
     task_title_input,
 )
@@ -55,17 +55,17 @@ task_reward_window = Window(
     state=CreateTaskStates.reward,
 )
 
-task_end_phrase_window = Window(
+task_answer_window = Window(
     Const("4️⃣ Введите фразу для завершения задания (256 символов)"),
     MessageInput(
-        func=task_end_phrase_input,
+        func=task_answer_input,
         content_types=ContentType.TEXT,
         filter=F.text,
     ),
     Back(Const("⏪ Шаг назад")),
     GoToTasksButton(),
     GoToAdminPanelButton(),
-    state=CreateTaskStates.end_phrase,
+    state=CreateTaskStates.answer,
 )
 
 
@@ -74,7 +74,7 @@ confirm_create_task_window = Window(
     Format("Название: {dialog_data[title]}"),
     Format("Награда: {dialog_data[reward]}\n"),
     Format("Описание:\n{dialog_data[description]}\n"),
-    Format("Завершающая фраза:\n{dialog_data[end_phrase]}"),
+    Format("Завершающая фраза:\n{dialog_data[answer]}"),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_create",
@@ -91,7 +91,7 @@ create_task_dialog = Dialog(
     task_title_window,
     task_description_window,
     task_reward_window,
-    task_end_phrase_window,
+    task_answer_window,
     confirm_create_task_window,
     on_start=on_start_update_dialog_data,
 )

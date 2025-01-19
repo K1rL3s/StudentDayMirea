@@ -5,5 +5,5 @@ class CreateTaskStates(StatesGroup):
     title = State()
     description = State()
     reward = State()
-    end_phrase = State()
+    answer = State()
     confirm = State()

@@ -1,7 +1,7 @@
 from aiogram import F
 from aiogram_dialog import Dialog, Window
 from aiogram_dialog.widgets.kbd import Button
-from aiogram_dialog.widgets.text import Const, Format
+from aiogram_dialog.widgets.text import Const, Format, Multi
 
 from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
 from bot.dialogs.on_actions import on_start_update_dialog_data
@@ -16,9 +16,12 @@ view_task_window = Window(
         "Нет активного задания",
         when=F["task"].is_(None),
     ),
-    Format(
-        "id={task.id}\ntitle={task.title}\nreward={task.reward}",
+    Multi(
+        Format("{task.title}"),
+        Format("{task.description}"),
+        Format("{task.reward}"),
         when=F["task"].is_not(None),
+        sep="\n\n",
     ),
     Button(
         Const("✅ Подтвердить"),

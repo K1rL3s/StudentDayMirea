@@ -46,12 +46,12 @@ quests_list_window = Window(
 )
 
 view_one_quest_window = Window(
-    Format(
-        "id={quest.id}\n"
-        "title={quest.title}\n"
-        "description={quest.description}\n"
-        "answer={quest.answer}",
-    ),
+    Format("ID: {quest.id}"),
+    Format("Название: {quest.title}"),
+    Format("Награда: {quest.reward}"),
+    Format("Описание:\n{quest.description}\n"),
+    Format("Задание:\n{quest.task}\n"),
+    Format("Ответ:\n{quest.answer}\n"),
     Button(
         Const("🖼️ Куркод задания"),
         id="qrcode",
@@ -70,7 +70,7 @@ view_one_quest_window = Window(
 )
 
 confirm_delete_quest_window = Window(
-    Format("❓ Вы уверены, что хотите удалить задание id={quest.id}? "),
+    Format("❓ Вы уверены, что хотите удалить задание ID={quest.id}? "),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_delete",

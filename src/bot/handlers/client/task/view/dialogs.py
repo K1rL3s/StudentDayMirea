@@ -10,9 +10,7 @@ from .on_actions import on_answer
 from .states import ViewTaskStates
 
 view_task_window = Window(
-    # Format("<tg-spoiler>ID: {task.id}</tg-spoiler>"),
-    Format("{task.title}"),
-    # Format("Награда: {task.reward} Пятаков\n"),
+    Format("{task.title}\n"),
     Format("{task.description}"),
     Button(Const("✏️ Ввести ответ"), id="answer", on_click=on_answer),
     GoToMenuButton(),
