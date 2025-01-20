@@ -20,7 +20,7 @@ tasks_list_window = Window(
     Const("🧠 Все задания"),
     ScrollingGroup(
         Select(
-            Format("{item.id} | {item.status} | {item.title}"),
+            Format("{item.id} | {item.title}"),
             id="tasks_select",
             items="tasks",
             on_click=on_task_selected,
@@ -38,7 +38,6 @@ tasks_list_window = Window(
         on_click=on_create_task,
         when=IsStager(),
     ),
-    GoToTasksButton(),
     GoToAdminPanelButton(),
     GoToMenuButton(),
     getter=get_all_tasks,

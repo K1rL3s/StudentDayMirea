@@ -38,7 +38,6 @@ quests_list_window = Window(
         on_click=on_create_quest,
         when=IsStager(),
     ),
-    GoToQuestsButton(),
     GoToAdminPanelButton(),
     GoToMenuButton(),
     getter=get_all_quests,
