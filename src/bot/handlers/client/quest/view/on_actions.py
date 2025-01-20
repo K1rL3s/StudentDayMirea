@@ -1,7 +1,6 @@
-from tkinter import Button
-
 from aiogram.types import CallbackQuery
 from aiogram_dialog import DialogManager, ShowMode
+from aiogram_dialog.widgets.kbd import Button
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 

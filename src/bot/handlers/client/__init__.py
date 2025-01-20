@@ -11,7 +11,7 @@ from .menu.dialogs import menu_dialog
 from .menu.router import router as menu_router
 from .qrcode.router import router as qrcodes_router
 from .quest.dialogs import quest_answer_dialog, view_quests_dialog
-from .quest.start.router import router as quest_start_router
+from .quest.router import router as quest_router
 from .secret.router import router as secret_router
 from .shop.dialogs import shop_dialog
 from .shop.router import router as products_router
@@ -40,7 +40,7 @@ def include_client_routers(root_router: Router) -> None:
         cancel_router,
         task_router,
         products_router,
-        quest_start_router,
+        quest_router,
         secret_router,
         menu_router,
         help_router,

@@ -5,7 +5,7 @@ from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
 from core.ids import ProductId
-from database.models import ProductModel
+from database.models import ProductModel, UserModel
 from database.repos.products import ProductsRepo
 
 
@@ -28,6 +28,19 @@ async def get_one_product(
     dialog_manager: DialogManager,
     products_repo: FromDishka[ProductsRepo],
     **__: Any,
-) -> dict[str, ProductModel | None]:
+) -> dict[str, Any]:
     product_id: ProductId = dialog_manager.dialog_data["product_id"]
-    return {"product": await products_repo.get_by_id(product_id)}
+    product = await products_repo.get_by_id(product_id)
+    return {"product": product}
+
+
+@inject
+async def get_can_buy(
+    dialog_manager: DialogManager,
+    products_repo: FromDishka[ProductsRepo],
+    **__: Any,
+) -> dict[str, Any]:
+    user: UserModel = dialog_manager.middleware_data["user"]
+    product_id: ProductId = dialog_manager.dialog_data["product_id"]
+    product = await products_repo.get_by_id(product_id)
+    return {"can_buy": user.balance >= product.price and product.stock > 0}

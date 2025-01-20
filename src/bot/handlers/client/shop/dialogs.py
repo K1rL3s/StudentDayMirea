@@ -6,7 +6,7 @@ from aiogram_dialog.widgets.text import Const, Format
 from bot.dialogs.buttons import EmptyButton, GoToMenuButton
 from bot.dialogs.on_actions import on_go_to_products, on_start_update_dialog_data
 
-from .getters import get_available_products, get_one_product
+from .getters import get_available_products, get_can_buy, get_one_product
 from .on_actions import on_buy_product, on_product_selected
 from .states import ShopStates
 
@@ -44,9 +44,9 @@ view_one_product_window = Window(
     Format("Цена: {product.price} Пятаков"),
     Format("В наличии {product.stock} шт.\n"),
     Format("{product.description}"),
-    Button(Const("💵 Купить"), id="buy", on_click=on_buy_product),
+    Button(Const("💵 Купить"), id="buy", on_click=on_buy_product, when=F["can_buy"]),
     Back(Const("⏪ Все товары")),
-    getter=get_one_product,
+    getter=[get_one_product, get_can_buy],
     state=ShopStates.one,
 )
 

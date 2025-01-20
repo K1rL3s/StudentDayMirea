@@ -5,25 +5,22 @@ from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
 from core.ids import QuestId, UserId
+from core.services.quests import QuestsService
 from database.models import QuestModel, UsersToQuestsModel
 from database.repos.quests import QuestsRepo
 
 
 @inject
 async def get_all_known_quests(
-    quests_repo: FromDishka[QuestsRepo],
     dialog_manager: DialogManager,
+    quests_repo: FromDishka[QuestsRepo],
+    quests_service: FromDishka[QuestsService],
     **__: Any,
 ) -> dict[str, list[tuple[QuestModel, UsersToQuestsModel]]]:
     user_id: UserId = dialog_manager.middleware_data["user_id"]
     quests = await quests_repo.get_known_quests(user_id)
 
-    # TODO нормально сделать финальное задание
-    all_quests = await quests_repo.get_all()
-    if len(quests) == len(all_quests) and all(pair[1].status for pair in quests):
-        final = True
-    else:
-        final = False
+    final = await quests_service.is_final_quest_available(user_id)
 
     return {"quests": quests, "final": final}
 

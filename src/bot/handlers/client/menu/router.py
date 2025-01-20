@@ -11,7 +11,7 @@ from .states import MenuStates
 router = Router(name=__file__)
 
 
-@router.message(Command(SlashCommand.MENU, SlashCommand.START, SlashCommand.CANCEL))
+@router.message(Command(SlashCommand.MENU, SlashCommand.START))
 async def menu_handler(
     message: Message,
     dialog_manager: DialogManager,

@@ -9,6 +9,7 @@ from bot.config import get_bot_config
 from bot.factories import create_bot, create_dispatcher
 from bot.handlers import include_routers
 from bot.middlewares import setup_middlewares
+from database.repos.quests import QuestsRepo
 from di.container import make_container
 
 
@@ -21,6 +22,10 @@ async def main() -> None:
     container = make_container()
     setup_dishka(container=container, router=dp, auto_inject=True)
     dp.shutdown.register(container.close)
+
+    async with container() as request_contaier:
+        quests_repo = await request_contaier.get(QuestsRepo)
+        await quests_repo.create_final_quest()
 
     setup_middlewares(bot, dp)
     include_routers(dp)

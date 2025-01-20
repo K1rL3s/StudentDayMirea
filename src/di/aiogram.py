@@ -4,8 +4,6 @@ from dishka import Provider, Scope, provide
 
 
 class AiogramBotProvider(Provider):
-    scope = Scope.REQUEST
-
-    @provide
+    @provide(scope=Scope.REQUEST)
     async def bot(self, event: TelegramObject) -> Bot:
         return event.bot

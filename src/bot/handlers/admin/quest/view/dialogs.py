@@ -52,6 +52,7 @@ view_one_quest_window = Window(
     Format("Описание:\n{quest.description}\n"),
     Format("Задание:\n{quest.task}\n"),
     Format("Ответ:\n{quest.answer}\n"),
+    Format("Подсказка после ответа:\n{quest.end_hint}\n"),
     Button(
         Const("🖼️ Куркод задания"),
         id="qrcode",

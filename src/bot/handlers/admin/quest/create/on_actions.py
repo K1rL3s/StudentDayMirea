@@ -81,6 +81,16 @@ async def quest_answer_input(
     await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
+async def quest_end_hint_input(
+    message: Message,
+    message_input: MessageInput,
+    dialog_manager: DialogManager,
+) -> None:
+    end_hint = message.text.strip()[:256]
+    dialog_manager.dialog_data["end_hint"] = end_hint
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
+
+
 @inject
 async def confirm_create_quest(
     _: CallbackQuery,
@@ -95,6 +105,7 @@ async def confirm_create_quest(
     image_id: str | None = dialog_manager.dialog_data.get("image_id")
     reward: int = dialog_manager.dialog_data["reward"]
     answer: str = dialog_manager.dialog_data["answer"]
+    end_hint: str = dialog_manager.dialog_data["end_hint"]
     master_id: UserId = dialog_manager.middleware_data["user_id"]
 
     quest_id = await quests_service.create(
@@ -105,6 +116,7 @@ async def confirm_create_quest(
         image_id,
         reward,
         answer,
+        end_hint,
         master_id,
     )
 

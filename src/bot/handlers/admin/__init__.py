@@ -3,7 +3,6 @@ from aiogram import Router
 from bot.filters.roles import IsAdmin, IsLottery, IsSeller, IsStager, IsWithRole
 
 from .broadcast.dialogs import broadcast_dialog
-from .broadcast.router import router as broadcast_router
 from .logs.router import router as logs_router
 from .lottery.dialogs import lottery_user_id_dialog
 from .money.router import router as money_router
@@ -12,7 +11,6 @@ from .panel.router import router as admin_panel_router
 from .quest.dialogs import create_quest_dialog, view_quests_dialog
 from .quest.router import router as quest_router
 from .secrets.dialogs import create_secret_dialog, view_secrets_dialog
-from .secrets.router import router as secrets_router
 from .shop.dialogs import create_product_dialog, view_products_dialog
 from .shop.router import router as products_routes
 from .tasks.dialogs import create_task_dialog, view_tasks_dialog
@@ -34,10 +32,8 @@ def include_admin_routers(root_router: Router) -> None:
     for observer in admin_router.observers.values():
         observer.filter(IsAdmin())
     admin_router.include_routers(
-        broadcast_router,
         logs_router,
         money_router,
-        secrets_router,
     )
 
     seller_router = Router(name=__file__)

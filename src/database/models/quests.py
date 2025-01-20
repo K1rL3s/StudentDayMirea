@@ -12,7 +12,9 @@ QUEST_ID_LEN = 8
 
 
 def quest_id_generator() -> QuestId:
-    return "".join(random.choices(string.ascii_letters + string.digits, k=QUEST_ID_LEN))
+    return QuestId(
+        "".join(random.choices(string.ascii_letters + string.digits, k=QUEST_ID_LEN)),
+    )
 
 
 class QuestModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
@@ -30,5 +32,6 @@ class QuestModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
     image_id: Mapped[str] = mapped_column(String(128), nullable=True)
     reward: Mapped[int] = mapped_column(Integer, nullable=False)
     answer: Mapped[str] = mapped_column(String(256), nullable=False)
+    end_hint: Mapped[str] = mapped_column(String(256), nullable=False)
 
     qrcode_image_id: Mapped[str] = mapped_column(String(128), nullable=True)

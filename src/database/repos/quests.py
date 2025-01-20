@@ -1,5 +1,8 @@
+import contextlib
+
 from sqlalchemy import delete, select, update
 from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.exc import IntegrityError
 
 from core.ids import QuestId, UserId
 from database.models import QuestModel, UsersToQuestsModel
@@ -45,6 +48,8 @@ class QuestsRepo(BaseAlchemyRepo):
 
     async def create(
         self,
+        *,
+        id_: QuestId | None = None,
         order: int,
         title: str,
         description: str,
@@ -52,8 +57,10 @@ class QuestsRepo(BaseAlchemyRepo):
         image_id: str | None,
         reward: int,
         answer: str,
+        end_hint: str,
     ) -> QuestModel:
         quest = QuestModel(
+            id=id_,
             order=order,
             title=title,
             description=description,
@@ -61,6 +68,7 @@ class QuestsRepo(BaseAlchemyRepo):
             image_id=image_id,
             reward=reward,
             answer=answer,
+            end_hint=end_hint,
         )
         self.session.add(quest)
         await self.session.flush()
@@ -138,3 +146,26 @@ class QuestsRepo(BaseAlchemyRepo):
         )
         relation = await self.session.scalar(query)
         return relation is not None
+
+    async def create_final_quest(self) -> None:
+        FINAL_QUEST_ID = QuestId("final")
+        ORDER = -1
+        TITLE = "🏁Финальное задание"
+        DESCRIPTION = "Квест завершён! Осталось понять, что же он в себе скрывал..."
+        TASK = ""
+        END_HINT = ""
+        REWARD = 100
+        ANSWER = "финал"
+
+        with contextlib.suppress(IntegrityError):
+            await self.create(
+                id_=FINAL_QUEST_ID,
+                order=ORDER,
+                title=TITLE,
+                description=DESCRIPTION,
+                task=TASK,
+                image_id=None,
+                reward=REWARD,
+                answer=ANSWER,
+                end_hint=END_HINT,
+            )

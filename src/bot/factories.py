@@ -13,14 +13,15 @@ from bot.enums import SlashCommand
 
 async def set_commands(bot: Bot) -> None:
     commands: dict[str, str] = {
-        SlashCommand.START: "Меню и регистрация",
+        SlashCommand.START: "Старт",
         SlashCommand.MENU: "Меню",
         SlashCommand.HELP: "Помощь",
         SlashCommand.SHOP: "Товары в наличии",
         SlashCommand.CART: "Купленные товары",
-        SlashCommand.TRANSFER: "Перевод другу",
+        SlashCommand.QUEST: "Квест",
         SlashCommand.TASK: "Текущее задание",
-        SlashCommand.CANCEL: "Отмена",
+        SlashCommand.TRANSFER: "Перевод другу",
+        SlashCommand.SECRET: "Секрет ;)",
     }
 
     await bot.set_chat_menu_button(menu_button=MenuButtonCommands())

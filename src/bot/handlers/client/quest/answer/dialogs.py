@@ -2,7 +2,7 @@ from aiogram import F
 from aiogram.enums import ContentType
 from aiogram_dialog import Dialog, Window
 from aiogram_dialog.widgets.input import MessageInput
-from aiogram_dialog.widgets.kbd import Back, Button
+from aiogram_dialog.widgets.kbd import Button
 from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToMenuButton
@@ -20,14 +20,15 @@ wait_answer_window = Window(
         content_types=ContentType.TEXT,
         filter=F.text,
     ),
-    Back(Const("⏪ Записка")),
+    Button(Const("⏪ Записка"), id="quest", on_click=on_back_to_quest),
     GoToMenuButton(),
     state=AnswerQuestStates.wait,
 )
 
 ok_answer_window = Window(
     Const("🎉 Верно!"),
-    Format("Вы получили {quest.reward} Пятаков за задание «{quest.title}»"),
+    Format("Вы получили {quest.reward} Пятаков за задание «{quest.title}»\n"),
+    Format("💡 {quest.end_hint}", when=F["quest"].end_hint),
     GoToMenuButton(),
     getter=get_quest_by_id,
     state=AnswerQuestStates.ok,

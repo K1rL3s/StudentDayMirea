@@ -9,13 +9,8 @@ class SlashCommand(StrEnum):
     CART = "cart"
     TRANSFER = "transfer"
     ADMIN = "admin"
-    PANEL = "panel"
-    BROADCAST = "broadcast"
     SECRET = "secret"
-    SECRETS = "secrets"
-    CANCEL = "cancel"
     ID = "id"
-    TASKS = "tasks"
     TASK = "task"
     QUEST = "quest"
 

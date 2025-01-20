@@ -9,4 +9,5 @@ class CreateQuestStates(StatesGroup):
     image = State()
     reward = State()
     answer = State()
+    end_hint = State()
     confirm = State()

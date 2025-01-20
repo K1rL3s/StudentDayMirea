@@ -5,6 +5,7 @@ from core.exceptions import (
     UserNotFound,
     WrongQuestAnswer,
 )
+from core.final_quest import FINAL_QUEST_ID
 from core.ids import QuestId, UserId
 from core.services.roles import RolesService
 from database.models import QuestModel
@@ -35,23 +36,26 @@ class QuestsService:
         image_id: str | None,
         reward: int,
         answer: str,
+        end_hint: str,
         master_id: UserId,
     ) -> QuestId:
         await self.roles_service.is_stager(master_id)
         quest = await self.quests_repo.create(
-            order,
-            title,
-            description,
-            task,
-            image_id,
-            reward,
-            answer,
+            order=order,
+            title=title,
+            description=description,
+            task=task,
+            image_id=image_id,
+            reward=reward,
+            answer=answer,
+            end_hint=end_hint,
         )
         return quest.id
 
     async def delete(self, quest_id: QuestId, master_id: UserId) -> None:
         await self.roles_service.is_stager(master_id)
-        await self.quests_repo.delete(quest_id)
+        if quest_id != FINAL_QUEST_ID:
+            await self.quests_repo.delete(quest_id)
 
     async def start(self, quest_id: QuestId, user_id: UserId) -> QuestModel:
         user = await self.users_repo.get_by_id(user_id)
@@ -94,4 +98,16 @@ class QuestsService:
         new_balance = user.balance + quest.reward
         await self.users_repo.set_balance(user_id, new_balance)
 
+        if await self.is_final_quest_available(user_id):
+            await self.start(FINAL_QUEST_ID, user_id)
+
         return quest.title, quest.reward
+
+    async def is_final_quest_available(self, user_id: UserId) -> bool:
+        known_quests = await self.quests_repo.get_known_quests(user_id)
+        all_quests = await self.quests_repo.get_all()
+        return (
+            len(known_quests) != 0  # что-то должно быть найдено
+            and len(known_quests) == len(all_quests) - 1  # без учёта финального
+            and all(pair[1].status for pair in known_quests)  # все найденное выполнено
+        )

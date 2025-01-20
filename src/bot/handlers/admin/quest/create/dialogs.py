@@ -13,6 +13,7 @@ from .on_actions import (
     confirm_create_quest,
     quest_answer_input,
     quest_description_input,
+    quest_end_hint_input,
     quest_image_input,
     quest_order_input,
     quest_reward_input,
@@ -111,6 +112,19 @@ quest_answer_window = Window(
     state=CreateQuestStates.answer,
 )
 
+quest_end_hint_window = Window(
+    Const("8️⃣ Введите подсказку на следующий квест (256 символов)"),
+    MessageInput(
+        func=quest_end_hint_input,
+        content_types=ContentType.TEXT,
+        filter=F.text,
+    ),
+    Back(Const("⏪ Шаг назад")),
+    GoToQuestsButton(),
+    GoToAdminPanelButton(),
+    state=CreateQuestStates.end_hint,
+)
+
 confirm_create_quest_window = Window(
     Const("Создать задание❓\n"),
     Format("Порядковый номер: {dialog_data[order]}"),
@@ -120,6 +134,7 @@ confirm_create_quest_window = Window(
     Format("Изображение: {dialog_data[image_id]}", when=F["dialog_data"]["image_id"]),
     Format("Награда: {dialog_data[reward]}"),
     Format("Ответ:\n{dialog_data[answer]}\n"),
+    Format("Подсказка после ответа:\n{dialog_data[end_hint]}\n"),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_create",
@@ -140,6 +155,7 @@ create_quest_dialog = Dialog(
     quest_image_window,
     quest_reward_window,
     quest_answer_window,
+    quest_end_hint_window,
     confirm_create_quest_window,
     on_start=on_start_update_dialog_data,
 )

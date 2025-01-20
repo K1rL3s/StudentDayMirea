@@ -1,10 +1,9 @@
 from aiogram import F, Router
-from aiogram.filters import Command, CommandStart, MagicData
+from aiogram.filters import CommandStart, MagicData
 from aiogram.types import Message
 from aiogram_dialog import DialogManager
 from dishka import FromDishka
 
-from bot.enums import SlashCommand
 from core.services.qrcodes import TaskIdPrefix
 from database.repos.tasks import TasksRepo
 
@@ -27,11 +26,3 @@ async def start_task_by_deeplink(
 
     if await task_repo.get_by_id(task_id):
         await dialog_manager.start(ViewTasksStates.one, data={"task_id": task_id})
-
-
-@router.message(Command(SlashCommand.TASKS))
-async def list_tasks_handler(
-    message: Message,
-    dialog_manager: DialogManager,
-) -> None:
-    await dialog_manager.start(state=ViewTasksStates.list)
