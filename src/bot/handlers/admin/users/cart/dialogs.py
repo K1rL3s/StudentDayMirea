@@ -7,7 +7,7 @@ from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
 from bot.dialogs.on_actions import on_start_update_dialog_data
 
 from ..buttons import GoToUserButton
-from ..getters import user_short_link
+from ..getters import get_view_user_info
 from ..on_actions import _UserIdNameText
 from .getters import get_view_user_cart
 from .on_actions import on_clear_cart_confirm
@@ -30,7 +30,7 @@ user_cart_window = Window(
     GoToUserButton,
     GoToAdminPanelButton(),
     GoToMenuButton(),
-    getter=[user_short_link, get_view_user_cart],
+    getter=[get_view_user_info, get_view_user_cart],
     state=CartUserStates.cart,
 )
 
@@ -45,7 +45,7 @@ clear_cart_window = Window(
     ),
     GoToAdminPanelButton(),
     GoToMenuButton(),
-    getter=user_short_link,
+    getter=get_view_user_info,
     state=CartUserStates.clear,
 )
 

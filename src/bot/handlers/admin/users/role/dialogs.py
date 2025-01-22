@@ -6,7 +6,7 @@ from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
 from bot.dialogs.on_actions import on_start_update_dialog_data
 
 from ..buttons import GoToUserButton
-from ..getters import user_short_link
+from ..getters import get_view_user_info
 from ..on_actions import _UserIdNameText
 from .getters import get_roles
 from .on_actions import on_role_confirm, on_role_selected
@@ -28,7 +28,7 @@ user_role_window = Window(
     GoToUserButton,
     GoToAdminPanelButton(),
     GoToMenuButton(),
-    getter=[user_short_link, get_roles],
+    getter=[get_view_user_info, get_roles],
     state=RoleUserStates.select,
 )
 
@@ -41,7 +41,7 @@ set_role_window = Window(
     Back(Const("⏪ Роли")),
     GoToAdminPanelButton(),
     GoToMenuButton(),
-    getter=user_short_link,
+    getter=get_view_user_info,
     state=RoleUserStates.role,
 )
 

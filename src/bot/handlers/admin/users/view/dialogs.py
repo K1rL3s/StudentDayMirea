@@ -9,7 +9,7 @@ from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
 from bot.dialogs.filters.roles import IsAdmin, IsLottery, IsSeller, IsStager
 from bot.dialogs.on_actions import on_start_update_dialog_data
 
-from ..getters import user_short_link
+from ..getters import get_view_user_info
 from ..on_actions import _UserIdNameText
 from .on_actions import (
     id_input_handler,
@@ -70,7 +70,7 @@ view_user_window = Window(
     Back(Const("🔁 Ввести ID")),
     GoToAdminPanelButton(),
     GoToMenuButton(),
-    getter=user_short_link,
+    getter=get_view_user_info,
     state=ViewUserStates.one,
 )
 

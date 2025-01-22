@@ -10,7 +10,7 @@ from .view.states import ViewUserStates
 _UserIdNameText = Format(
     "ID: <code>{view_user.id}</code>\n"
     "<b>{view_user.name}</b> - {role}\n"
-    "Лотерейный билет - {lottery_ticket}",
+    "Лотерея - {lottery_ticket}\n",
 )
 
 

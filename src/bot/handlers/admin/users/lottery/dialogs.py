@@ -9,7 +9,7 @@ from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
 from bot.dialogs.on_actions import on_start_update_dialog_data
 
 from ..buttons import GoToUserButton
-from ..getters import user_short_link
+from ..getters import get_view_user_info
 from .on_actions import fio_input_handler, group_input_handler, ticket_id_input_handler
 from .states import LotteryUserStates
 
@@ -24,7 +24,7 @@ ticket_id_window = Window(
     GoToAdminPanelButton(),
     GoToMenuButton(),
     state=LotteryUserStates.ticket_id,
-    getter=user_short_link,
+    getter=get_view_user_info,
 )
 
 fio_window = Window(
@@ -39,7 +39,7 @@ fio_window = Window(
     GoToAdminPanelButton(),
     GoToMenuButton(),
     state=LotteryUserStates.fio,
-    getter=user_short_link,
+    getter=get_view_user_info,
 )
 
 group_window = Window(
@@ -53,7 +53,7 @@ group_window = Window(
     GoToAdminPanelButton(),
     GoToMenuButton(),
     state=LotteryUserStates.group,
-    getter=user_short_link,
+    getter=get_view_user_info,
 )
 
 set_lottery_info_dialog = Dialog(
