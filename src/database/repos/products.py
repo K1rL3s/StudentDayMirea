@@ -28,11 +28,15 @@ class ProductsRepo(BaseAlchemyRepo):
         return await self.session.scalar(query)
 
     async def get_available(self) -> list[ProductModel]:
-        query = select(ProductModel).where(ProductModel.stock > 0)
+        query = (
+            select(ProductModel)
+            .where(ProductModel.stock > 0)
+            .order_by(ProductModel.price.asc())
+        )
         return list(await self.session.scalars(query))
 
     async def get_all(self) -> list[ProductModel]:
-        query = select(ProductModel)
+        query = select(ProductModel).order_by(ProductModel.price.asc())
         return list(await self.session.scalars(query))
 
     async def set_stock(self, product_id: ProductId, new_stock: int) -> int:

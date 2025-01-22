@@ -20,7 +20,7 @@ products_list_window = Window(
     Const("🛍️ Все товары"),
     ScrollingGroup(
         Select(
-            Format("{item.id} | {item.name}"),
+            Format("{item.name} | {item.price}"),
             id="products_select",
             items="products",
             on_click=on_product_selected,

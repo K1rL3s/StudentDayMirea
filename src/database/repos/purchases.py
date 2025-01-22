@@ -38,6 +38,7 @@ class PurchasesRepo(BaseAlchemyRepo):
             select(ProductModel, PurchaseModel)
             .join(PurchaseModel, PurchaseModel.product_id == ProductModel.id)
             .where(PurchaseModel.user_id == user_id)
+            .order_by(ProductModel.price.asc())
         )
         return list(await self.session.execute(query))
 
