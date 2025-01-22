@@ -61,7 +61,7 @@ view_user_window = Window(
             when=IsLottery(),
         ),
         Button(
-            Const("🖼️ Куркод"),
+            Const("🖼️ Куркод юзера"),
             id="qrcode",
             on_click=on_view_qrcode,
         ),

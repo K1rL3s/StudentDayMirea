@@ -4,7 +4,7 @@ from aiogram_dialog.widgets.kbd import Button
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
-from core.ids import QuestId
+from core.ids import QuestId, TgId
 from core.services.qrcode_saver import QRCodeSaver
 from core.services.quests import QuestsService
 from database.models import UserModel
@@ -22,7 +22,7 @@ async def on_quest_selected(
     item_id: str,
     quests_repo: FromDishka[QuestsRepo],
 ) -> None:
-    quest_id = dialog_manager.dialog_data["quest_id"] = item_id
+    quest_id = dialog_manager.dialog_data["quest_id"] = QuestId(item_id)
 
     quest = await quests_repo.get_by_id(quest_id)
     if quest.image_id:
@@ -58,7 +58,7 @@ async def on_view_qrcode(
     if quest.qrcode_image_id:
         await callback.message.answer_photo(photo=quest.qrcode_image_id, caption=text)
     else:
-        await qrcode_saver.quest(text, quest.id, callback.from_user.id)
+        await qrcode_saver.quest(text, quest.id, TgId(callback.from_user.id))
 
     dialog_manager.show_mode = ShowMode.DELETE_AND_SEND
 
