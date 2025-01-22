@@ -63,9 +63,9 @@ class SecretsService:
         phrase: str,
         reward: int,
         activation_limit: int,
-        creator_id: int,
+        master_id: UserId,
     ) -> SecretId:
-        await self.role_service.is_admin(creator_id)
+        await self.role_service.is_admin(master_id)
 
         if not phrase:
             raise InvalidValue("Секретная фраза не может быть пустой")

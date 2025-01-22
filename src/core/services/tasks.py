@@ -86,7 +86,7 @@ class TasksService:
         if await self.tasks_repo.is_task_reward_claimed(user_id, task.id):
             raise TaskRewardAlreadyClaimed(user_id, task.id)
 
-        if phrase != task.answer:
+        if phrase.casefold() != task.answer.casefold():
             raise WrongTaskAnswer
 
         await self.tasks_repo.set_users_to_tasks_status(user_id, task.id, True)

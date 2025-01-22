@@ -15,7 +15,7 @@ async def product_name_input(
     message_input: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
-    name = message.html_text.strip()[:64]
+    name = message.text.strip()[:64]
     dialog_manager.dialog_data["name"] = name
     await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 

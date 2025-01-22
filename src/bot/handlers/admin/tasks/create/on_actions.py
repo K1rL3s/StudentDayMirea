@@ -15,7 +15,7 @@ async def task_title_input(
     message_input: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
-    title = message.html_text.strip()[:256]
+    title = message.text.strip()[:256]
     dialog_manager.dialog_data["title"] = title
     await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
@@ -46,7 +46,7 @@ async def task_answer_input(
     dialog_manager: DialogManager,
 ) -> None:
     answer = message.text.strip()[:256]
-    dialog_manager.dialog_data["answer"] = answer
+    dialog_manager.dialog_data["answer"] = answer.casefold()
     await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 

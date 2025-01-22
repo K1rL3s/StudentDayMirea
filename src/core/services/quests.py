@@ -90,7 +90,7 @@ class QuestsService:
         if await self.quests_repo.is_quest_reward_claimed(user_id, quest_id):
             raise QuestRewardAlreadyClaimed(user_id, quest_id)
 
-        if phrase != quest.answer:
+        if phrase.casefold() != quest.answer.casefold():
             raise WrongQuestAnswer
 
         await self.quests_repo.set_users_to_quests_status(user_id, quest.id, True)
