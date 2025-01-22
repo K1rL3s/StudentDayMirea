@@ -29,3 +29,14 @@ async def get_active_task(
     user: UserModel = dialog_manager.middleware_data["user"]
     task = await tasks_repo.get_active_task(user.id)
     return {"task": task}
+
+
+@inject
+async def get_active_task_key(
+    dialog_manager: DialogManager,
+    tasks_repo: FromDishka[TasksRepo],
+    **__: Any,
+) -> dict[str, Any]:
+    user: UserModel = dialog_manager.middleware_data["user"]
+    task = await tasks_repo.get_active_task(user.id)
+    return {"active_task": task}
