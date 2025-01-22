@@ -1,5 +1,5 @@
 from aiogram_dialog import Dialog, Window
-from aiogram_dialog.widgets.kbd import Back, Button, Next, ScrollingGroup, Select
+from aiogram_dialog.widgets.kbd import Back, Button, Column, Next, Select
 from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
@@ -18,7 +18,7 @@ from .states import AdminViewQuestsStates
 
 quests_list_window = Window(
     Const("🗺️ Все квестовые задания"),
-    ScrollingGroup(
+    Column(
         Select(
             Format("{item.order} | {item.id} | {item.title}"),
             id="quests_select",
@@ -27,10 +27,6 @@ quests_list_window = Window(
             item_id_getter=lambda item: item.id,
             type_factory=str,
         ),
-        width=1,
-        height=10,
-        hide_on_single_page=True,
-        id="quests_group",
     ),
     Button(
         Const("✏️ Создать задание"),
