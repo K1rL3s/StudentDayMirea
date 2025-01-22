@@ -58,11 +58,6 @@ class TasksRepo(BaseAlchemyRepo):
         await self.session.execute(query)
         await self.session.flush()
 
-    async def set_status(self, task_id: TaskId, status: bool) -> None:
-        query = update(TaskModel).where(TaskModel.id == task_id).values(status=status)
-        await self.session.execute(query)
-        await self.session.flush()
-
     async def set_users_to_tasks_status(
         self,
         user_id: UserId,
@@ -102,9 +97,14 @@ class TasksRepo(BaseAlchemyRepo):
         await self.session.flush()
 
     async def get_active_task(self, user_id: UserId) -> TaskModel | None:
-        subquery = select(UsersToTasksModel.task_id).where(
-            UsersToTasksModel.user_id == user_id,
-            UsersToTasksModel.status == False,  # noqa: E712
+        subquery = (
+            select(UsersToTasksModel.task_id)
+            .where(
+                UsersToTasksModel.user_id == user_id,
+                UsersToTasksModel.status == False,  # noqa: E712
+            )
+            .order_by(UsersToTasksModel.created_at.desc())
+            .limit(1)
         )
         query = select(TaskModel).where(TaskModel.id == subquery.as_scalar())
         return await self.session.scalar(query)
