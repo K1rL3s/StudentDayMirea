@@ -5,8 +5,10 @@ from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button
 from aiogram_dialog.widgets.text import Const, Format
 
+from bot.dialogs.buttons import GoToAdminPanelButton
 from bot.dialogs.on_actions import on_start_update_dialog_data
 
+from ..buttons import GoToQuestButton, GoToQuestsButton
 from ..getters import get_quest_by_id
 from .on_actions import (
     on_edit_image_input,
@@ -24,6 +26,9 @@ edit_reward_window = Window(
         content_types=ContentType.TEXT,
         filter=F.text.isdigit(),
     ),
+    GoToQuestButton(),
+    GoToQuestsButton(),
+    GoToAdminPanelButton(),
     state=EditQuestStates.reward,
     getter=get_quest_by_id,
 )
@@ -42,6 +47,9 @@ edit_image_window = Window(
         on_click=on_edit_without_image_input,
         when=F["quest"].image_id,
     ),
+    GoToQuestButton(),
+    GoToQuestsButton(),
+    GoToAdminPanelButton(),
     state=EditQuestStates.image,
     getter=get_quest_by_id,
 )

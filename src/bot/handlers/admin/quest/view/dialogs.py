@@ -54,7 +54,7 @@ view_one_quest_window = Window(
             on_click=on_edit_reward,
         ),
         Button(
-            Const("🖼️ Изменить картинку"),
+            Const("📸 Изменить картинку"),
             id="image",
             on_click=on_edit_image,
         ),
