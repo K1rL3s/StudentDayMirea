@@ -16,9 +16,6 @@ START_TEXT = """
 <b>Я — Кузя</b>, и я помогу тебе разобраться во всём, чем можно заняться на Дне студента!
 
 💰 Я главный по <b>Пятакам</b>, буду следить, сколько у тебя их накопилось, и напоминать про самые интересные события ко Дню студента.
-
-Для регистрации просто введи свою <b>фамилию и имя</b>.
-<i>(Пример: Иванов Ваня)</i>
 """.strip()  # noqa
 
 BAD_FORMAT = "Неверный формат!"
@@ -30,11 +27,8 @@ REGISTER_TEXT = """
 
 
 welcome_window = Window(
-    Const(
-        START_TEXT,
-        when=~F["dialog_data"]["retry"],
-    ),
-    Const(BAD_FORMAT, when=F["dialog_data"]["retry"]),
+    Const(START_TEXT, when=~F["dialog_data"]["retry"]),
+    Const(BAD_FORMAT, when=F["dialog_data"]["retry"] == "format"),
     Const("\n" + REGISTER_TEXT),
     MessageInput(name_handler, content_types=[ContentType.TEXT]),
     state=StartStates.name,

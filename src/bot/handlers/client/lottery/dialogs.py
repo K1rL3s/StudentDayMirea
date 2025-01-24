@@ -22,7 +22,7 @@ LOTTERY_INFO_TEXT = """
 """.strip()  # noqa: E501
 
 LOTTERY_TICKET_TEXT = """
-"Ты тоже участвуешь! Твой билет <b>№{ticket_id}</b>"
+Ты тоже участвуешь! Твой билет <b>№{ticket_id}</b>
 """.strip()
 
 

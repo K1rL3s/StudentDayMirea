@@ -8,7 +8,6 @@ from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
 from bot.dialogs.flags import FORCE_GET_USER_KEY
-from bot.stickers import PANDA_NICE
 from core.enums import RightsRole
 from core.ids import UserId
 from database.repos.users import UsersRepo
@@ -26,14 +25,15 @@ async def name_handler(
     _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
-    dialog_manager.dialog_data["retry"] = True
+    dialog_manager.show_mode = ShowMode.DELETE_AND_SEND
 
     full_name = message.text.strip()
     if not re.match(r"^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$", full_name):
+        dialog_manager.dialog_data["retry"] = "format"
         return
 
     dialog_manager.dialog_data["full_name"] = full_name
-    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
+    await dialog_manager.next()
 
 
 @inject
@@ -51,9 +51,11 @@ async def register_confirm(
     role = RightsRole.ADMIN if tg_id == bot_owner_id else None
     await users_repo.update(user_id, full_name, role)
 
-    await callback.message.answer_sticker(PANDA_NICE)
-    await callback.message.answer(text=SUCCESS_TEXT.format(user_id=user_id))
-    await dialog_manager.start(state=MenuStates.menu, data={FORCE_GET_USER_KEY: None})
+    await dialog_manager.start(
+        state=MenuStates.menu,
+        data={FORCE_GET_USER_KEY: None},
+        show_mode=ShowMode.DELETE_AND_SEND,
+    )
 
 
 async def register_disconfirm(

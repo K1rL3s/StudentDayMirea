@@ -60,7 +60,7 @@ async def amount_input_handler(
     receiver_id: UserId = dialog_manager.dialog_data["receiver_id"]
     await users_service.transfer_funds(user.id, receiver_id, int(amount))
 
-    text = f'💵 Тебе пришли {amount} Пятаков от "{user.name}"!'
+    text = f"💵 Тебе пришли {amount} Пятаков!"
     receiver = await users_repo.get_by_id(receiver_id)
     await broadcaster.one_notify(text=text, user_id=receiver_id, tg_id=receiver.tg_id)
 
