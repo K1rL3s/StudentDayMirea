@@ -5,6 +5,7 @@ from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
 from bot.handlers.admin.users.lottery.states import LotteryUserStates
+from core.ids import UserId
 from database.repos.users import UsersRepo
 
 
@@ -24,12 +25,12 @@ async def user_id_input_handler(
     if not user_id.isdigit():
         return await _user_not_found(message)
 
-    user_id = int(user_id)
+    user_id = UserId(int(user_id))
     user = await users_repo.get_by_id(user_id)
     if user is None:
         return await _user_not_found(message)
 
     return await dialog_manager.start(
-        LotteryUserStates.ticket_id,
+        LotteryUserStates.fio,
         data={"view_user_id": user_id},
     )
