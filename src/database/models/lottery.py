@@ -8,7 +8,7 @@ from database.models.base import BaseAlchemyModel
 class TicketModel(BaseAlchemyModel):
     __tablename__ = "lottery_tickets"
 
-    id: Mapped[TicketId] = mapped_column(Integer, primary_key=True)
+    id: Mapped[TicketId] = mapped_column(Integer, primary_key=True, autoincrement=True)
     fio: Mapped[str] = mapped_column(String(256), nullable=False)
     group: Mapped[str] = mapped_column(String(32), nullable=False)
     user_id: Mapped[UserId] = mapped_column(
