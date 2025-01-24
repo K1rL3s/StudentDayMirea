@@ -35,7 +35,7 @@ class QRCodeSaver:
         save_to: UserId,
         send_to: TgId,
     ) -> None:
-        qrcode = self.qrcode_service.user_id_qrcode(save_to)
+        qrcode = self.qrcode_service.user_qrcode(save_to)
         qrcode_image_id = await self._send(caption, send_to, qrcode)
         await self.users_repo.set_qrcode_image_id(save_to, qrcode_image_id)
 
@@ -45,7 +45,7 @@ class QRCodeSaver:
         task_id: TaskId,
         send_to: TgId,
     ) -> None:
-        qrcode = self.qrcode_service.task_id_qrcode(task_id)
+        qrcode = self.qrcode_service.task_qrcode(task_id)
         qrcode_image_id = await self._send(caption, send_to, qrcode)
         await self.tasks_repo.set_qrcode_image_id(task_id, qrcode_image_id)
 
@@ -55,7 +55,7 @@ class QRCodeSaver:
         product_id: ProductId,
         send_to: TgId,
     ) -> None:
-        qrcode = self.qrcode_service.product_id_qrcode(product_id)
+        qrcode = self.qrcode_service.product_qrcode(product_id)
         qrcode_image_id = await self._send(caption, send_to, qrcode)
         await self.products_repo.set_qrcode_image_id(product_id, qrcode_image_id)
 
@@ -65,7 +65,7 @@ class QRCodeSaver:
         quest_id: QuestId,
         send_to: TgId,
     ) -> None:
-        qrcode = self.qrcode_service.quest_id_qrcode(quest_id)
+        qrcode = self.qrcode_service.quest_qrcode(quest_id)
         qrcode_image_id = await self._send(caption, send_to, qrcode)
         await self.quests_repo.set_qrcode_image_id(quest_id, qrcode_image_id)
 

@@ -24,22 +24,25 @@ class QRCodeService:
             image_factory=PyPNGImage,
         )
 
-    def user_id_qrcode(self, user_id: UserId) -> BytesIO:
+    def user_qrcode(self, user_id: UserId) -> BytesIO:
         return self._generate_qrcode(UserIdPrefix, user_id)
 
-    def task_id_qrcode(self, task_id: TaskId) -> BytesIO:
+    def task_qrcode(self, task_id: TaskId) -> BytesIO:
         return self._generate_qrcode(TaskIdPrefix, task_id)
 
-    def product_id_qrcode(self, product_id: ProductId) -> BytesIO:
+    def product_qrcode(self, product_id: ProductId) -> BytesIO:
         return self._generate_qrcode(ProductIdPrefix, product_id)
 
-    def quest_id_qrcode(self, quest_id: QuestId) -> BytesIO:
+    def quest_qrcode(self, quest_id: QuestId) -> BytesIO:
         return self._generate_qrcode(QuestIdPrefix, quest_id)
+
+    def task_deeplink(self, task_id: TaskId) -> str:
+        return self._generate_deeplink(TaskIdPrefix, task_id)
 
     def _generate_qrcode(self, prefix: str, data: Any) -> BytesIO:
         self.qr.clear()
 
-        deeplink = f"https://t.me/{self.bot_name}?start={prefix}{data}"
+        deeplink = self._generate_deeplink(prefix, data)
         self.qr.add_data(deeplink)
         self.qr.make(fit=True)
         img = self.qr.make_image(fill_color="black", back_color="white")
@@ -51,9 +54,12 @@ class QRCodeService:
 
         return stream
 
+    def _generate_deeplink(self, prefix: str, data: Any) -> str:
+        return f"https://t.me/{self.bot_name}?start={prefix}{data}"
+
 
 if __name__ == "__main__":
     generator = QRCodeService("pandito_bot")
     with open("test.png", "wb") as f:
-        image = generator.user_id_qrcode(2015866626)
+        image = generator.user_qrcode(UserId(2015866626))
         f.write(image.getvalue())

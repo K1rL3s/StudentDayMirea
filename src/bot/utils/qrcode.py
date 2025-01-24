@@ -14,7 +14,7 @@ async def send_and_save_product_qrcode(
     product_id: ProductId,
     send_to: UserId,
 ) -> None:
-    qrcode = qrcode_service.product_id_qrcode(product_id)
+    qrcode = qrcode_service.product_qrcode(product_id)
     photo = BufferedInputFile(qrcode.getvalue(), f"qrcode_product{product_id}.png")
     bot_message = await bot.send_photo(chat_id=send_to, photo=photo, caption=caption)
     qrcode_image_id = bot_message.photo[-1].file_id

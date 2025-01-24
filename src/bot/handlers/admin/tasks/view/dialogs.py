@@ -43,6 +43,7 @@ view_one_task_window = Window(
     Format("Название:\n{task.title}\n"),
     Format("Описание:\n{task.description}\n"),
     Format("Ответ:\n{task.answer}\n"),
+    Format("Ссылка для старта: {deeplink}"),
     Button(Const("🖼️ Куркод задания"), id="qrcode", on_click=on_view_qrcode),
     Button(
         Const("🗑️ Удалить"),
