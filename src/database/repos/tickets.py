@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, update
 
 from core.ids import TicketId, UserId
 from database.models.lottery import TicketModel
@@ -20,12 +20,24 @@ class TicketsRepo(BaseAlchemyRepo):
 
     async def create(
         self,
-        ticket_id: TicketId,
         user_id: UserId,
         fio: str,
         group: str,
-    ) -> TicketModel:
-        ticket = TicketModel(id=ticket_id, user_id=user_id, fio=fio, group=group)
+    ) -> None:
+        ticket = TicketModel(user_id=user_id, fio=fio, group=group)
         self.session.add(ticket)
         await self.session.flush()
-        return ticket
+
+    async def update(
+        self,
+        user_id: UserId,
+        fio: str,
+        group: str,
+    ) -> None:
+        query = (
+            update(TicketModel)
+            .where(TicketModel.user_id == user_id)
+            .values(fio=fio, group=group)
+        )
+        await self.session.execute(query)
+        await self.session.flush()

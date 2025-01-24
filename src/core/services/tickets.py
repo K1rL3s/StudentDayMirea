@@ -1,34 +1,36 @@
-from sqlalchemy.exc import IntegrityError
-
-from core.exceptions import TicketAlreadyExists
-from core.ids import TicketId, UserId
+from core.exceptions import UserNotFound
+from core.ids import UserId
 from core.services.roles import RolesService
-from database.models.lottery import TicketModel
 from database.repos.tickets import TicketsRepo
+from database.repos.users import UsersRepo
 
 
 class TicketsService:
-    def __init__(self, tickets_repo: TicketsRepo, roles_service: RolesService) -> None:
+    def __init__(
+        self,
+        tickets_repo: TicketsRepo,
+        users_repo: UsersRepo,
+        roles_service: RolesService,
+    ) -> None:
         self.tickets_repo = tickets_repo
+        self.users_repo = users_repo
         self.roles_service = roles_service
 
-    async def create(
+    async def create_or_update(
         self,
-        ticket_id: TicketId,
         user_id: UserId,
         fio: str,
         group: str,
         master_id: UserId,
-    ) -> TicketModel:
+    ) -> None:
         await self.roles_service.is_lottery(master_id)
 
-        if await self.tickets_repo.get_by_id(ticket_id):
-            raise TicketAlreadyExists.ticket(ticket_id)
+        user = await self.users_repo.get_by_id(user_id)
+        if user is None:
+            raise UserNotFound(user_id)
 
-        if await self.tickets_repo.get_by_user_id(ticket_id):
-            raise TicketAlreadyExists.user(user_id)
+        ticket = await self.tickets_repo.get_by_user_id(user_id)
+        if ticket:
+            return await self.tickets_repo.update(user_id, fio, group)
 
-        try:
-            return await self.tickets_repo.create(ticket_id, user_id, fio, group)
-        except IntegrityError as e:
-            raise TicketAlreadyExists.unknown(ticket_id, user_id) from e
+        return await self.tickets_repo.create(user_id, fio, group)
