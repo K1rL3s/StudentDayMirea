@@ -10,7 +10,7 @@ from .on_actions import amount_input_handler, id_input_handler
 from .states import TransferFundsStates
 
 transfer_wait_id_window = Window(
-    Const("Введите ID человека, которому хотите перевести <b>Пятаки</b>"),
+    Const("Введи ID человека, которому хочешь перевести <b>Пятаки</b>"),
     GoToMenuButton(),
     MessageInput(
         id_input_handler,
@@ -24,7 +24,7 @@ transfer_wait_id_window = Window(
 transfer_wait_amount_window = Window(
     Format(
         "Имя получателя: <b>{dialog_data[receiver_name]}</b>\n\n"
-        "Если всё верно, то введите сумму перевода\n"
+        "Если всё верно, то введи сумму перевода\n"
         "Ваш баланс: {middleware_data[user].balance} Пятаков",
     ),
     GoToMenuButton(),

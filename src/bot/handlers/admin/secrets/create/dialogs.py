@@ -17,7 +17,7 @@ from .on_actions import (
 from .states import CreateSecretStates
 
 create_secret_window = Window(
-    Const("1️⃣ Введите секретную фразу"),
+    Const("1️⃣ Введи секретную фразу"),
     MessageInput(
         func=secret_phrase_input,
         content_types=ContentType.TEXT,

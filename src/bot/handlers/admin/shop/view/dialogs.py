@@ -79,7 +79,7 @@ view_one_product_window = Window(
 )
 
 confirm_delete_product_window = Window(
-    Format("❓ Вы уверены, что хотите удалить товар ID={product.id}? "),
+    Format("❓ Ты уверен, что хочешь удалить товар ID={product.id}? "),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_delete",

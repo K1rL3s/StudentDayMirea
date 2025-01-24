@@ -36,7 +36,7 @@ class TicketAlreadyExists(EntityAlreadyExists):
         message = (
             f"Ошибка при привязке билета №{ticket_id} для юзера {user_id}\n"
             "Либо билет уже занят, либо юзер уже участвует в лотерее."
-            "Попробуйте повторить регистрацию ещё раз"
+            "Попробуй повторить регистрацию ещё раз"
         )
         return cls(message=message)
 

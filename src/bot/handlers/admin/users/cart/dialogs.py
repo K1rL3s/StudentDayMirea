@@ -36,7 +36,7 @@ user_cart_window = Window(
 
 clear_cart_window = Window(
     Format(
-        "❓ Уверены, что хотите очистить корзину "
+        "❓ Уверен, что хочешь очистить корзину "
         "пользователю {view_user.id} - {view_user.name}?",
     ),
     Row(

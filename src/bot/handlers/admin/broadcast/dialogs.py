@@ -10,7 +10,7 @@ from .on_actions import on_input_broadcast_message, start_broadcast
 from .states import BroadcastStates
 
 wait_message_window = Window(
-    Const("ℹ️ Введите сообщение для рассылки"),
+    Const("ℹ️ Введи сообщение для рассылки"),
     GoToAdminPanelButton("⏪ Админ-панель"),
     MessageInput(
         func=on_input_broadcast_message,

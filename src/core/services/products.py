@@ -55,33 +55,14 @@ class ProductsService:
         await self.users_repo.set_balance(user.id, new_balance)
 
         new_stock = product.stock - quantity
-        await self.products_repo.set_stock(product_id, new_stock)
+        await self.set_stock(product_id, new_stock)
 
         await self.logs_repo.log_action(
             user.id,
-            f"Bought {quantity} of {product_id} for {quantity} units",
+            f"Bought {product_id} for {quantity} units",
         )
 
         return new_balance
-
-    async def decrement_stock(self, product_id: ProductId, quantity: int) -> int:
-        if quantity <= 0:
-            raise InvalidValue(
-                "Нельзя уменьшить кол-во товара на отрицательное значение "
-                f'"{quantity}"',
-            )
-
-        product = await self.products_repo.get_by_id(product_id)
-        if product is None:
-            raise ProductNotFound(product_id)
-
-        if product.stock < quantity:
-            raise NotEnoughStock(product.stock, quantity)
-
-        new_stock = product.stock - quantity
-        await self.products_repo.set_stock(product_id, new_stock)
-
-        return new_stock
 
     async def set_stock(self, product_id: ProductId, new_stock: int) -> int:
         if new_stock < 0:
@@ -112,13 +93,14 @@ class ProductsService:
         master_id: UserId,
     ) -> ProductId:
         await self.roles_service.is_seller(master_id)
+
         return await self.products_repo.create_product(name, description, price, stock)
 
     async def delete(self, product_id: ProductId, master_id: UserId) -> None:
+        await self.roles_service.is_seller(master_id)
+
         product = await self.products_repo.get_by_id(product_id)
         if product is None:
             raise ProductNotFound(product_id)
-
-        await self.roles_service.is_seller(master_id)
 
         await self.products_repo.delete(product_id)

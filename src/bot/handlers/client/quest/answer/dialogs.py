@@ -14,7 +14,7 @@ from .on_actions import on_answer_input
 from .states import AnswerQuestStates
 
 wait_answer_window = Window(
-    Const("⏳ Введите ответ на задание ⬇"),
+    Const("⏳ Введи ответ на задание ⬇"),
     MessageInput(
         func=on_answer_input,
         content_types=ContentType.TEXT,
@@ -27,7 +27,7 @@ wait_answer_window = Window(
 
 ok_answer_window = Window(
     Const("🎉 Верно!"),
-    Format("Вы получили {quest.reward} Пятаков за задание «{quest.title}»\n"),
+    Format("Ты получил {quest.reward} Пятаков за задание «{quest.title}»\n"),
     Format("💡 {quest.end_hint}", when=F["quest"].end_hint),
     GoToMenuButton(),
     getter=get_quest_by_id,
@@ -36,7 +36,7 @@ ok_answer_window = Window(
 
 fail_answer_window = Window(
     Const("😢 Не правильно..."),
-    Const("Попробуйте ещё раз"),
+    Const("Попробуй ещё раз"),
     Button(Const("⏪ Записка"), id="quest", on_click=on_back_to_quest),
     GoToMenuButton(),
     state=AnswerQuestStates.fail,

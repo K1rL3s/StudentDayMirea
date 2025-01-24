@@ -59,7 +59,7 @@ view_one_quest_window = Window(
 )
 
 confirm_delete_quest_window = Window(
-    Format("❓ Вы уверены, что хотите удалить задание ID={quest.id}? "),
+    Format("❓ Ты уверен, что хочешь удалить задание ID={quest.id}? "),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_delete",

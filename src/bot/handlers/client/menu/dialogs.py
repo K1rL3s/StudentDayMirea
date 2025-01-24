@@ -20,9 +20,9 @@ from .states import MenuStates
 menu_dialog = Dialog(
     Window(
         Const("<b>Главное меню</b>\n"),
-        Format("Ваш ID: <code>{user_id}</code> (/id)"),
+        Format("Твой ID: <code>{user_id}</code> (/id)"),
         Format("Баланс: {balance} <b>Пятаков</b>\n"),
-        Format("Вы - <u>{role}</u>", when=IsWithRole()),
+        Format("Ты - <u>{role}</u>", when=IsWithRole()),
         Group(
             Button(Const("🛍️ Магазин"), id="shop", on_click=on_shop),
             Button(Const("🧺 Корзина"), id="cart", on_click=on_cart),

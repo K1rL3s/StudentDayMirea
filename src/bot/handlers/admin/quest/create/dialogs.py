@@ -23,7 +23,7 @@ from .on_actions import (
 from .states import CreateQuestStates
 
 quest_order_window = Window(
-    Const("1️⃣ Введите порядковый номер задания"),
+    Const("1️⃣ Введи порядковый номер задания"),
     MessageInput(
         func=quest_order_input,
         content_types=ContentType.TEXT,
@@ -35,7 +35,7 @@ quest_order_window = Window(
 )
 
 quest_title_window = Window(
-    Const("2️⃣ Введите название (заголовок) задания (256 символов)"),
+    Const("2️⃣ Введи название (заголовок) задания (256 символов)"),
     MessageInput(
         func=quest_title_input,
         content_types=ContentType.TEXT,
@@ -48,7 +48,7 @@ quest_title_window = Window(
 )
 
 quest_description_window = Window(
-    Const("3️⃣ Введите описание задания (2048 символов)"),
+    Const("3️⃣ Введи описание задания (2048 символов)"),
     MessageInput(
         func=quest_description_input,
         content_types=ContentType.TEXT,
@@ -61,7 +61,7 @@ quest_description_window = Window(
 )
 
 quest_task_window = Window(
-    Const("4️⃣ Введите задание задания (1024 символов)"),
+    Const("4️⃣ Введи задание задания (1024 символов)"),
     MessageInput(
         func=quest_task_input,
         content_types=ContentType.TEXT,
@@ -74,7 +74,7 @@ quest_task_window = Window(
 )
 
 quest_image_window = Window(
-    Const("5️⃣ Отправьте картинку для задания"),
+    Const("5️⃣ Отправь картинку для задания"),
     MessageInput(
         func=quest_image_input,
         content_types=ContentType.PHOTO,
@@ -100,7 +100,7 @@ quest_reward_window = Window(
 )
 
 quest_answer_window = Window(
-    Const("7️⃣ Введите ответ на задание (256 символов)"),
+    Const("7️⃣ Введи ответ на задание (256 символов)"),
     MessageInput(
         func=quest_answer_input,
         content_types=ContentType.TEXT,
@@ -113,7 +113,7 @@ quest_answer_window = Window(
 )
 
 quest_end_hint_window = Window(
-    Const("8️⃣ Введите подсказку на следующий квест (256 символов)"),
+    Const("8️⃣ Введи подсказку на следующий квест (256 символов)"),
     MessageInput(
         func=quest_end_hint_input,
         content_types=ContentType.TEXT,

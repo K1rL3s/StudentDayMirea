@@ -11,7 +11,7 @@ from .on_actions import on_cancel_task
 from .states import CancelTaskStates
 
 cancel_task_window = Window(
-    Const("Вы уверены, что хотите прекратить выполнение задания❓"),
+    Const("Ты уверен, что хочешь прекратить выполнение задания❓"),
     Button(Const("✅ Подтвердить"), id="confirm", on_click=on_cancel_task),
     Button(Const("⏪ Задание"), id="task", on_click=on_go_user_task),
     Button(Const("⏪ Юзер"), id="user", on_click=on_go_view_user),

@@ -12,7 +12,7 @@ from .on_actions import on_answer_input
 from .states import AnswerTaskStates
 
 wait_answer_window = Window(
-    Const("⏳ Введите ответ на задание ⬇"),
+    Const("⏳ Введи ответ на задание ⬇"),
     MessageInput(
         func=on_answer_input,
         content_types=ContentType.TEXT,
@@ -25,7 +25,7 @@ wait_answer_window = Window(
 
 ok_answer_window = Window(
     Const("🎉 Верно!"),
-    Format("Вы получили {start_data[reward]} Пятаков за задание «{start_data[title]}»"),
+    Format("Ты получил {start_data[reward]} Пятаков за задание «{start_data[title]}»"),
     GoToMenuButton(),
     state=AnswerTaskStates.ok,
 )

@@ -19,7 +19,7 @@ from .on_actions import (
 from .states import CreateTaskStates
 
 task_title_window = Window(
-    Const("1️⃣ Введите название (заголовок) задания (256 символов)"),
+    Const("1️⃣ Введи название (заголовок) задания (256 символов)"),
     MessageInput(
         func=task_title_input,
         content_types=ContentType.TEXT,
@@ -30,7 +30,7 @@ task_title_window = Window(
 )
 
 task_description_window = Window(
-    Const("2️⃣ Введите описание задания (2048 символов)"),
+    Const("2️⃣ Введи описание задания (2048 символов)"),
     MessageInput(
         func=task_description_input,
         content_types=ContentType.TEXT,
@@ -56,7 +56,7 @@ task_reward_window = Window(
 )
 
 task_answer_window = Window(
-    Const("4️⃣ Введите фразу для завершения задания (256 символов)"),
+    Const("4️⃣ Введи фразу для завершения задания (256 символов)"),
     MessageInput(
         func=task_answer_input,
         content_types=ContentType.TEXT,

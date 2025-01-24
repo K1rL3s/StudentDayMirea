@@ -18,7 +18,7 @@ from .on_actions import (
 from .states import AdminPanelStates
 
 admin_panel_window = Window(
-    Format("❗Админ-панель, вы - <u>{role}</u>"),
+    Format("❗Админ-панель, ты - <u>{role}</u>"),
     Group(
         Button(
             Const("📢 Рассылка"),

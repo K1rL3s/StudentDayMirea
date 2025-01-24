@@ -56,7 +56,7 @@ view_one_task_window = Window(
 )
 
 confirm_delete_task_window = Window(
-    Format("❓ Вы уверены, что хотите удалить задание ID={task.id}? "),
+    Format("❓ Ты уверен, что хочешь удалить задание ID={task.id}? "),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_delete",

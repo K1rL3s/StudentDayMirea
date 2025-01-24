@@ -14,7 +14,7 @@ from .on_actions import fio_input_handler, group_input_handler, ticket_id_input_
 from .states import LotteryUserStates
 
 ticket_id_window = Window(
-    Const("🆔 Введите номер лотерейного билета"),
+    Const("🆔 Введи номер лотерейного билета"),
     MessageInput(
         ticket_id_input_handler,
         content_types=ContentType.TEXT,
@@ -28,7 +28,7 @@ ticket_id_window = Window(
 )
 
 fio_window = Window(
-    Const("👤 Введите ФИО"),
+    Const("👤 Введи ФИО"),
     MessageInput(
         fio_input_handler,
         content_types=ContentType.TEXT,
@@ -43,7 +43,7 @@ fio_window = Window(
 )
 
 group_window = Window(
-    Const("🎓 Введите группу студента"),
+    Const("🎓 Введи группу студента"),
     MessageInput(
         group_input_handler,
         content_types=ContentType.TEXT,

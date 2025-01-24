@@ -36,7 +36,7 @@ async def on_buy_product(
         dialog_manager.dialog_data["final_message"] = "Упс, продукт уже раскупили"
     elif user.balance < product.price:
         dialog_manager.dialog_data["final_message"] = (
-            "Упс, у вас недостаточно <b>Пятаков</b>!"
+            "Упс, у тебя недостаточно <b>Пятаков</b>!"
         )
     else:
         await products_service.buy_product(user.id, product.id, 1)

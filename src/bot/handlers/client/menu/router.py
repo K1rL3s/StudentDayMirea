@@ -4,7 +4,6 @@ from aiogram.types import Message
 from aiogram_dialog import DialogManager
 
 from bot.enums import SlashCommand
-from bot.stickers import PANDA_WINK
 
 from .states import MenuStates
 
@@ -16,5 +15,4 @@ async def menu_handler(
     message: Message,
     dialog_manager: DialogManager,
 ) -> None:
-    await message.answer_sticker(sticker=PANDA_WINK)
     await dialog_manager.start(state=MenuStates.menu)

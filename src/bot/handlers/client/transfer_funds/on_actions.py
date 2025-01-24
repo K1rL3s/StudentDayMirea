@@ -52,7 +52,7 @@ async def amount_input_handler(
     user: UserModel = dialog_manager.middleware_data["user"]
 
     if user.balance < amount:
-        text = "😢 У вас недостаточно Пятаков для перевода, введите другую сумму"
+        text = "😢 У тебя недостаточно Пятаков для перевода, введи другую сумму"
         await message.answer(text=text)
         dialog_manager.show_mode = ShowMode.DELETE_AND_SEND
         return
@@ -60,7 +60,7 @@ async def amount_input_handler(
     receiver_id: UserId = dialog_manager.dialog_data["receiver_id"]
     await users_service.transfer_funds(user.id, receiver_id, int(amount))
 
-    text = f"💵 Вам перевели {amount} Пятаков!"
+    text = f'💵 Тебе пришли {amount} Пятаков от "{user.name}"!'
     receiver = await users_repo.get_by_id(receiver_id)
     await broadcaster.one_notify(text=text, user_id=receiver_id, tg_id=receiver.tg_id)
 

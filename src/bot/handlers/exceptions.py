@@ -25,7 +25,7 @@ async def service_exceptions_handler(
     e = event.exception
 
     logging.warning(f"{e.__class__.__name__} {e!s}")
-    text = f"😵‍💫 Произошла ошибка, попробуйте ещё раз. Вот её текст:\n\n{e!s}"
+    text = f"😵‍💫 Произошла ошибка, попробуй ещё раз. Вот её текст:\n\n{e!s}"
     await bot.send_message(chat_id=event_chat.id, text=text)
 
     # raise event.exception
@@ -61,7 +61,7 @@ async def all_exceptions_handler(
     bot: Bot,
     event_chat: Chat,
 ) -> None:
-    text = "❌😵 Произошла ошибка...\nПопробуйте ещё раз или напишите @K1rLes"
+    text = "❌😵 Произошла ошибка...\nПопробуй ещё раз или напиши ему -> @K1rLes"
     await bot.send_message(chat_id=event_chat.id, text=text)
 
     raise event.exception
