@@ -11,6 +11,7 @@ from database.repos.base import BaseAlchemyRepo
 class PurchasesInfo:
     total_products: int
     total_purchases: int
+    product_to_quantity: list[tuple[tuple[ProductId, str], int]]
     formated_info: str
 
 
@@ -42,8 +43,15 @@ class PurchasesRepo(BaseAlchemyRepo):
         )
         return list(await self.session.execute(query))
 
-    async def clear_purchases(self, user_id: UserId) -> None:
-        query = delete(PurchaseModel).where(PurchaseModel.user_id == user_id)
+    async def clear_purchases(
+        self,
+        user_id: UserId,
+        product_ids: list[ProductId],
+    ) -> None:
+        query = delete(PurchaseModel).where(
+            PurchaseModel.user_id == user_id,
+            PurchaseModel.product_id.in_(product_ids),
+        )
         await self.session.execute(query)
         await self.session.flush()
 
@@ -54,20 +62,24 @@ class PurchasesRepo(BaseAlchemyRepo):
         total_products = len({i[0].id for i in purchases})
         total_purchases = sum(i[1].quantity for i in purchases)
 
-        product_to_purchases: dict[tuple[int, str], int] = {}
+        product_to_quantity: dict[tuple[ProductId, str], int] = {}
         for product, purchase in purchases:
-            if (product.id, product.name) not in product_to_purchases:
-                product_to_purchases[(product.id, product.name)] = 0
-            product_to_purchases[(product.id, product.name)] += purchase.quantity
+            if (product.id, product.name) not in product_to_quantity:
+                product_to_quantity[(product.id, product.name)] = 0
+            product_to_quantity[(product.id, product.name)] += purchase.quantity
 
+        sorted_product_to_quntity = sorted(
+            product_to_quantity.items(),
+            key=lambda x: x[0][0],
+        )
         formated_purchases = "\n".join(
-            [
-                f"<b>{key[1]}</b>: {value}"
-                for key, value in sorted(
-                    product_to_purchases.items(),
-                    key=lambda x: x[0],
-                )
-            ],
+            f"<b>{product_name}</b>: {quantity}"
+            for (product_id, product_name), quantity in sorted_product_to_quntity
         )
 
-        return PurchasesInfo(total_products, total_purchases, formated_purchases)
+        return PurchasesInfo(
+            total_products,
+            total_purchases,
+            sorted_product_to_quntity,
+            formated_purchases,
+        )

@@ -1,6 +1,13 @@
 from aiogram import F
 from aiogram_dialog import Dialog, Window
-from aiogram_dialog.widgets.kbd import Back, Button, Next, Row
+from aiogram_dialog.widgets.kbd import (
+    Back,
+    Button,
+    Multiselect,
+    Next,
+    Row,
+    ScrollingGroup,
+)
 from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
@@ -10,7 +17,7 @@ from ..buttons import GoToUserButton
 from ..getters import get_view_user_info
 from ..on_actions import _UserIdNameText
 from .getters import get_view_user_cart
-from .on_actions import on_clear_cart_confirm
+from .on_actions import on_cart_item_selected, on_clear_cart_confirm
 from .states import CartUserStates
 
 user_cart_window = Window(
@@ -21,11 +28,26 @@ user_cart_window = Window(
     ),
     Format("Корзина пустая", when=~F["total_purchases"]),
     Format("\n{formated_info}"),
+    ScrollingGroup(
+        Multiselect(
+            checked_text=Format("🔘 {item[0][1]}: {item[1]}"),
+            unchecked_text=Format("{item[0][1]}: {item[1]}"),
+            id="select_cart",
+            item_id_getter=lambda p: p[0][0],
+            items="products_to_quantity",
+            type_factory=int,
+            on_state_changed=on_cart_item_selected,
+        ),
+        height=10,
+        width=1,
+        hide_on_single_page=True,
+        id="cart_pager",
+    ),
     Button(
         Const("🗑️ Очистить корзину"),
         id="clear_cart",
         on_click=Next(),
-        when=F["total_purchases"],
+        when=F["dialog_data"]["selected"],
     ),
     GoToUserButton,
     GoToAdminPanelButton(),
@@ -36,7 +58,7 @@ user_cart_window = Window(
 
 clear_cart_window = Window(
     Format(
-        "❓ Уверен, что хочешь очистить корзину "
+        "❓ Уверен, что хочешь очистить выделенные позиции из корзины "
         "пользователю {view_user.id} - {view_user.name}?",
     ),
     Row(
@@ -48,7 +70,6 @@ clear_cart_window = Window(
     getter=get_view_user_info,
     state=CartUserStates.clear,
 )
-
 
 user_cart_dialog = Dialog(
     user_cart_window,

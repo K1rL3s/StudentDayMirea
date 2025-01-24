@@ -24,4 +24,6 @@ async def get_view_user_cart(
         "total_products": purchases_info.total_products,
         "total_purchases": purchases_info.total_purchases,
         "formated_info": purchases_info.formated_info,
+        "purchases": purchases,
+        "products_to_quantity": purchases_info.product_to_quantity,
     }
