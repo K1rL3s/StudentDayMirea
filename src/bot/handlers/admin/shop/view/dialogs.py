@@ -1,9 +1,8 @@
 from aiogram_dialog import Dialog, Window
-from aiogram_dialog.widgets.kbd import Back, Button, Next, ScrollingGroup, Select
+from aiogram_dialog.widgets.kbd import Back, Button, Next, Row, ScrollingGroup, Select
 from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
-from bot.dialogs.filters.roles import IsSeller
 from bot.dialogs.on_actions import on_start_update_dialog_data
 
 from ..buttons import GoToProductsButton
@@ -11,6 +10,8 @@ from ..getters import get_all_products, get_one_product
 from .on_actions import (
     on_confirm_delete_product,
     on_create_product,
+    on_edit_price,
+    on_edit_stock,
     on_product_selected,
     on_view_qrcode,
 )
@@ -36,7 +37,6 @@ products_list_window = Window(
         Const("✏️ Добавить товар"),
         id="create_product",
         on_click=on_create_product,
-        when=IsSeller(),
     ),
     GoToAdminPanelButton(),
     GoToMenuButton(),
@@ -55,11 +55,22 @@ view_one_product_window = Window(
         id="qrcode",
         on_click=on_view_qrcode,
     ),
+    Row(
+        Button(
+            Const("🏷️ Изменить цену"),
+            id="price",
+            on_click=on_edit_price,
+        ),
+        Button(
+            Const("📦 Изменить запас"),
+            id="stock",
+            on_click=on_edit_stock,
+        ),
+    ),
     Button(
         Const("🗑️ Удалить"),
         id="delete",
         on_click=Next(),
-        when=IsSeller(),
     ),
     Back(Const("⏪ Товары")),
     GoToAdminPanelButton(),

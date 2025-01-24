@@ -5,6 +5,7 @@ from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
 from bot.handlers.admin.secrets.create.states import CreateSecretStates
+from bot.handlers.admin.secrets.edit.states import EditSecretStates
 from bot.handlers.admin.secrets.view.states import ViewSecretsStates
 from core.ids import SecretId
 from core.services.secrets import SecretsService
@@ -35,6 +36,42 @@ async def on_delete_secret(
     dialog_manager: DialogManager,
 ) -> None:
     await dialog_manager.next()
+
+
+async def on_edit_phrase(
+    _: CallbackQuery,
+    __: Button,
+    dialog_manager: DialogManager,
+) -> None:
+    secret_id: SecretId = dialog_manager.dialog_data["secret_id"]
+    await dialog_manager.start(
+        state=EditSecretStates.phrase,
+        data={"secret_id": secret_id},
+    )
+
+
+async def on_edit_reward(
+    _: CallbackQuery,
+    __: Button,
+    dialog_manager: DialogManager,
+) -> None:
+    secret_id: SecretId = dialog_manager.dialog_data["secret_id"]
+    await dialog_manager.start(
+        state=EditSecretStates.reward,
+        data={"secret_id": secret_id},
+    )
+
+
+async def on_edit_activation_limit(
+    _: CallbackQuery,
+    __: Button,
+    dialog_manager: DialogManager,
+) -> None:
+    secret_id: SecretId = dialog_manager.dialog_data["secret_id"]
+    await dialog_manager.start(
+        state=EditSecretStates.activation_limit,
+        data={"secret_id": secret_id},
+    )
 
 
 @inject

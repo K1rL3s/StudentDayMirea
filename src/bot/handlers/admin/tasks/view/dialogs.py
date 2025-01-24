@@ -3,7 +3,6 @@ from aiogram_dialog.widgets.kbd import Back, Button, Next, ScrollingGroup, Selec
 from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
-from bot.dialogs.filters.roles import IsStager
 from bot.dialogs.on_actions import on_start_update_dialog_data
 
 from ..buttons import GoToTasksButton
@@ -32,12 +31,7 @@ tasks_list_window = Window(
         hide_on_single_page=True,
         id="tasks_group",
     ),
-    Button(
-        Const("✏️ Создать задание"),
-        id="create_task",
-        on_click=on_create_task,
-        when=IsStager(),
-    ),
+    Button(Const("✏️ Создать задание"), id="create_task", on_click=on_create_task),
     GoToAdminPanelButton(),
     GoToMenuButton(),
     getter=get_all_tasks,
@@ -49,16 +43,11 @@ view_one_task_window = Window(
     Format("Название:\n{task.title}\n"),
     Format("Описание:\n{task.description}\n"),
     Format("Ответ:\n{task.answer}\n"),
-    Button(
-        Const("🖼️ Куркод задания"),
-        id="qrcode",
-        on_click=on_view_qrcode,
-    ),
+    Button(Const("🖼️ Куркод задания"), id="qrcode", on_click=on_view_qrcode),
     Button(
         Const("🗑️ Удалить"),
         id="delete",
         on_click=Next(),
-        when=IsStager(),
     ),
     Back(Const("⏪ Задания")),
     GoToAdminPanelButton(),

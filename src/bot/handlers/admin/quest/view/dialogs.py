@@ -1,9 +1,8 @@
 from aiogram_dialog import Dialog, Window
-from aiogram_dialog.widgets.kbd import Back, Button, Column, Next, Select
+from aiogram_dialog.widgets.kbd import Back, Button, Column, Next, Row, Select
 from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
-from bot.dialogs.filters.roles import IsStager
 from bot.dialogs.on_actions import on_start_update_dialog_data
 
 from ..buttons import GoToQuestsButton
@@ -11,6 +10,7 @@ from ..getters import get_all_quests, get_quest_by_id
 from .on_actions import (
     on_confirm_delete_quest,
     on_create_quest,
+    on_edit_reward,
     on_quest_selected,
     on_view_qrcode,
 )
@@ -28,12 +28,7 @@ quests_list_window = Window(
             type_factory=str,
         ),
     ),
-    Button(
-        Const("✏️ Создать задание"),
-        id="create_quest",
-        on_click=on_create_quest,
-        when=IsStager(),
-    ),
+    Button(Const("✏️ Создать задание"), id="create_quest", on_click=on_create_quest),
     GoToAdminPanelButton(),
     GoToMenuButton(),
     getter=get_all_quests,
@@ -48,17 +43,15 @@ view_one_quest_window = Window(
     Format("Задание:\n{quest.task}\n"),
     Format("Ответ:\n{quest.answer}\n"),
     Format("Подсказка после ответа:\n{quest.end_hint}\n"),
-    Button(
-        Const("🖼️ Куркод задания"),
-        id="qrcode",
-        on_click=on_view_qrcode,
+    Button(Const("🖼️ Куркод задания"), id="qrcode", on_click=on_view_qrcode),
+    Row(
+        Button(
+            Const("💰 Изменить награду"),
+            id="reward",
+            on_click=on_edit_reward,
+        ),
     ),
-    Button(
-        Const("🗑️ Удалить"),
-        id="delete",
-        on_click=Next(),
-        when=IsStager(),
-    ),
+    Button(Const("🗑️ Удалить"), id="delete", on_click=Next()),
     Back(Const("⏪ Задания")),
     GoToAdminPanelButton(),
     getter=get_quest_by_id,

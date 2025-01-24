@@ -11,6 +11,7 @@ from database.models import UserModel
 from database.repos.quests import QuestsRepo
 
 from ..create.states import CreateQuestStates
+from ..edit.states import EditQuestStates
 from .states import AdminViewQuestsStates
 
 
@@ -41,6 +42,18 @@ async def on_create_quest(
     dialog_manager: DialogManager,
 ) -> None:
     await dialog_manager.start(state=CreateQuestStates.order)
+
+
+async def on_edit_reward(
+    _: CallbackQuery,
+    __: Button,
+    dialog_manager: DialogManager,
+) -> None:
+    quest_id: QuestId = dialog_manager.dialog_data["quest_id"]
+    await dialog_manager.start(
+        state=EditQuestStates.reward,
+        data={"quest_id": quest_id},
+    )
 
 
 @inject

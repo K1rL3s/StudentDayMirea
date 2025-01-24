@@ -26,14 +26,17 @@ async def check_secret_handler(
     dialog_manager: DialogManager,
     secrets_service: FromDishka[SecretsService],
 ) -> None:
-    if secret_phrase := command.args.strip():
-        try:
-            reward = await secrets_service.reward_for_secret(user_id, secret_phrase)
-        except (SecretNotFound, SecretRewardAlreadyClaimed, ActivationLimitReached):
-            return
+    if command.args is None or not command.args.strip():
+        return
 
-        await message.answer(f"🕵 Секрет найден! Начислено {reward} Пятаков 💰")
-        await dialog_manager.start(
-            state=MenuStates.menu,
-            data={FORCE_GET_USER_KEY: None},
-        )
+    secret_phrase = command.args.strip()
+    try:
+        reward = await secrets_service.reward_for_secret(user_id, secret_phrase)
+    except (SecretNotFound, SecretRewardAlreadyClaimed, ActivationLimitReached):
+        return
+
+    await message.answer(f"🕵 Секрет найден! Начислено {reward} Пятаков 💰")
+    await dialog_manager.start(
+        state=MenuStates.menu,
+        data={FORCE_GET_USER_KEY: None},
+    )

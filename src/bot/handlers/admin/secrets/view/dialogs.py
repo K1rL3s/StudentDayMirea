@@ -1,9 +1,8 @@
 from aiogram_dialog import Dialog, Window
-from aiogram_dialog.widgets.kbd import Back, Button, ScrollingGroup, Select
+from aiogram_dialog.widgets.kbd import Back, Button, Row, ScrollingGroup, Select
 from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
-from bot.dialogs.filters.roles import IsAdmin
 from bot.dialogs.on_actions import on_start_update_dialog_data
 
 from ..buttons import GoToSecretsButton
@@ -12,6 +11,9 @@ from .on_actions import (
     on_confirm_delete_secret,
     on_create_secret,
     on_delete_secret,
+    on_edit_activation_limit,
+    on_edit_phrase,
+    on_edit_reward,
     on_secret_selected,
 )
 from .states import ViewSecretsStates
@@ -36,7 +38,6 @@ secrets_list_window = Window(
         Const("✏️ Создать секрет"),
         id="create",
         on_click=on_create_secret,
-        when=IsAdmin(),
     ),
     GoToAdminPanelButton(),
     GoToMenuButton(),
@@ -50,11 +51,27 @@ view_one_secret_window = Window(
     Format("Награда: {secret.reward}"),
     Format("Лимит активаций: {secret.activation_limit}"),
     Format("Всего активаций: {total_activations}"),
+    Row(
+        Button(
+            Const("💬 Изменить фразу"),
+            id="pharse",
+            on_click=on_edit_phrase,
+        ),
+        Button(
+            Const("💰 Изменить награду"),
+            id="reward",
+            on_click=on_edit_reward,
+        ),
+        Button(
+            Const("🚀 Изменить лимит"),
+            id="activation_limit",
+            on_click=on_edit_activation_limit,
+        ),
+    ),
     Button(
         Const("🗑️ Удалить"),
         id="delete",
         on_click=on_delete_secret,
-        when=IsAdmin(),
     ),
     Back(Const("⏪ Cекреты")),
     GoToAdminPanelButton(),

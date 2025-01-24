@@ -8,10 +8,18 @@ from .lottery.dialogs import lottery_user_id_dialog
 from .money.router import router as money_router
 from .panel.dialogs import admin_panel_dialog
 from .panel.router import router as admin_panel_router
-from .quest.dialogs import create_quest_dialog, view_quests_dialog
+from .quest.dialogs import create_quest_dialog, edit_quest_dialog, view_quests_dialog
 from .quest.router import router as quest_router
-from .secrets.dialogs import create_secret_dialog, view_secrets_dialog
-from .shop.dialogs import create_product_dialog, view_products_dialog
+from .secrets.dialogs import (
+    create_secret_dialog,
+    edit_secret_dialog,
+    view_secrets_dialog,
+)
+from .shop.dialogs import (
+    create_product_dialog,
+    edit_product_dialog,
+    view_products_dialog,
+)
 from .shop.router import router as products_routes
 from .tasks.dialogs import create_task_dialog, view_tasks_dialog
 from .tasks.router import router as tasks_router
@@ -71,6 +79,7 @@ def include_admin_dialogs(root_router: Router) -> None:
         broadcast_dialog,
         view_secrets_dialog,
         create_secret_dialog,
+        edit_secret_dialog,
         user_role_dialog,
     )
 
@@ -81,6 +90,7 @@ def include_admin_dialogs(root_router: Router) -> None:
         user_cart_dialog,
         view_products_dialog,
         create_product_dialog,
+        edit_product_dialog,
     )
 
     stager_router = Router(name=__file__)
@@ -94,6 +104,7 @@ def include_admin_dialogs(root_router: Router) -> None:
         confirm_task_dialog,
         create_quest_dialog,
         view_quests_dialog,
+        edit_quest_dialog,
     )
 
     lottery_router = Router(name=__file__)

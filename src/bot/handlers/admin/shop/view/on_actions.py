@@ -4,13 +4,14 @@ from aiogram_dialog.widgets.kbd import Button
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
-from core.ids import ProductId
+from core.ids import ProductId, TgId
 from core.services.products import ProductsService
 from core.services.qrcode_saver import QRCodeSaver
 from database.models import UserModel
 from database.repos.products import ProductsRepo
 
 from ..create.states import CreateProductStates
+from ..edit.states import EditProductStates
 from .states import ViewProductsStates
 
 
@@ -32,6 +33,30 @@ async def on_create_product(
     await dialog_manager.start(state=CreateProductStates.name)
 
 
+async def on_edit_price(
+    _: CallbackQuery,
+    __: Button,
+    dialog_manager: DialogManager,
+) -> None:
+    product_id: ProductId = dialog_manager.dialog_data["product_id"]
+    await dialog_manager.start(
+        state=EditProductStates.price,
+        data={"product_id": product_id},
+    )
+
+
+async def on_edit_stock(
+    _: CallbackQuery,
+    __: Button,
+    dialog_manager: DialogManager,
+) -> None:
+    product_id: ProductId = dialog_manager.dialog_data["product_id"]
+    await dialog_manager.start(
+        state=EditProductStates.stock,
+        data={"product_id": product_id},
+    )
+
+
 @inject
 async def on_view_qrcode(
     callback: CallbackQuery,
@@ -47,7 +72,7 @@ async def on_view_qrcode(
     if product.qrcode_image_id:
         await callback.message.answer_photo(photo=product.qrcode_image_id, caption=text)
     else:
-        await qrcode_saver.product(text, product.id, callback.from_user.id)
+        await qrcode_saver.product(text, product.id, TgId(callback.from_user.id))
 
     dialog_manager.show_mode = ShowMode.DELETE_AND_SEND
 

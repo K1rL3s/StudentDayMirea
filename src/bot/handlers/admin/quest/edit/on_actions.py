@@ -1,0 +1,3 @@
+async def on_edit_reward_input() -> None:
+    # TODO логика изменения
+    ...
