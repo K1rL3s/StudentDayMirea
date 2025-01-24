@@ -1,7 +1,7 @@
 import re
 
 from aiogram.types import CallbackQuery, Message
-from aiogram_dialog import DialogManager
+from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button
 from dishka import FromDishka
@@ -33,7 +33,7 @@ async def name_handler(
         return
 
     dialog_manager.dialog_data["full_name"] = full_name
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 @inject

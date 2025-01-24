@@ -12,7 +12,7 @@ from core.services.tasks import TasksService
 
 async def task_title_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     title = message.text.strip()[:256]
@@ -22,7 +22,7 @@ async def task_title_input(
 
 async def task_description_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     description = message.html_text.strip()[:2048]
@@ -32,7 +32,7 @@ async def task_description_input(
 
 async def task_reward_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     reward = int(message.text)
@@ -42,7 +42,7 @@ async def task_reward_input(
 
 async def task_answer_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     answer = message.text.strip()[:256]

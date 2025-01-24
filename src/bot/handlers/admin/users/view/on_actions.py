@@ -18,16 +18,18 @@ from ..task.view.states import TaskUserStates
 @inject
 async def id_input_handler(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
     users_repo: FromDishka[UsersRepo],
 ) -> None:
-    user_id = int(message.text)
+    user_id = UserId(int(message.text))
+
+    dialog_manager.show_mode = ShowMode.DELETE_AND_SEND
 
     user = await users_repo.get_by_id(user_id)
     if user is None:
         text = f"Пользователя с ID {user_id} не существует :("
-        await message.reply(text=text)
+        await message.answer(text=text)
         return
 
     dialog_manager.dialog_data["view_user_id"] = user.id

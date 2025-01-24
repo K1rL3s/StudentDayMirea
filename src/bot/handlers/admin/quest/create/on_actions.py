@@ -13,7 +13,7 @@ from ..view.states import AdminViewQuestsStates
 
 async def quest_order_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     order = int(message.text)
@@ -23,7 +23,7 @@ async def quest_order_input(
 
 async def quest_title_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     title = message.text.strip()[:256]
@@ -33,7 +33,7 @@ async def quest_title_input(
 
 async def quest_description_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     description = message.html_text.strip()[:2048]
@@ -43,7 +43,7 @@ async def quest_description_input(
 
 async def quest_task_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     task = message.html_text.strip()[:1024]
@@ -53,7 +53,7 @@ async def quest_task_input(
 
 async def quest_image_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     image_id = message.photo[-1].file_id
@@ -63,7 +63,7 @@ async def quest_image_input(
 
 async def quest_reward_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     reward = int(message.text)
@@ -73,7 +73,7 @@ async def quest_reward_input(
 
 async def quest_answer_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     answer = message.text.strip()[:256]
@@ -83,7 +83,7 @@ async def quest_answer_input(
 
 async def quest_end_hint_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     end_hint = message.text.strip()[:256]

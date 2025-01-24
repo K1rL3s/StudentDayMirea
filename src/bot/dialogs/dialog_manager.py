@@ -20,25 +20,13 @@ class CustomStartModeShowModeManagerImpl(ManagerImpl):
         state: State,
         data: dict[str, Any] | None = None,
         mode: StartMode = StartMode.RESET_STACK,
-        show_mode: ShowMode | None = ShowMode.DELETE_AND_SEND,
+        show_mode: ShowMode | None = ShowMode.AUTO,
         access_settings: AccessSettings | None = None,
     ) -> None:
         if data is None:
             data = {}
 
         await super().start(state, data, mode, show_mode, access_settings)
-
-        # self.check_disabled()
-        # self.show_mode = show_mode or self.show_mode
-        # if mode is StartMode.NORMAL:
-        #     await self._start_normal(state, data, access_settings)
-        # elif mode is StartMode.RESET_STACK:
-        #     await self.reset_stack(remove_keyboard=False)
-        #     await self._start_normal(state, data, access_settings)
-        # elif mode is StartMode.NEW_STACK:
-        #     await self._start_new_stack(state, data, access_settings)
-        # else:
-        #     raise ValueError(f"Unknown start mode: {mode}")
 
 
 class MyManagerFactory(DialogManagerFactory):

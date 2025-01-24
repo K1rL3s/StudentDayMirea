@@ -12,7 +12,7 @@ from core.services.products import ProductsService
 
 async def product_name_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     name = message.text.strip()[:64]
@@ -22,7 +22,7 @@ async def product_name_input(
 
 async def product_description_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     description = message.html_text.strip()[:2048]
@@ -32,7 +32,7 @@ async def product_description_input(
 
 async def product_price_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     price = int(message.text)
@@ -42,7 +42,7 @@ async def product_price_input(
 
 async def product_stock_input(
     message: Message,
-    message_input: MessageInput,
+    _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
     stock = int(message.text)

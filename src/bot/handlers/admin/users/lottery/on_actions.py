@@ -1,5 +1,5 @@
 from aiogram.types import Message
-from aiogram_dialog import DialogManager
+from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
@@ -23,14 +23,14 @@ async def ticket_id_input_handler(
         await message.answer(text=text)
         return
 
-    ticket_id = int(ticket_id)
+    ticket_id = TicketId(int(ticket_id))
     if ticket := await tickets_repo.get_by_id(ticket_id):
         text = f"Такой номер билета уже занят: {ticket.user_id} {ticket.fio}"
         await message.answer(text=text)
         return
 
     dialog_manager.dialog_data["ticket_id"] = ticket_id
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 async def fio_input_handler(
@@ -40,7 +40,7 @@ async def fio_input_handler(
 ) -> None:
     fio = message.text.strip()[:256]
     dialog_manager.dialog_data["fio"] = fio
-    await dialog_manager.next()
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
 @inject
