@@ -10,4 +10,6 @@ class CreateQuestStates(StatesGroup):
     reward = State()
     answer = State()
     end_hint = State()
+    right_answer = State()
+    wrong_answer = State()
     confirm = State()

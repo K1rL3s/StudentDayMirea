@@ -58,6 +58,8 @@ class QuestsRepo(BaseAlchemyRepo):
         reward: int,
         answer: str,
         end_hint: str,
+        right_answer: str,
+        wrong_answer: str,
     ) -> QuestModel:
         quest = QuestModel(
             id=id_,
@@ -69,6 +71,8 @@ class QuestsRepo(BaseAlchemyRepo):
             reward=reward,
             answer=answer,
             end_hint=end_hint,
+            right_answer=right_answer,
+            wrong_answer=wrong_answer,
         )
         self.session.add(quest)
         await self.session.flush()
@@ -156,6 +160,8 @@ class QuestsRepo(BaseAlchemyRepo):
         END_HINT = ""
         REWARD = 100
         ANSWER = "финал"
+        RIGHT_ANSWER = ""
+        WRONG_ANSWER = ""
 
         with contextlib.suppress(IntegrityError):
             await self.create(
@@ -168,4 +174,6 @@ class QuestsRepo(BaseAlchemyRepo):
                 reward=REWARD,
                 answer=ANSWER,
                 end_hint=END_HINT,
+                right_answer=RIGHT_ANSWER,
+                wrong_answer=WRONG_ANSWER,
             )

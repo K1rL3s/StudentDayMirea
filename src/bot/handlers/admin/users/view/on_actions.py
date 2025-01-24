@@ -5,7 +5,7 @@ from aiogram_dialog.widgets.kbd import Button
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
-from core.ids import UserId
+from core.ids import TgId, UserId
 from core.services.qrcode_saver import QRCodeSaver
 from database.repos.users import UsersRepo
 
@@ -75,7 +75,7 @@ async def on_view_qrcode(
     if user.qrcode_image_id:
         await callback.message.answer_photo(photo=user.qrcode_image_id, caption=text)
     else:
-        await qrcode_saver.user(text, user.id, callback.from_user.id)
+        await qrcode_saver.user(text, user.id, TgId(callback.from_user.id))
 
     dialog_manager.show_mode = ShowMode.DELETE_AND_SEND
 
@@ -108,6 +108,6 @@ async def on_set_lottery_info(
 ) -> None:
     user_id: UserId = dialog_manager.dialog_data["view_user_id"]
     await dialog_manager.start(
-        LotteryUserStates.ticket_id,
+        LotteryUserStates.fio,
         data={"view_user_id": user_id},
     )

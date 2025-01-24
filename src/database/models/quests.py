@@ -26,12 +26,14 @@ class QuestModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
         default=quest_id_generator,
     )
     order: Mapped[int] = mapped_column(Integer, nullable=False)
-    title: Mapped[str] = mapped_column(String(256), nullable=False)
+    title: Mapped[str] = mapped_column(String(64), nullable=False)
     description: Mapped[str] = mapped_column(String(2048), nullable=False)
     task: Mapped[str] = mapped_column(String(1024), nullable=False)
     image_id: Mapped[str] = mapped_column(String(128), nullable=True)
     reward: Mapped[int] = mapped_column(Integer, nullable=False)
-    answer: Mapped[str] = mapped_column(String(256), nullable=False)
+    answer: Mapped[str] = mapped_column(String(128), nullable=False)
     end_hint: Mapped[str] = mapped_column(String(256), nullable=False)
+    right_answer: Mapped[str] = mapped_column(String(128), nullable=False)
+    wrong_answer: Mapped[str] = mapped_column(String(128), nullable=False)
 
     qrcode_image_id: Mapped[str] = mapped_column(String(128), nullable=True)

@@ -17,12 +17,14 @@ from .on_actions import (
     quest_image_input,
     quest_order_input,
     quest_reward_input,
+    quest_right_answer_input,
     quest_task_input,
     quest_title_input,
+    quest_wrong_answer_input,
 )
 from .states import CreateQuestStates
 
-quest_order_window = Window(
+order_window = Window(
     Const("1️⃣ Введи порядковый номер задания"),
     MessageInput(
         func=quest_order_input,
@@ -34,8 +36,8 @@ quest_order_window = Window(
     state=CreateQuestStates.order,
 )
 
-quest_title_window = Window(
-    Const("2️⃣ Введи название (заголовок) задания (256 символов)"),
+title_window = Window(
+    Const("2️⃣ Введи название (заголовок) задания (64 символов)"),
     MessageInput(
         func=quest_title_input,
         content_types=ContentType.TEXT,
@@ -47,7 +49,7 @@ quest_title_window = Window(
     state=CreateQuestStates.title,
 )
 
-quest_description_window = Window(
+description_window = Window(
     Const("3️⃣ Введи описание задания (2048 символов)"),
     MessageInput(
         func=quest_description_input,
@@ -60,7 +62,7 @@ quest_description_window = Window(
     state=CreateQuestStates.description,
 )
 
-quest_task_window = Window(
+task_window = Window(
     Const("4️⃣ Введи задание задания (1024 символов)"),
     MessageInput(
         func=quest_task_input,
@@ -73,7 +75,7 @@ quest_task_window = Window(
     state=CreateQuestStates.task,
 )
 
-quest_image_window = Window(
+image_window = Window(
     Const("5️⃣ Отправь картинку для задания"),
     MessageInput(
         func=quest_image_input,
@@ -86,7 +88,7 @@ quest_image_window = Window(
     state=CreateQuestStates.image,
 )
 
-quest_reward_window = Window(
+reward_window = Window(
     Const("6️⃣ Какая награда за задание? Число больше нуля"),
     MessageInput(
         func=quest_reward_input,
@@ -99,8 +101,8 @@ quest_reward_window = Window(
     state=CreateQuestStates.reward,
 )
 
-quest_answer_window = Window(
-    Const("7️⃣ Введи ответ на задание (256 символов)"),
+answer_window = Window(
+    Const("7️⃣ Введи ответ на задание (128 символов)"),
     MessageInput(
         func=quest_answer_input,
         content_types=ContentType.TEXT,
@@ -112,7 +114,7 @@ quest_answer_window = Window(
     state=CreateQuestStates.answer,
 )
 
-quest_end_hint_window = Window(
+end_hint_window = Window(
     Const("8️⃣ Введи подсказку на следующий квест (256 символов)"),
     MessageInput(
         func=quest_end_hint_input,
@@ -125,6 +127,34 @@ quest_end_hint_window = Window(
     state=CreateQuestStates.end_hint,
 )
 
+right_answer_window = Window(
+    Const("9️ Введи текст на верный ответ (128 символов)"),
+    MessageInput(
+        func=quest_right_answer_input,
+        content_types=ContentType.TEXT,
+        filter=F.text,
+    ),
+    Back(Const("⏪ Шаг назад")),
+    GoToQuestsButton(),
+    GoToAdminPanelButton(),
+    state=CreateQuestStates.right_answer,
+)
+
+
+wrong_answer_window = Window(
+    Const("1️⃣0️⃣ Введи текст на неверный ответ (128 символов)"),
+    MessageInput(
+        func=quest_wrong_answer_input,
+        content_types=ContentType.TEXT,
+        filter=F.text,
+    ),
+    Back(Const("⏪ Шаг назад")),
+    GoToQuestsButton(),
+    GoToAdminPanelButton(),
+    state=CreateQuestStates.wrong_answer,
+)
+
+
 confirm_create_quest_window = Window(
     Const("Создать задание❓\n"),
     Format("Порядковый номер: {dialog_data[order]}"),
@@ -135,6 +165,8 @@ confirm_create_quest_window = Window(
     Format("Награда: {dialog_data[reward]}"),
     Format("Ответ:\n{dialog_data[answer]}\n"),
     Format("Подсказка после ответа:\n{dialog_data[end_hint]}\n"),
+    Format("На правильный ответ:\n{dialog_data[right_answer]}\n"),
+    Format("На неверный ответа:\n{dialog_data[wrong_answer]}\n"),
     Button(
         Const("✅ Подтвердить"),
         id="confirm_create",
@@ -148,14 +180,16 @@ confirm_create_quest_window = Window(
 
 
 create_quest_dialog = Dialog(
-    quest_order_window,
-    quest_title_window,
-    quest_description_window,
-    quest_task_window,
-    quest_image_window,
-    quest_reward_window,
-    quest_answer_window,
-    quest_end_hint_window,
+    order_window,
+    title_window,
+    description_window,
+    task_window,
+    image_window,
+    reward_window,
+    answer_window,
+    end_hint_window,
+    right_answer_window,
+    wrong_answer_window,
     confirm_create_quest_window,
     on_start=on_start_update_dialog_data,
 )

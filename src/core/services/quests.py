@@ -37,6 +37,8 @@ class QuestsService:
         reward: int,
         answer: str,
         end_hint: str,
+        right_answer: str,
+        wrong_answer: str,
         master_id: UserId,
     ) -> QuestId:
         await self.roles_service.is_stager(master_id)
@@ -49,6 +51,8 @@ class QuestsService:
             reward=reward,
             answer=answer,
             end_hint=end_hint,
+            right_answer=right_answer,
+            wrong_answer=wrong_answer,
         )
         return quest.id
 

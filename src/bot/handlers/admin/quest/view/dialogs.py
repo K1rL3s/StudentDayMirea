@@ -43,6 +43,8 @@ view_one_quest_window = Window(
     Format("Задание:\n{quest.task}\n"),
     Format("Ответ:\n{quest.answer}\n"),
     Format("Подсказка после ответа:\n{quest.end_hint}\n"),
+    Format("На верный ответ:\n{quest.right_answer}\n"),
+    Format("На неверный ответ:\n{quest.wrong_answer}\n"),
     Button(Const("🖼️ Куркод задания"), id="qrcode", on_click=on_view_qrcode),
     Row(
         Button(

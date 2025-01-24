@@ -26,8 +26,9 @@ wait_answer_window = Window(
 )
 
 ok_answer_window = Window(
-    Const("🎉 Верно!"),
-    Format("Ты получил {quest.reward} Пятаков за задание «{quest.title}»\n"),
+    Const("🎉 Верно!\n"),
+    Format("{quest.right_answer}\n"),
+    Format("💰 Ты получил {quest.reward} Пятаков за задание «{quest.title}»\n"),
     Format("💡 {quest.end_hint}", when=F["quest"].end_hint),
     GoToMenuButton(),
     getter=get_quest_by_id,
@@ -35,10 +36,11 @@ ok_answer_window = Window(
 )
 
 fail_answer_window = Window(
-    Const("😢 Не правильно..."),
-    Const("Попробуй ещё раз"),
+    Const("😢 Не правильно... Попробуй ещё раз.\n"),
+    Format("{quest.wrong_answer}"),
     Button(Const("⏪ Записка"), id="quest", on_click=on_back_to_quest),
     GoToMenuButton(),
+    getter=get_quest_by_id,
     state=AnswerQuestStates.fail,
 )
 

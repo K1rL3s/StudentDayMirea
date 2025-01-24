@@ -22,7 +22,7 @@ async def on_cancel_task(
 
     await tasks_service.cancel_active_task(user_id)
 
-    text = "👋 Ваше активное задание было отменено этапщиком"
+    text = "👋 Твоё активное задание было отменено этапщиком"
     await broadcaster.one_notify(text, user_id)
 
     await dialog_manager.start(ViewUserStates.one, data={"view_user_id": user_id})

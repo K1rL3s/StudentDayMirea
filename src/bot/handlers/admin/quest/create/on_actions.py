@@ -26,7 +26,7 @@ async def quest_title_input(
     _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
-    title = message.text.strip()[:256]
+    title = message.text.strip()[:64]
     dialog_manager.dialog_data["title"] = title
     await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
@@ -76,7 +76,7 @@ async def quest_answer_input(
     _: MessageInput,
     dialog_manager: DialogManager,
 ) -> None:
-    answer = message.text.strip()[:256]
+    answer = message.text.strip()[:128]
     dialog_manager.dialog_data["answer"] = answer.casefold()
     await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
@@ -88,6 +88,26 @@ async def quest_end_hint_input(
 ) -> None:
     end_hint = message.text.strip()[:256]
     dialog_manager.dialog_data["end_hint"] = end_hint
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
+
+
+async def quest_right_answer_input(
+    message: Message,
+    _: MessageInput,
+    dialog_manager: DialogManager,
+) -> None:
+    right_answer = message.html_text.strip()[:128]
+    dialog_manager.dialog_data["right_answer"] = right_answer
+    await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
+
+
+async def quest_wrong_answer_input(
+    message: Message,
+    _: MessageInput,
+    dialog_manager: DialogManager,
+) -> None:
+    wrong_answer = message.html_text.strip()[:128]
+    dialog_manager.dialog_data["wrong_answer"] = wrong_answer
     await dialog_manager.next(show_mode=ShowMode.DELETE_AND_SEND)
 
 
@@ -106,6 +126,8 @@ async def confirm_create_quest(
     reward: int = dialog_manager.dialog_data["reward"]
     answer: str = dialog_manager.dialog_data["answer"]
     end_hint: str = dialog_manager.dialog_data["end_hint"]
+    right_answer: str = dialog_manager.dialog_data["right_answer"]
+    wrong_answer: str = dialog_manager.dialog_data["wrong_answer"]
     master_id: UserId = dialog_manager.middleware_data["user_id"]
 
     quest_id = await quests_service.create(
@@ -117,6 +139,8 @@ async def confirm_create_quest(
         reward,
         answer,
         end_hint,
+        right_answer,
+        wrong_answer,
         master_id,
     )
 
