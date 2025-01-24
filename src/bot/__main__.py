@@ -25,7 +25,7 @@ async def main() -> None:
 
     async with container() as request_contaier:
         quests_repo = await request_contaier.get(QuestsRepo)
-        await quests_repo.create_final_quest()
+        await quests_repo.create_quest_from_json()
 
     setup_middlewares(bot, dp)
     include_routers(dp)

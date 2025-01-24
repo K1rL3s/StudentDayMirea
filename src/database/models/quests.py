@@ -33,7 +33,7 @@ class QuestModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
     reward: Mapped[int] = mapped_column(Integer, nullable=False)
     answer: Mapped[str] = mapped_column(String(128), nullable=False)
     end_hint: Mapped[str] = mapped_column(String(256), nullable=False)
-    right_answer: Mapped[str] = mapped_column(String(128), nullable=False)
-    wrong_answer: Mapped[str] = mapped_column(String(128), nullable=False)
+    right_answer: Mapped[str] = mapped_column(String(384), nullable=False)
+    wrong_answer: Mapped[str] = mapped_column(String(384), nullable=False)
 
     qrcode_image_id: Mapped[str] = mapped_column(String(128), nullable=True)

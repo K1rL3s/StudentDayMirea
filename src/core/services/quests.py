@@ -1,3 +1,4 @@
+from bot.utils.answer import format_answer
 from core.exceptions import (
     QuestNotFound,
     QuestNotKnown,
@@ -94,7 +95,7 @@ class QuestsService:
         if await self.quests_repo.is_quest_reward_claimed(user_id, quest_id):
             raise QuestRewardAlreadyClaimed(user_id, quest_id)
 
-        if phrase.casefold() != quest.answer.casefold():
+        if format_answer(phrase) != format_answer(quest.answer):
             raise WrongQuestAnswer
 
         await self.quests_repo.set_users_to_quests_status(user_id, quest.id, True)

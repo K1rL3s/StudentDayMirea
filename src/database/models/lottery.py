@@ -12,7 +12,7 @@ class TicketModel(BaseAlchemyModel):
     fio: Mapped[str] = mapped_column(String(256), nullable=False)
     group: Mapped[str] = mapped_column(String(32), nullable=False)
     user_id: Mapped[UserId] = mapped_column(
-        ForeignKey("users.id"),
+        ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
         unique=True,
     )

@@ -32,10 +32,15 @@ ok_answer_window = Window(
 
 
 fail_answer_window = Window(
-    Const("😢 Не правильно..."),
+    Const("😢 Неверный ответ..."),
     Const("Попробуйте ещё раз"),
     GoToTaskButton(),
     GoToMenuButton(),
+    MessageInput(
+        func=on_answer_input,
+        content_types=ContentType.TEXT,
+        filter=F.text,
+    ),
     getter=get_active_task,
     state=AnswerTaskStates.fail,
 )

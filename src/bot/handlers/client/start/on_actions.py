@@ -15,10 +15,6 @@ from database.repos.users import UsersRepo
 from ..menu.states import MenuStates
 from .states import StartStates
 
-SUCCESS_TEXT = """
-Ты успешно зарегистрировался! 🎉\n\n<b>Твой ID: <code>{user_id}</code></b>
-""".strip()
-
 
 async def name_handler(
     message: Message,
@@ -45,10 +41,10 @@ async def register_confirm(
 ) -> None:
     tg_id = callback.from_user.id
     full_name = dialog_manager.dialog_data["full_name"]
-    bot_owner_id: UserId = dialog_manager.middleware_data["owner_id"]
+    bot_owner_ids: list[UserId] = dialog_manager.middleware_data["owner_id"]
     user_id: UserId = dialog_manager.middleware_data["user_id"]
 
-    role = RightsRole.ADMIN if tg_id == bot_owner_id else None
+    role = RightsRole.ADMIN if tg_id in bot_owner_ids else None
     await users_repo.update(user_id, full_name, role)
 
     await dialog_manager.start(

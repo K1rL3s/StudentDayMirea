@@ -10,6 +10,7 @@ from ..getters import get_all_quests, get_quest_by_id
 from .on_actions import (
     on_confirm_delete_quest,
     on_create_quest,
+    on_edit_image,
     on_edit_reward,
     on_quest_selected,
     on_view_qrcode,
@@ -51,6 +52,11 @@ view_one_quest_window = Window(
             Const("💰 Изменить награду"),
             id="reward",
             on_click=on_edit_reward,
+        ),
+        Button(
+            Const("🖼️ Изменить картинку"),
+            id="image",
+            on_click=on_edit_image,
         ),
     ),
     Button(Const("🗑️ Удалить"), id="delete", on_click=Next()),

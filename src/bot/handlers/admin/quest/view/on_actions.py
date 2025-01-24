@@ -56,6 +56,18 @@ async def on_edit_reward(
     )
 
 
+async def on_edit_image(
+    _: CallbackQuery,
+    __: Button,
+    dialog_manager: DialogManager,
+) -> None:
+    quest_id: QuestId = dialog_manager.dialog_data["quest_id"]
+    await dialog_manager.start(
+        state=EditQuestStates.image,
+        data={"quest_id": quest_id},
+    )
+
+
 @inject
 async def on_view_qrcode(
     callback: CallbackQuery,

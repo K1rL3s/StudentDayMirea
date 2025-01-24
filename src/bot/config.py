@@ -14,7 +14,7 @@ class BotConfig(BaseSettings):
     model_config = parse_settings
 
     bot_token: str
-    owner_id: int
+    owner_id: list[int]
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = Field("DEBUG")
 
 

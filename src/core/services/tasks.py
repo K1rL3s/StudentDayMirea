@@ -1,3 +1,4 @@
+from bot.utils.answer import format_answer
 from core.exceptions import (
     ActiveTaskNotFound,
     TaskNotFound,
@@ -86,7 +87,7 @@ class TasksService:
         if await self.tasks_repo.is_task_reward_claimed(user_id, task.id):
             raise TaskRewardAlreadyClaimed(user_id, task.id)
 
-        if phrase.casefold() != task.answer.casefold():
+        if format_answer(phrase) != format_answer(task.answer):
             raise WrongTaskAnswer
 
         await self.tasks_repo.set_users_to_tasks_status(user_id, task.id, True)

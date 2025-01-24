@@ -1,4 +1,6 @@
-import contextlib
+import json
+from pathlib import Path
+from typing import Any
 
 from sqlalchemy import delete, select, update
 from sqlalchemy.dialects.postgresql import insert
@@ -151,29 +153,19 @@ class QuestsRepo(BaseAlchemyRepo):
         relation = await self.session.scalar(query)
         return relation is not None
 
-    async def create_final_quest(self) -> None:
-        FINAL_QUEST_ID = QuestId("final")
-        ORDER = -1
-        TITLE = "🏁Финальное задание"
-        DESCRIPTION = "Квест завершён! Осталось понять, что же он в себе скрывал..."
-        TASK = ""
-        END_HINT = ""
-        REWARD = 100
-        ANSWER = "финал"
-        RIGHT_ANSWER = ""
-        WRONG_ANSWER = ""
+    async def update(self, quest_id: QuestId, **kwargs: Any) -> None:
+        query = update(QuestModel).where(QuestModel.id == quest_id).values(**kwargs)
+        await self.session.execute(query)
+        await self.session.flush()
 
-        with contextlib.suppress(IntegrityError):
-            await self.create(
-                id_=FINAL_QUEST_ID,
-                order=ORDER,
-                title=TITLE,
-                description=DESCRIPTION,
-                task=TASK,
-                image_id=None,
-                reward=REWARD,
-                answer=ANSWER,
-                end_hint=END_HINT,
-                right_answer=RIGHT_ANSWER,
-                wrong_answer=WRONG_ANSWER,
-            )
+    async def create_quest_from_json(self) -> None:
+        FILE = Path(__file__).parent.parent.parent / "content" / "quests.js"
+        with open(FILE.resolve(), encoding="utf8") as f:
+            quests = json.loads(f.read())
+            for quest in quests:
+                try:
+                    quest["id_"] = quest.pop("id")
+                    quest["image_id"] = None
+                    await self.create(**quest)
+                except IntegrityError:
+                    return
