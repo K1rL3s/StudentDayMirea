@@ -7,7 +7,7 @@ from dishka import FromDishka
 from bot.enums import SlashCommand
 from bot.handlers.client.task.start.states import StartTaskStates
 from bot.handlers.client.task.view.states import ViewTaskStates
-from core.ids import UserId
+from core.ids import TaskId, UserId
 from core.services.qrcodes import TaskIdPrefix
 from database.repos.tasks import TasksRepo
 
@@ -25,7 +25,7 @@ async def start_task_by_deeplink(
     dialog_manager: DialogManager,
     task_repo: FromDishka[TasksRepo],
 ) -> None:
-    task_id = task_deeplink.lstrip(TaskIdPrefix)
+    task_id = TaskId(task_deeplink.lstrip(TaskIdPrefix))
     if await task_repo.get_by_id(task_id):
         if not await task_repo.is_task_reward_claimed(user_id, task_id):
             await dialog_manager.start(StartTaskStates.wait, data={"task_id": task_id})

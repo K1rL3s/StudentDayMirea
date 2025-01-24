@@ -1,4 +1,4 @@
-from sqlalchemy import select, update
+from sqlalchemy import delete, select, update
 
 from core.ids import TgId, UserId
 from database.models import UserModel
@@ -71,5 +71,10 @@ class UsersRepo(BaseAlchemyRepo):
 
     async def set_role(self, tg_id: UserId, role: str | None) -> None:
         query = update(UserModel).where(UserModel.id == tg_id).values(role=role)
+        await self.session.execute(query)
+        await self.session.flush()
+
+    async def delete(self, user_id: UserId) -> None:
+        query = delete(UserModel).where(UserModel.id == user_id)
         await self.session.execute(query)
         await self.session.flush()

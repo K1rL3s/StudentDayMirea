@@ -4,6 +4,7 @@ from aiogram.types import Message
 from aiogram_dialog import DialogManager
 from dishka import FromDishka
 
+from core.ids import QuestId
 from core.services.qrcodes import QuestIdPrefix
 from database.repos.quests import QuestsRepo
 
@@ -22,7 +23,7 @@ async def view_quest_by_deeplink(
     dialog_manager: DialogManager,
     quest_repo: FromDishka[QuestsRepo],
 ) -> None:
-    quest_id = quest_deeplink.lstrip(QuestIdPrefix)
+    quest_id = QuestId(quest_deeplink.lstrip(QuestIdPrefix))
 
     if await quest_repo.get_by_id(quest_id):
         await dialog_manager.start(

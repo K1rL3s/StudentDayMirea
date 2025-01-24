@@ -1,4 +1,4 @@
-from sqlalchemy import select, update
+from sqlalchemy import delete, select, update
 
 from core.ids import TicketId, UserId
 from database.models.lottery import TicketModel
@@ -39,5 +39,13 @@ class TicketsRepo(BaseAlchemyRepo):
             .where(TicketModel.user_id == user_id)
             .values(fio=fio, group=group)
         )
+        await self.session.execute(query)
+        await self.session.flush()
+
+    async def delete(
+        self,
+        user_id: UserId,
+    ) -> None:
+        query = delete(TicketModel).where(TicketModel.user_id == user_id)
         await self.session.execute(query)
         await self.session.flush()

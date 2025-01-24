@@ -6,6 +6,7 @@ from dishka import FromDishka
 
 from bot.enums import SlashCommand
 from bot.handlers.client.shop.states import ShopStates
+from core.ids import ProductId
 from core.services.qrcodes import ProductIdPrefix
 from database.repos.products import ProductsRepo
 
@@ -29,7 +30,7 @@ async def open_product_by_deeplink(
 ) -> None:
     product_id = product_deeplink.lstrip(ProductIdPrefix)
     if product_id.isdigit():
-        product_id = int(product_id)
+        product_id = ProductId(int(product_id))
         product = await products_repo.get_by_id(product_id)
         if product and product.stock > 0:
             await dialog_manager.start(
