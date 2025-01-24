@@ -15,4 +15,5 @@ class TicketModel(BaseAlchemyModel):
         ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
         unique=True,
+        index=True,
     )

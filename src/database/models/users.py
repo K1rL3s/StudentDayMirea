@@ -14,6 +14,7 @@ class UserModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
         Identity(start=1000),
         primary_key=True,
         autoincrement=True,
+        index=True,
     )
     tg_id: Mapped[TgId] = mapped_column(BigInteger, nullable=False, unique=True)
     name: Mapped[str] = mapped_column(String(256), nullable=True)

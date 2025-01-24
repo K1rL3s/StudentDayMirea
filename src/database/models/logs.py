@@ -13,5 +13,6 @@ class LogsModel(CreatedAtMixin, BaseAlchemyModel):
     user_id: Mapped[UserId] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
+        index=True,
     )
     description: Mapped[str] = mapped_column(String(4096), nullable=False)

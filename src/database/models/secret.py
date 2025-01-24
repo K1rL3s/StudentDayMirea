@@ -9,7 +9,12 @@ from database.models.base import BaseAlchemyModel
 class SecretModel(CreatedAtMixin, BaseAlchemyModel):
     __tablename__ = "secrets"
 
-    id: Mapped[SecretId] = mapped_column(Integer, primary_key=True)
-    phrase: Mapped[str] = mapped_column(String(256), nullable=False, unique=True)
+    id: Mapped[SecretId] = mapped_column(Integer, primary_key=True, index=True)
+    phrase: Mapped[str] = mapped_column(
+        String(256),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
     reward: Mapped[int] = mapped_column(Integer, nullable=False)
     activation_limit: Mapped[int] = mapped_column(Integer, nullable=False)

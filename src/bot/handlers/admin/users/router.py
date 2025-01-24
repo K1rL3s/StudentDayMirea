@@ -48,6 +48,7 @@ async def delete_user(
 
     text = "Формат: /delete <user_id>"
     await message.answer(text=text)
+    return None
 
 
 @router.message(Command("clear"), IsAdmin())
@@ -61,3 +62,4 @@ async def clear_lottery_user(
 
     text = "Формат: /clear <user_id>"
     await message.answer(text=text)
+    return None

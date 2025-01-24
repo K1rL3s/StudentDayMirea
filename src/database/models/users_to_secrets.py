@@ -1,8 +1,7 @@
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from core.ids import SecretId, UserId
-from database.models import SecretModel, UserModel
 from database.models._mixins import CreatedAtMixin
 from database.models.base import BaseAlchemyModel
 
@@ -13,17 +12,10 @@ class UsersToSecretsModel(CreatedAtMixin, BaseAlchemyModel):
     user_id: Mapped[UserId] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE"),
         primary_key=True,
+        index=True,
     )
     secret_id: Mapped[SecretId] = mapped_column(
         ForeignKey("secrets.id", ondelete="CASCADE"),
         primary_key=True,
-    )
-
-    user: Mapped[UserModel] = relationship(
-        "UserModel",
-        cascade="all,delete",
-    )
-    secret: Mapped[SecretModel] = relationship(
-        "SecretModel",
-        cascade="all,delete",
+        index=True,
     )

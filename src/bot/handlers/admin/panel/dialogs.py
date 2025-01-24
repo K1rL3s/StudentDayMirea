@@ -5,7 +5,7 @@ from aiogram_dialog.widgets.text import Const, Format
 from bot.dialogs.buttons import GoToMenuButton
 from bot.dialogs.filters.roles import IsAdmin, IsLottery, IsSeller, IsStager, IsWithRole
 
-from .getters import get_user_info
+from .getters import get_user_info, get_users_count
 from .on_actions import (
     on_go_to_broadcast,
     on_go_to_lottery,
@@ -18,7 +18,11 @@ from .on_actions import (
 from .states import AdminPanelStates
 
 admin_panel_window = Window(
-    Format("❗Админ-панель, ты - <u>{role}</u>"),
+    Format("❗Админ-панель, ты - <u>{role}</u>\n"),
+    Format(
+        "👨🏻‍🎓 Зарегистрировано <b>{all_users}</b> и активно <b>{active_users}</b>",
+        when=IsAdmin(),
+    ),
     Group(
         Button(
             Const("📢 Рассылка"),
@@ -65,7 +69,7 @@ admin_panel_window = Window(
         width=2,
     ),
     GoToMenuButton(),
-    getter=get_user_info,
+    getter=[get_user_info, get_users_count],
     state=AdminPanelStates.panel,
 )
 

@@ -24,6 +24,7 @@ class QuestModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
         String(length=QUEST_ID_LEN),
         primary_key=True,
         default=quest_id_generator,
+        index=True,
     )
     order: Mapped[int] = mapped_column(Integer, nullable=False)
     title: Mapped[str] = mapped_column(String(64), nullable=False)

@@ -1,6 +1,7 @@
 from aiogram import F, Router
 from aiogram.filters import MagicData
 
+from .block_bot import router as block_bot_router
 from .cancel import router as cancel_router
 from .cart.dialogs import cart_dialog
 from .cart.router import router as purchases_router
@@ -27,6 +28,7 @@ def include_register_routers(root_router: Router) -> None:
     root_router.include_routers(
         start_router,
         start_dialog,
+        block_bot_router,
     )
 
 

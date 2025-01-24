@@ -12,7 +12,9 @@ TASK_ID_LEN = 8
 
 
 def task_id_generator() -> TaskId:
-    return "".join(random.choices(string.ascii_letters + string.digits, k=TASK_ID_LEN))
+    return TaskId(
+        "".join(random.choices(string.ascii_letters + string.digits, k=TASK_ID_LEN)),
+    )
 
 
 class TaskModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
@@ -22,6 +24,7 @@ class TaskModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
         String(length=TASK_ID_LEN),
         primary_key=True,
         default=task_id_generator,
+        index=True,
     )
     title: Mapped[str] = mapped_column(String(256), nullable=False)
     description: Mapped[str] = mapped_column(String(2048), nullable=False)
