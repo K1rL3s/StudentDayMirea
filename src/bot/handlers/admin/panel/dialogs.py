@@ -21,7 +21,7 @@ from .states import AdminPanelStates
 admin_panel_window = Window(
     Format("❗Админ-панель, ты - <u>{role}</u>\n"),
     Format(
-        "👨🏻‍🎓 Зарегистрировано <b>{all_users}</b> и активно <b>{active_users}</b>",
+        "👨🏻‍🎓 Зарегистрировано <b>{all_users}</b>, активно <b>{active_users}</b>",
         when=IsAdmin(),
     ),
     Group(
