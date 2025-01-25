@@ -5,6 +5,8 @@ from .block_bot import router as block_bot_router
 from .cancel import router as cancel_router
 from .cart.dialogs import cart_dialog
 from .cart.router import router as purchases_router
+from .coupons.dialogs import coupons_dialog
+from .coupons.router import router as coupons_router
 from .help.dialogs import help_dialog
 from .help.router import router as help_router
 from .lottery.dialogs import lottery_dialog
@@ -49,6 +51,7 @@ def include_client_routers(root_router: Router) -> None:
         qrcodes_router,
         purchases_router,
         transfer_funds_router,
+        coupons_router,
     )
 
     root_router.include_routers(registered_clients_router)
@@ -72,4 +75,5 @@ def include_client_dialogs(root_router: Router) -> None:
         task_answer_dialog,
         view_quests_dialog,
         quest_answer_dialog,
+        coupons_dialog,
     )

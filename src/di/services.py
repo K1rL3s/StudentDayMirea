@@ -2,6 +2,7 @@ from aiogram.types import TelegramObject
 from dishka import Provider, Scope, provide
 
 from core.services.broadcast import Broadcaster
+from core.services.coupons import CouponsService
 from core.services.products import ProductsService
 from core.services.purchases import PurchasesService
 from core.services.qrcode_saver import QRCodeSaver
@@ -33,3 +34,4 @@ class ServicesProvider(Provider):
     roles_service = provide(RolesService)
     tickets_service = provide(TicketsService)
     quests_service = provide(QuestsService)
+    coupons_serivce = provide(CouponsService)

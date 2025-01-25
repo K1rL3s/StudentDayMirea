@@ -12,6 +12,7 @@ class PurchaseModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
     id: Mapped[PurchaseId] = mapped_column(
         Integer,
         primary_key=True,
+        autoincrement=True,
         index=True,
     )
     user_id: Mapped[UserId] = mapped_column(

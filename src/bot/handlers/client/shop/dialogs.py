@@ -10,6 +10,11 @@ from .getters import get_available_products, get_can_buy, get_one_product
 from .on_actions import on_buy_product, on_product_selected
 from .states import ShopStates
 
+CATALOG_URL_TEXT = """
+Подробнее о товарах можете узнать в нашем <a href="https://docs.google.com/spreadsheets/u/1/d/1RarsNHTOvQwfIXlhvPUrG1gxz6l47Qn64kPBG3cGsqA/edit?usp=drive_web&ouid=115131655351366142500">каталоге</a>.
+""".strip()
+
+
 view_available_products_window = Window(
     Const("Список товаров 🛍️\n"),
     Format(
@@ -18,7 +23,8 @@ view_available_products_window = Window(
         when=F["total_stock"],
     ),
     Const("Товаров в наличии нет", when=~F["total_stock"]),
-    Format("Баланс: {middleware_data[user].balance} Пятаков", when=F["total_stock"]),
+    Format("Баланс: {middleware_data[user].balance} Пятаков\n", when=F["total_stock"]),
+    Const(CATALOG_URL_TEXT, when=F["total_stock"]),
     ScrollingGroup(
         Select(
             Format("{item.name} — {item.price} Пятаков"),

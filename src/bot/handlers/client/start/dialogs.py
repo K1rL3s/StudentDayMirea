@@ -30,7 +30,11 @@ welcome_window = Window(
     Const(START_TEXT, when=~F["dialog_data"]["retry"]),
     Const(BAD_FORMAT, when=F["dialog_data"]["retry"] == "format"),
     Const("\n" + REGISTER_TEXT),
-    MessageInput(name_handler, content_types=[ContentType.TEXT]),
+    MessageInput(
+        name_handler,
+        content_types=ContentType.TEXT,
+        filter=F.text.len() < 64,
+    ),
     state=StartStates.name,
 )
 confirm_name_window = Window(

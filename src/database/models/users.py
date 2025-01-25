@@ -16,14 +16,19 @@ class UserModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
         autoincrement=True,
         index=True,
     )
-    tg_id: Mapped[TgId] = mapped_column(BigInteger, nullable=False, unique=True)
-    name: Mapped[str] = mapped_column(String(256), nullable=True)
+    tg_id: Mapped[TgId] = mapped_column(
+        BigInteger,
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+    name: Mapped[str | None] = mapped_column(String(64), nullable=True)
     balance: Mapped[int] = mapped_column(Integer, nullable=False)
 
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    role: Mapped[str] = mapped_column(String(64), default=None, nullable=True)
+    role: Mapped[str | None] = mapped_column(String(16), default=None, nullable=True)
 
-    qrcode_image_id: Mapped[str] = mapped_column(
+    qrcode_image_id: Mapped[str | None] = mapped_column(
         String(128),
         nullable=True,
         unique=True,

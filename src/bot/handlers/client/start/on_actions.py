@@ -23,7 +23,7 @@ async def name_handler(
 ) -> None:
     dialog_manager.show_mode = ShowMode.DELETE_AND_SEND
 
-    full_name = message.text.strip()
+    full_name = message.text.strip()[:64]
     if not re.match(r"^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$", full_name):
         dialog_manager.dialog_data["retry"] = "format"
         return

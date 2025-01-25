@@ -3,6 +3,7 @@ from aiogram import Router
 from bot.filters.roles import IsAdmin, IsLottery, IsSeller, IsStager, IsWithRole
 
 from .broadcast.dialogs import broadcast_dialog
+from .coupons.dialogs import create_coupon_dialog, view_coupons_dialog
 from .logs.router import router as logs_router
 from .lottery.dialogs import lottery_user_id_dialog
 from .money.router import router as money_router
@@ -81,6 +82,8 @@ def include_admin_dialogs(root_router: Router) -> None:
         create_secret_dialog,
         edit_secret_dialog,
         user_role_dialog,
+        view_coupons_dialog,
+        create_coupon_dialog,
     )
 
     seller_router = Router(name=__file__)

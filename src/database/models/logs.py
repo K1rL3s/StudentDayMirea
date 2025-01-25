@@ -9,7 +9,7 @@ from database.models.base import BaseAlchemyModel
 class LogsModel(CreatedAtMixin, BaseAlchemyModel):
     __tablename__ = "logs"
 
-    id: Mapped[LogId] = mapped_column(Integer, primary_key=True)
+    id: Mapped[LogId] = mapped_column(Integer, primary_key=True, autoincrement=True)
     user_id: Mapped[UserId] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,

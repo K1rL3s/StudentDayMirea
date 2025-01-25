@@ -1,5 +1,6 @@
 from dishka import Provider, Scope, provide
 
+from database.repos.coupons import CouponsRepo
 from database.repos.logs import LogsRepo
 from database.repos.products import ProductsRepo
 from database.repos.purchases import PurchasesRepo
@@ -21,3 +22,4 @@ class ReposProvider(Provider):
     tasks_repo = provide(TasksRepo)
     tickets_repo = provide(TicketsRepo)
     quests_repo = provide(QuestsRepo)
+    coupons_repo = provide(CouponsRepo)

@@ -8,6 +8,7 @@ from bot.dialogs.filters.roles import IsAdmin, IsLottery, IsSeller, IsStager, Is
 from .getters import get_user_info, get_users_count
 from .on_actions import (
     on_go_to_broadcast,
+    on_go_to_coupons,
     on_go_to_lottery,
     on_go_to_quest,
     on_go_to_secrets,
@@ -65,6 +66,12 @@ admin_panel_window = Window(
             id="lottery",
             on_click=on_go_to_lottery,
             when=IsLottery(),
+        ),
+        Button(
+            Const("🛴 Купоны"),
+            id="coupons",
+            on_click=on_go_to_coupons,
+            when=IsAdmin(),
         ),
         width=2,
     ),

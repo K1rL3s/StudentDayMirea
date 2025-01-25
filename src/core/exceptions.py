@@ -108,6 +108,10 @@ class WrongQuestAnswer(InvalidValue):
     pass
 
 
+class WrongCouponAnswer(InvalidValue):
+    pass
+
+
 class InvalidValueAfterUpdate(InvalidValue):
     pass
 
@@ -154,6 +158,16 @@ class QuestRewardAlreadyClaimed(RewardAlreadyClaimed):
         super().__init__(
             f"Пользователь {user_id} уже забрал награду за задание {quest_id}",
         )
+
+
+class CouponAlreadyClaimed(RewardAlreadyClaimed):
+    def __init__(self, user_id: UserId) -> None:
+        super().__init__(f"Пользователь {user_id} уже активировал купон")
+
+
+class NoFreeCoupons(ServiceException):
+    def __init__(self) -> None:
+        super().__init__("Купоны закончились.")
 
 
 class ActivationLimitReached(ServiceException):
