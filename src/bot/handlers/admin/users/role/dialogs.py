@@ -7,13 +7,13 @@ from bot.dialogs.on_actions import on_start_update_dialog_data
 
 from ..buttons import GoToUserButton
 from ..getters import get_view_user_info
-from ..on_actions import _UserIdNameText
+from ..on_actions import UserAdminInfoText
 from .getters import get_roles
 from .on_actions import on_role_confirm, on_role_selected
 from .states import RoleUserStates
 
 user_role_window = Window(
-    _UserIdNameText,
+    UserAdminInfoText,
     Group(
         Select(
             Format("{item[1]}"),

@@ -12,8 +12,11 @@ from ..buttons import GoToUserButton
 from ..getters import get_view_user_info
 from .on_actions import fio_input_handler, group_input_handler
 from .states import LotteryUserStates
+from ..on_actions import UserAdminInfoText
+
 
 fio_window = Window(
+    UserAdminInfoText,
     Const("👤 Введи ФИО"),
     MessageInput(
         fio_input_handler,
@@ -28,6 +31,7 @@ fio_window = Window(
 )
 
 group_window = Window(
+    UserAdminInfoText,
     Const("🎓 Введи группу студента"),
     MessageInput(
         group_input_handler,

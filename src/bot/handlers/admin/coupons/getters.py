@@ -14,7 +14,8 @@ async def get_all_coupons(
     **__: Any,
 ) -> dict[str, Any]:
     coupons = await coupons_repo.get_all()
-    return {"coupons": coupons}
+    total, activated = await coupons_repo.get_stats()
+    return {"coupons": coupons, "total": total, "activated": activated}
 
 
 @inject

@@ -41,7 +41,7 @@ admin_panel_window = Window(
             Const("🛍️ Товары"),
             id="products",
             on_click=on_go_to_shop,
-            when=IsSeller(),
+            when=IsAdmin(),
         ),
         Button(
             Const("🤫 Секреты"),

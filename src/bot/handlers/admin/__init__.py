@@ -43,12 +43,13 @@ def include_admin_routers(root_router: Router) -> None:
     admin_router.include_routers(
         logs_router,
         money_router,
+        products_routes,
     )
 
-    seller_router = Router(name=__file__)
-    for observer in seller_router.observers.values():
-        observer.filter(IsSeller())
-    seller_router.include_routers(products_routes)
+    # seller_router = Router(name=__file__)
+    # for observer in seller_router.observers.values():
+    #     observer.filter(IsSeller())
+    # seller_router.include_routers()
 
     stager_router = Router(name=__file__)
     for observer in stager_router.observers.values():
@@ -64,7 +65,7 @@ def include_admin_routers(root_router: Router) -> None:
     with_role_router.include_routers(
         admin_panel_router,
         admin_router,
-        seller_router,
+        # seller_router,
         stager_router,
         users_router,
     )
@@ -84,6 +85,9 @@ def include_admin_dialogs(root_router: Router) -> None:
         user_role_dialog,
         view_coupons_dialog,
         create_coupon_dialog,
+        view_products_dialog,
+        create_product_dialog,
+        edit_product_dialog,
     )
 
     seller_router = Router(name=__file__)
@@ -91,9 +95,6 @@ def include_admin_dialogs(root_router: Router) -> None:
         observer.filter(IsSeller())
     seller_router.include_routers(
         user_cart_dialog,
-        view_products_dialog,
-        create_product_dialog,
-        edit_product_dialog,
     )
 
     stager_router = Router(name=__file__)

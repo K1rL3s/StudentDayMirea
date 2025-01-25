@@ -32,6 +32,10 @@ class CouponsService:
         await self.roles_service.is_admin(master_id)
         return await self.coupons_repo.create(description)
 
+    async def delete(self, coupon_id: CouponId, master_id: UserId) -> None:
+        await self.roles_service.is_admin(master_id)
+        return await self.coupons_repo.delete(coupon_id)
+
     async def reward(self, user_id: UserId, coupon_phrase: str) -> CouponId:
         if coupon_phrase != COUPON_ANSWER:
             raise WrongCouponAnswer

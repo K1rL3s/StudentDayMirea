@@ -1,16 +1,20 @@
+from aiogram import F
 from aiogram.types import CallbackQuery
 from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.kbd import Button
-from aiogram_dialog.widgets.text import Format
+from aiogram_dialog.widgets.text import Const, Format, Multi
 
 from core.ids import UserId
 
 from .view.states import ViewUserStates
 
-_UserIdNameText = Format(
-    "ID: <code>{view_user.id}</code>\n"
-    "<b>{view_user.name}</b> - {role}\n"
-    "Лотерея - {lottery_ticket}\n",
+UserAdminInfoText = Multi(
+    Format("ID: <code>{view_user.id}</code>"),
+    Format("<b>{view_user.name}</b> - {role}"),
+    Format("Лотерея - {lottery}"),
+    Format("ФИО - {fio}", when=F["fio"]),
+    Format("Группа - {group}", when=F["group"]),
+    Const(" "),
 )
 
 

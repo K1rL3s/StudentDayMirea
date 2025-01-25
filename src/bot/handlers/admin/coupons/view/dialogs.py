@@ -17,7 +17,8 @@ from .on_actions import (
 from .states import ViewCouponsStates
 
 coupons_list_window = Window(
-    Const("🛴 Все купоны"),
+    Const("🛴 Все купоны\n"),
+    Format("📈 Всего {total} купонов, активировано {activated} "),
     ScrollingGroup(
         Select(
             Format("{item.id} | {item.description}"),
@@ -45,7 +46,7 @@ coupons_list_window = Window(
 
 view_one_coupon_window = Window(
     Format("ID: {coupon.id}"),
-    Format("Купон:{coupon.description}\n"),
+    Format("Купон: {coupon.description}\n"),
     Format(
         "Активирован юзером: {coupon_user.id} {coupon_user.name}",
         when=F["coupon_user"],

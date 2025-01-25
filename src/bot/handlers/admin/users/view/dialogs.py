@@ -10,7 +10,7 @@ from bot.dialogs.filters.roles import IsAdmin, IsLottery, IsSeller, IsStager
 from bot.dialogs.on_actions import on_start_update_dialog_data
 
 from ..getters import get_view_user_info
-from ..on_actions import _UserIdNameText
+from ..on_actions import UserAdminInfoText
 from .on_actions import (
     id_input_handler,
     on_check_cart,
@@ -34,7 +34,7 @@ wait_user_id_window = Window(
 )
 
 view_user_window = Window(
-    _UserIdNameText,
+    UserAdminInfoText,
     Group(
         Button(
             Const("🧺 Корзина"),

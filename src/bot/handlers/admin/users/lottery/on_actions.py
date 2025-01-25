@@ -4,7 +4,7 @@ from aiogram_dialog.widgets.input import MessageInput
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
-from bot.handlers.admin.users.view.states import ViewUserStates
+from bot.handlers.admin.panel.states import AdminPanelStates
 from core.ids import UserId
 from core.services.tickets import TicketsService
 
@@ -34,4 +34,4 @@ async def group_input_handler(
 
     await tickets_service.create_or_update(view_user_id, fio, group, master_id)
 
-    await dialog_manager.start(ViewUserStates.one, data={"view_user_id": view_user_id})
+    await dialog_manager.start(state=AdminPanelStates.panel)

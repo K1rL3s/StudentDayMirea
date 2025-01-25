@@ -21,5 +21,11 @@ async def get_view_user_info(
     user = await users_repo.get_by_id(view_user_id)
     ticket = await tickets_repo.get_by_user_id(view_user_id)
     role = translate_role(user.role, "Пользователь")
-    lottery_ticket = "Участвует" if ticket is not None else "Не участвует"
-    return {"view_user": user, "role": role, "lottery_ticket": lottery_ticket}
+    lottery = "Участвует" if ticket is not None else "Не участвует"
+    return {
+        "view_user": user,
+        "role": role,
+        "lottery": lottery,
+        "fio": ticket.fio if ticket else None,
+        "group": ticket.group if ticket else None,
+    }

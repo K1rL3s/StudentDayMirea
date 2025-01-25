@@ -82,3 +82,12 @@ class CouponsRepo(BaseAlchemyRepo):
     async def get_all(self) -> list[CouponModel]:
         query = select(CouponModel).order_by(CouponModel.id.asc())
         return list(await self.session.scalars(query))
+
+    async def get_stats(self) -> tuple[int, int]:
+        total_query = select(func.count(CouponModel.id))
+        total_coupons = await self.session.scalar(total_query)
+
+        activated_query = select(func.count(UserToCouponModel.coupon_id))
+        activated_coupons = await self.session.scalar(activated_query)
+
+        return total_coupons, activated_coupons

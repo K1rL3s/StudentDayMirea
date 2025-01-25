@@ -15,13 +15,13 @@ from bot.dialogs.on_actions import on_start_update_dialog_data
 
 from ..buttons import GoToUserButton
 from ..getters import get_view_user_info
-from ..on_actions import _UserIdNameText
+from ..on_actions import UserAdminInfoText
 from .getters import get_view_user_cart
 from .on_actions import on_cart_item_selected, on_clear_cart_confirm
 from .states import CartUserStates
 
 user_cart_window = Window(
-    _UserIdNameText,
+    UserAdminInfoText,
     Format(
         "Куплено {total_products} наименований в количестве {total_purchases} штук",
         when=F["total_purchases"],
