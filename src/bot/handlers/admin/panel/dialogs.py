@@ -3,7 +3,7 @@ from aiogram_dialog.widgets.kbd import Button, Group
 from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToMenuButton
-from bot.dialogs.filters.roles import IsAdmin, IsLottery, IsSeller, IsStager, IsWithRole
+from bot.dialogs.filters.roles import IsAdmin, IsLottery, IsStager, IsWithRole
 
 from .getters import get_user_info, get_users_count
 from .on_actions import (

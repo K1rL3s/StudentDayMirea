@@ -32,3 +32,5 @@ class PurchasesService:
         await self.roles_service.is_seller(master_id)
 
         await self.purchases_repo.clear_purchases(slave_id, product_ids)
+
+        await self.logs_repo.log_action(slave_id, f"Cart clean by {master_id=}")

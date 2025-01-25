@@ -51,10 +51,7 @@ class SecretsService:
         new_balance = user.balance + secret.reward
         await self.users_repo.set_balance(user_id, new_balance)
 
-        await self.logs_repo.log_action(
-            user_id,
-            f"Reward {secret.reward} coins for secret {secret.id} id",
-        )
+        await self.logs_repo.log_action(user_id, f"Reward {secret.id=}")
 
         return secret.reward
 
@@ -79,8 +76,13 @@ class SecretsService:
         except IntegrityError as e:  # TODO убрать отсюда импорт ошибки алхимии?
             raise SecretAlreadyExists(phrase) from e
 
+        await self.logs_repo.log_action(master_id, f"Create {secret.id=}")
+
         return secret.id
 
     async def delete(self, secret_id: SecretId, master_id: UserId) -> None:
         await self.role_service.is_admin(master_id)
+
         await self.secrets_repo.delete(secret_id)
+
+        await self.logs_repo.log_action(master_id, f"Delete {secret_id=}")

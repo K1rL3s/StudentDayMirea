@@ -44,8 +44,8 @@ class UsersService:
         await self.users_repo.set_balance(slave_id, new_balance)
 
         await self.logs_repo.log_action(
-            master_id,
-            f"Added money {amount} to user {slave_id}",
+            slave_id,
+            f"Add money {amount=} by {master_id=}",
         )
 
         return new_balance
@@ -68,12 +68,8 @@ class UsersService:
         await self.users_repo.set_balance(slave_id, new_balance)
 
         await self.logs_repo.log_action(
-            master_id,
-            f"Set {new_balance} money to user {slave_id}",
-        )
-        await self.logs_repo.log_action(
             slave_id,
-            f"Set {new_balance} money from user {master_id}",
+            f"Set money {new_balance=} by {master_id=}",
         )
 
         return new_balance
@@ -106,11 +102,11 @@ class UsersService:
 
         await self.logs_repo.log_action(
             sender_id,
-            f"Transferred {amount} to user {sender_id}",
+            f"Transfer {amount=} to user {receiver_id=}",
         )
         await self.logs_repo.log_action(
             receiver_id,
-            f"Received {amount} from user {sender_id}",
+            f"Receive {amount=} from user {sender_id=}",
         )
 
         return new_sender_balance
@@ -131,3 +127,5 @@ class UsersService:
             raise RoleNotFound(role)
 
         await self.users_repo.set_role(slave_id, role)
+
+        await self.logs_repo.log_action(slave_id, f"New role {role=} by {master_id=}")

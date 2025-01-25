@@ -33,15 +33,22 @@ class TasksService:
         description: str,
         reward: int,
         answer: str,
-        creator_id: UserId,
+        master_id: UserId,
     ) -> TaskId:
-        await self.roles_service.is_stager(creator_id)
-        task = await self.tasks_repo.create(title, description, reward, answer)
-        return task.id
+        await self.roles_service.is_stager(master_id)
+
+        task_id = await self.tasks_repo.create(title, description, reward, answer)
+
+        await self.logs_repo.log_action(master_id, f"Create {task_id=}")
+
+        return task_id
 
     async def delete(self, task_id: TaskId, master_id: UserId) -> None:
         await self.roles_service.is_stager(master_id)
+
         await self.tasks_repo.delete(task_id)
+
+        await self.logs_repo.log_action(master_id, f"Delete {task_id=}")
 
     async def start(self, task_id: TaskId, user_id: UserId) -> TaskModel:
         user = await self.users_repo.get_by_id(user_id)
@@ -58,6 +65,8 @@ class TasksService:
 
         await self.tasks_repo.link_user_to_task(user_id, task_id, status=False)
 
+        await self.logs_repo.log_action(user_id, f"Start {task_id=}")
+
         return new_task
 
     async def cancel_active_task(self, user_id: UserId) -> None:
@@ -68,6 +77,8 @@ class TasksService:
         task = await self.tasks_repo.get_active_task(user_id)
         if task is None:
             raise ActiveTaskNotFound(user_id)
+
+        await self.logs_repo.log_action(user_id, f"Cancel {task.id=}")
 
         await self.tasks_repo.unlink_user_from_task(user_id, task.id)
 
@@ -95,6 +106,8 @@ class TasksService:
         new_balance = user.balance + task.reward
         await self.users_repo.set_balance(user_id, new_balance)
 
+        await self.logs_repo.log_action(user_id, f"Reward {task.id=} by phrase")
+
         return task.title, task.reward
 
     async def reward_for_task_by_stager(
@@ -116,5 +129,10 @@ class TasksService:
 
         new_balance = user.balance + task.reward
         await self.users_repo.set_balance(slave_id, new_balance)
+
+        await self.logs_repo.log_action(
+            slave_id,
+            f"Reward {task.id=} by stager {master_id=}",
+        )
 
         return task.title, task.reward

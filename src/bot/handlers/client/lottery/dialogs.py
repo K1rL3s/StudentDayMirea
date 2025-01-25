@@ -23,7 +23,7 @@ LOTTERY_INFO_TEXT = """
 """.strip()  # noqa: E501
 
 LOTTERY_TICKET_TEXT = """
-✨ Ты тоже участвуешь в лотерее! 
+✨ Ты тоже участвуешь в лотерее!
 """.strip()
 
 

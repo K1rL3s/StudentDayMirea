@@ -20,7 +20,7 @@ class TasksRepo(BaseAlchemyRepo):
         description: str,
         reward: int,
         answer: str,
-    ) -> TaskModel:
+    ) -> TaskId:
         task = TaskModel(
             title=title,
             description=description,
@@ -29,7 +29,7 @@ class TasksRepo(BaseAlchemyRepo):
         )
         self.session.add(task)
         await self.session.flush()
-        return task
+        return task.id
 
     async def delete(self, task_id: TaskId) -> None:
         query = delete(TaskModel).where(TaskModel.id == task_id)

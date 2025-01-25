@@ -5,17 +5,16 @@ from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
 from bot.handlers.admin.panel.states import AdminPanelStates
-from bot.handlers.admin.users.view.states import ViewUserStates
 from core.ids import ProductId, UserId
 from core.services.purchases import PurchasesService
 from database.models import UserModel
 
 
 async def on_cart_item_selected(
-    callback: CallbackQuery,
+    _: CallbackQuery,
     multi_select: Multiselect,
     dialog_manager: DialogManager,
-    item_id: int,
+    __: int,
 ) -> None:
     dialog_manager.dialog_data["selected"] = multi_select.get_checked()  # ??
 

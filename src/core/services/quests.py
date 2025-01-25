@@ -55,12 +55,20 @@ class QuestsService:
             right_answer=right_answer,
             wrong_answer=wrong_answer,
         )
+
+        await self.logs_repo.log_action(master_id, f"Create {quest.id=}")
+
         return quest.id
 
     async def delete(self, quest_id: QuestId, master_id: UserId) -> None:
+        if quest_id == FINAL_QUEST_ID:
+            return
+
         await self.roles_service.is_stager(master_id)
-        if quest_id != FINAL_QUEST_ID:
-            await self.quests_repo.delete(quest_id)
+
+        await self.quests_repo.delete(quest_id)
+
+        await self.logs_repo.log_action(master_id, f"Delete {quest_id=}")
 
     async def start(self, quest_id: QuestId, user_id: UserId) -> QuestModel:
         user = await self.users_repo.get_by_id(user_id)
@@ -72,6 +80,8 @@ class QuestsService:
             raise QuestNotFound(quest_id)
 
         await self.quests_repo.link_user_to_quest(user_id, quest_id)
+
+        await self.logs_repo.log_action(user_id, f"Start {quest_id=}")
 
         return quest
 
@@ -105,6 +115,8 @@ class QuestsService:
 
         if await self.is_final_quest_available(user_id):
             await self.start(FINAL_QUEST_ID, user_id)
+
+        await self.logs_repo.log_action(user_id, f"Reward {quest_id=}")
 
         return quest.title, quest.reward
 

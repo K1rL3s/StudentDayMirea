@@ -30,11 +30,17 @@ class CouponsService:
 
     async def create(self, description: str, master_id: UserId) -> CouponId:
         await self.roles_service.is_admin(master_id)
-        return await self.coupons_repo.create(description)
+        coupon_id = await self.coupons_repo.create(description)
+
+        await self.logs_repo.log_action(master_id, f"Create {coupon_id=}")
+
+        return coupon_id
 
     async def delete(self, coupon_id: CouponId, master_id: UserId) -> None:
         await self.roles_service.is_admin(master_id)
-        return await self.coupons_repo.delete(coupon_id)
+        await self.coupons_repo.delete(coupon_id)
+
+        await self.logs_repo.log_action(master_id, f"Delete {coupon_id=}")
 
     async def reward(self, user_id: UserId, coupon_phrase: str) -> CouponId:
         if coupon_phrase != COUPON_ANSWER:
@@ -53,5 +59,7 @@ class CouponsService:
 
         if coupon_id is None:
             raise NoFreeCoupons
+
+        await self.logs_repo.log_action(user_id, f"Activate {coupon_id=}")
 
         return coupon_id

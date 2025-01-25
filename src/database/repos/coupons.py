@@ -49,7 +49,7 @@ class CouponsRepo(BaseAlchemyRepo):
             or_(
                 UserToCouponModel.user_id == user_id,
                 UserToCouponModel.coupon_id == coupon_id,
-            )
+            ),
         )
         await self.session.execute(query)
         await self.session.flush()

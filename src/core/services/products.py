@@ -59,7 +59,7 @@ class ProductsService:
 
         await self.logs_repo.log_action(
             user.id,
-            f"Bought {product_id} for {quantity} units",
+            f"Bought {product_id=} for {quantity=} units. {new_balance=} {new_stock=}",
         )
 
         return new_balance
@@ -94,7 +94,16 @@ class ProductsService:
     ) -> ProductId:
         await self.roles_service.is_admin(master_id)
 
-        return await self.products_repo.create_product(name, description, price, stock)
+        product_id = await self.products_repo.create_product(
+            name,
+            description,
+            price,
+            stock,
+        )
+
+        await self.logs_repo.log_action(master_id, f"Create {product_id=}")
+
+        return product_id
 
     async def delete(self, product_id: ProductId, master_id: UserId) -> None:
         await self.roles_service.is_admin(master_id)
@@ -104,3 +113,5 @@ class ProductsService:
             raise ProductNotFound(product_id)
 
         await self.products_repo.delete(product_id)
+
+        await self.logs_repo.log_action(master_id, f"Delete {product_id=}")

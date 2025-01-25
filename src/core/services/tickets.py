@@ -1,6 +1,7 @@
 from core.exceptions import UserNotFound
 from core.ids import UserId
 from core.services.roles import RolesService
+from database.repos.logs import LogsRepo
 from database.repos.tickets import TicketsRepo
 from database.repos.users import UsersRepo
 
@@ -11,10 +12,12 @@ class TicketsService:
         tickets_repo: TicketsRepo,
         users_repo: UsersRepo,
         roles_service: RolesService,
+        logs_repo: LogsRepo,
     ) -> None:
         self.tickets_repo = tickets_repo
         self.users_repo = users_repo
         self.roles_service = roles_service
+        self.logs_repo = logs_repo
 
     async def create_or_update(
         self,
@@ -31,6 +34,8 @@ class TicketsService:
 
         ticket = await self.tickets_repo.get_by_user_id(user_id)
         if ticket:
-            return await self.tickets_repo.update(user_id, fio, group)
+            await self.tickets_repo.update(user_id, fio, group)
+        else:
+            await self.tickets_repo.create(user_id, fio, group)
 
-        return await self.tickets_repo.create(user_id, fio, group)
+        await self.logs_repo.log_action(user_id, f"Lottery info by {master_id=}")

@@ -10,10 +10,9 @@ from bot.dialogs.on_actions import on_start_update_dialog_data
 
 from ..buttons import GoToUserButton
 from ..getters import get_view_user_info
+from ..on_actions import UserAdminInfoText
 from .on_actions import fio_input_handler, group_input_handler
 from .states import LotteryUserStates
-from ..on_actions import UserAdminInfoText
-
 
 fio_window = Window(
     UserAdminInfoText,
