@@ -32,7 +32,7 @@ user_cart_window = Window(
         Multiselect(
             checked_text=Format("🔘 {item[0][1]}: {item[1]}"),
             unchecked_text=Format("{item[0][1]}: {item[1]}"),
-            id="select_cart",
+            id="select",
             item_id_getter=lambda p: p[0][0],
             items="products_to_quantity",
             type_factory=int,
@@ -45,7 +45,7 @@ user_cart_window = Window(
     ),
     Button(
         Const("🗑️ Очистить корзину"),
-        id="clear_cart",
+        id="clear",
         on_click=Next(),
         when=F["dialog_data"]["selected"],
     ),

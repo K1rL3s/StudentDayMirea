@@ -115,3 +115,17 @@ class ProductsService:
         await self.products_repo.delete(product_id)
 
         await self.logs_repo.log_action(master_id, f"Delete {product_id=}")
+
+    async def refund(self, product_id: ProductId, quantity: int) -> int:
+        if quantity <= 0:
+            raise InvalidValue("Нельзя вернуть 0 или отрицательное число товаров")
+
+        product = await self.products_repo.get_by_id(product_id)
+        if product is None:
+            raise ProductNotFound(product_id)
+
+        new_stock = product.stock + quantity
+        await self.set_stock(product_id, new_stock)
+
+        refund_money = product.price * quantity
+        return refund_money  # noqa: RET504

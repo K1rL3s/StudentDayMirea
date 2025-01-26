@@ -31,7 +31,7 @@ class PurchasesRepo(BaseAlchemyRepo):
         await self.session.flush()
         return purchase
 
-    async def get_user_purchases(
+    async def get_all_user_purchases(
         self,
         user_id: UserId,
     ) -> list[tuple[ProductModel, PurchaseModel]]:
@@ -39,6 +39,19 @@ class PurchasesRepo(BaseAlchemyRepo):
             select(ProductModel, PurchaseModel)
             .join(PurchaseModel, PurchaseModel.product_id == ProductModel.id)
             .where(PurchaseModel.user_id == user_id)
+            .order_by(ProductModel.price.asc(), ProductModel.name.asc())
+        )
+        return list(await self.session.execute(query))
+
+    async def get_user_purchases_by_product_id(
+        self,
+        user_id: UserId,
+        product_id: ProductId,
+    ) -> list[tuple[ProductModel, PurchaseModel]]:
+        query = (
+            select(ProductModel, PurchaseModel)
+            .join(PurchaseModel, PurchaseModel.product_id == ProductModel.id)
+            .where(PurchaseModel.user_id == user_id, ProductModel.id == product_id)
             .order_by(ProductModel.price.asc(), ProductModel.name.asc())
         )
         return list(await self.session.execute(query))

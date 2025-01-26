@@ -25,7 +25,7 @@ async def on_cart(
     __: Button,
     dialog_manager: DialogManager,
 ) -> None:
-    await dialog_manager.start(state=CartStates.cart)
+    await dialog_manager.start(state=CartStates.view)
 
 
 async def on_transfer_funds(

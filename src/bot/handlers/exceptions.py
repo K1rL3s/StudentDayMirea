@@ -28,7 +28,7 @@ async def service_exceptions_handler(
     text = f"😵‍💫 Произошла ошибка, попробуй ещё раз. Вот её текст:\n\n{e!s}"
     await bot.send_message(chat_id=event_chat.id, text=text)
 
-    # raise event.exception
+    raise event.exception  # чтобы откатывалась сессия алхимии
 
 
 @router.error(ExceptionTypeFilter(UnknownIntent))

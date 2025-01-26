@@ -17,7 +17,7 @@ user_role_window = Window(
     Group(
         Select(
             Format("{item[1]}"),
-            id="select_roles",
+            id="select",
             item_id_getter=lambda item: item[0],
             items="roles",
             type_factory=int,

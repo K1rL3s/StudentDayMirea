@@ -11,4 +11,4 @@ router = Router(name=__file__)
 
 @router.message(Command(SlashCommand.CART))
 async def cart_handler(message: Message, dialog_manager: DialogManager) -> None:
-    await dialog_manager.start(state=CartStates.cart)
+    await dialog_manager.start(state=CartStates.view)
