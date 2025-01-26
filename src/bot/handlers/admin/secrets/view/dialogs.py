@@ -1,5 +1,5 @@
 from aiogram_dialog import Dialog, Window
-from aiogram_dialog.widgets.kbd import Back, Button, Row, ScrollingGroup, Select
+from aiogram_dialog.widgets.kbd import Back, Button, ScrollingGroup, Select
 from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
@@ -11,9 +11,6 @@ from .on_actions import (
     on_confirm_delete_secret,
     on_create_secret,
     on_delete_secret,
-    on_edit_activation_limit,
-    on_edit_phrase,
-    on_edit_reward,
     on_secret_selected,
 )
 from .states import ViewSecretsStates
