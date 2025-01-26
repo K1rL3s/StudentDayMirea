@@ -35,7 +35,7 @@ edit_reward_window = Window(
     MessageInput(
         func=on_edit_reward_input,
         content_types=ContentType.TEXT,
-        filter=F.text.isdigit(),
+        filter=F.text.cast(int) > 0,
     ),
     state=EditSecretStates.reward,
     getter=get_one_secret,
@@ -50,7 +50,7 @@ edit_activation_limit_window = Window(
     MessageInput(
         func=on_edit_activation_limit_input,
         content_types=ContentType.TEXT,
-        filter=F.text.isdigit(),
+        filter=F.text.isdigit(),  # ok
     ),
     state=EditSecretStates.activation_limit,
     getter=get_one_secret,

@@ -18,7 +18,7 @@ edit_price_window = Window(
     MessageInput(
         func=on_edit_price_input,
         content_types=ContentType.TEXT,
-        filter=F.text.isdigit(),
+        filter=F.text.cast(int) > 0,
     ),
     state=EditProductStates.price,
     getter=get_one_product,
@@ -33,7 +33,7 @@ edit_stock_window = Window(
     MessageInput(
         func=on_edit_stock_input,
         content_types=ContentType.TEXT,
-        filter=F.text.isdigit(),
+        filter=F.text.isdigit(),  # ok
     ),
     state=EditProductStates.stock,
     getter=get_one_product,

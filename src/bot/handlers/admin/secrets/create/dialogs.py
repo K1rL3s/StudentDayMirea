@@ -32,7 +32,7 @@ secret_reward_window = Window(
     MessageInput(
         func=secret_reward_input,
         content_types=ContentType.TEXT,
-        filter=F.text.isdigit(),
+        filter=F.text.cast(int) > 0,
     ),
     Back(Const("⏪ Шаг назад")),
     GoToSecretsButton(),
@@ -45,7 +45,7 @@ secret_activation_limit_window = Window(
     MessageInput(
         func=secret_activation_limit_input,
         content_types=ContentType.TEXT,
-        filter=F.text.isdigit(),
+        filter=F.text.cast(int) > 0,
     ),
     Back(Const("⏪ Шаг назад")),
     GoToSecretsButton(),

@@ -24,7 +24,7 @@ edit_reward_window = Window(
     MessageInput(
         func=on_edit_reward_input,
         content_types=ContentType.TEXT,
-        filter=F.text.isdigit(),
+        filter=F.text.cast(int) > 0,
     ),
     GoToQuestButton(),
     GoToQuestsButton(),

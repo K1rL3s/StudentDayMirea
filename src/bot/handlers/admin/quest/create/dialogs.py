@@ -29,7 +29,7 @@ order_window = Window(
     MessageInput(
         func=quest_order_input,
         content_types=ContentType.TEXT,
-        filter=F.text.isdigit(),
+        filter=F.text.cast(int) > 0,
     ),
     GoToQuestsButton(),
     GoToAdminPanelButton(),
@@ -93,7 +93,7 @@ reward_window = Window(
     MessageInput(
         func=quest_reward_input,
         content_types=ContentType.TEXT,
-        filter=F.text.isdigit(),
+        filter=F.text.cast(int) > 0,
     ),
     Back(Const("⏪ Шаг назад")),
     GoToQuestsButton(),

@@ -28,7 +28,7 @@ wait_user_id_window = Window(
     MessageInput(
         id_input_handler,
         content_types=ContentType.TEXT,
-        filter=F.text.isdigit(),
+        filter=F.text.isdigit(),  # ok
     ),
     state=ViewUserStates.id,
 )

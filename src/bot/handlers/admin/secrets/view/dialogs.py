@@ -51,23 +51,23 @@ view_one_secret_window = Window(
     Format("Награда: {secret.reward}"),
     Format("Лимит активаций: {secret.activation_limit}"),
     Format("Всего активаций: {total_activations}"),
-    Row(
-        Button(
-            Const("💬 Изменить фразу"),
-            id="pharse",
-            on_click=on_edit_phrase,
-        ),
-        Button(
-            Const("💰 Изменить награду"),
-            id="reward",
-            on_click=on_edit_reward,
-        ),
-        Button(
-            Const("🚀 Изменить лимит"),
-            id="activation_limit",
-            on_click=on_edit_activation_limit,
-        ),
-    ),
+    # Row(
+    #     Button(
+    #         Const("💬 Изменить фразу"),
+    #         id="pharse",
+    #         on_click=on_edit_phrase,
+    #     ),
+    #     Button(
+    #         Const("💰 Изменить награду"),
+    #         id="reward",
+    #         on_click=on_edit_reward,
+    #     ),
+    #     Button(
+    #         Const("🚀 Изменить лимит"),
+    #         id="activation_limit",
+    #         on_click=on_edit_activation_limit,
+    #     ),
+    # ),
     Button(
         Const("🗑️ Удалить"),
         id="delete",

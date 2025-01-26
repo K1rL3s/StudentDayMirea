@@ -48,7 +48,7 @@ product_price_window = Window(
     MessageInput(
         func=product_price_input,
         content_types=ContentType.TEXT,
-        filter=F.text.isdigit(),
+        filter=F.text.cast(int) > 0,
     ),
     Back(Const("⏪ Шаг назад")),
     GoToProductsButton(),

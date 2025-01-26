@@ -1,3 +1,5 @@
+from typing import Any
+
 from sqlalchemy import delete, select, update
 
 from core.ids import ProductId
@@ -72,6 +74,13 @@ class ProductsRepo(BaseAlchemyRepo):
             update(ProductModel)
             .where(ProductModel.id == product_id)
             .values(qrcode_image_id=image_id)
+        )
+        await self.session.execute(query)
+        await self.session.flush()
+
+    async def update(self, product_id: ProductId, **kwargs: Any) -> None:
+        query = (
+            update(ProductModel).where(ProductModel.id == product_id).values(**kwargs)
         )
         await self.session.execute(query)
         await self.session.flush()
