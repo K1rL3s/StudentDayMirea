@@ -2,7 +2,7 @@ from aiogram import F
 from aiogram.enums import ContentType
 from aiogram_dialog import Dialog, Window
 from aiogram_dialog.widgets.input import MessageInput
-from aiogram_dialog.widgets.text import Const, Format
+from aiogram_dialog.widgets.text import Const, Format, Multi
 
 from bot.dialogs.buttons import GoToMenuButton
 
@@ -22,10 +22,11 @@ transfer_wait_id_window = Window(
 
 
 transfer_wait_amount_window = Window(
-    Format(
-        "👨‍🎓 <b>Имя получателя:</b> {dialog_data[receiver_name]}\n\n"
-        "💳 <b>Твой баланс:</b> {middleware_data[user].balance} Пятаков\n\n"
-        "💸 Если всё верно, то введи сумму перевода",
+    Multi(
+        Format("👨‍🎓 <b>ID получателя:</b> {dialog_data[receiver_id]}"),
+        Format("💳 <b>Твой баланс:</b> {middleware_data[user].balance} Пятаков"),
+        Const("💸 Если всё верно, то введи сумму перевода"),
+        sep="\n\n",
     ),
     GoToMenuButton(),
     MessageInput(

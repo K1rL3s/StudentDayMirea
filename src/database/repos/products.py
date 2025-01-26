@@ -31,12 +31,15 @@ class ProductsRepo(BaseAlchemyRepo):
         query = (
             select(ProductModel)
             .where(ProductModel.stock > 0)
-            .order_by(ProductModel.price.asc())
+            .order_by(ProductModel.price.asc(), ProductModel.name.asc())
         )
         return list(await self.session.scalars(query))
 
     async def get_all(self) -> list[ProductModel]:
-        query = select(ProductModel).order_by(ProductModel.price.asc())
+        query = select(ProductModel).order_by(
+            ProductModel.price.asc(),
+            ProductModel.name.asc(),
+        )
         return list(await self.session.scalars(query))
 
     async def set_stock(self, product_id: ProductId, new_stock: int) -> int:

@@ -80,7 +80,7 @@ class Broadcaster:
             await self.users_repo.change_active(user_id, is_active=False)
             return False
         except Exception as e:  # noqa: BLE001
-            logging.warning(f"Ошибка во время рассылки: {e.__class__.__name__}('{e}')")
+            logging.warning(f"Ошибка во время сообщения: {e.__class__.__name__}('{e}')")
             return False
 
         logger.debug("Уведомление успешно для ID=%d", user_id)

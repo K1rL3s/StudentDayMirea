@@ -33,15 +33,15 @@ view_quests_window = Window(
 
 view_quest_window = Window(
     Multi(
-        Const("✅ ", when=F["status"]),
-        Format("<b>{quest.title}</b>\n\n"),
-        Format("{quest.description}\n\n"),
-        Format("<b>Задание:</b>\n{quest.task}\n\n", when=~F["status"]),
-        Format(
-            "💡 Следующая записка:\n{quest.end_hint}",
-            when=F["status"] & F["quest"].end_hint,
+        Multi(
+            Const("✅ ", when=F["status"]),
+            Format("<b>{quest.title}</b>"),
+            sep="",
         ),
-        sep="",
+        Format("{quest.description}"),
+        Format("<b>Задание:</b>\n{quest.task}", when=~F["status"]),
+        Format("💡 Следующая записка:\n{quest.end_hint}", when=F["quest"].end_hint),
+        sep="\n\n",
     ),
     Button(
         Const("✏️ Ввести ответ"),

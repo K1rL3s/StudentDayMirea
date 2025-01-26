@@ -76,7 +76,7 @@ class ProductsService:
 
     async def set_price(self, product_id: ProductId, new_price: int) -> int:
         if new_price <= 0:
-            raise InvalidValue("Цена не может быть отрицательной")
+            raise InvalidValue("Цена не может быть 0 или отрицательной")
 
         product = await self.products_repo.get_by_id(product_id)
         if product is None:
