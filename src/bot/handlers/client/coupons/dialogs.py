@@ -8,7 +8,11 @@ from .getters import get_coupon
 from .states import CouponStates
 
 view_coupon_window = Window(
-    Format("🛴 Ваш купон от самоката: <b>{coupon.description}</b>"),
+    Format(
+        "🛴 Ты получил промокод от самоката "
+        "на скидку 200 рублей на 1 заказ от 700 рублей: <b>{coupon.description}</b>\n"
+    ),
+    Const("Действие промокода с 29.01 по 1.03"),
     GoToMenuButton(),
     getter=get_coupon,
     state=CouponStates.view,

@@ -37,8 +37,17 @@ async def check_coupon_handler(
     except (WrongCouponAnswer, CouponAlreadyClaimed):
         return None
 
+    """
+    Ты получил промокод на скидку 200 рублей на 1 заказ от 700 рублей: 
+    """
+
     coupon = await coupons_repo.get_by_user_id(user_id)
-    text = f"🛴 Ваш купон от самоката: <b>{coupon.description}</b>"
+    text = (
+        "🛴 Ты получил промокод от самоката "
+        "на скидку 200 рублей на 1 заказ от 700 рублей: "
+        f"<b>{coupon.description}</b>\n\n"
+        "Действие промокода с 29.01 по 1.03"
+    )
     await message.answer(text=text)
 
     await dialog_manager.start(state=MenuStates.menu, data={FORCE_GET_USER_KEY: None})
