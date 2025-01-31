@@ -37,10 +37,6 @@ async def check_coupon_handler(
     except (WrongCouponAnswer, CouponAlreadyClaimed):
         return None
 
-    """
-    Ты получил промокод на скидку 200 рублей на 1 заказ от 700 рублей: 
-    """
-
     coupon = await coupons_repo.get_by_user_id(user_id)
     text = (
         "🛴 Ты получил промокод от самоката "

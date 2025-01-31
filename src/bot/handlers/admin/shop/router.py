@@ -23,7 +23,7 @@ async def open_product_by_deeplink(
     dialog_manager: DialogManager,
     products_repo: FromDishka[ProductsRepo],
 ) -> None:
-    product_id = product_deeplink.lstrip(ProductIdPrefix)
+    product_id = product_deeplink[len(ProductIdPrefix):]
     if not product_id.isdigit():
         product_id = ProductId(int(product_id))
         if await products_repo.get_by_id(product_id):

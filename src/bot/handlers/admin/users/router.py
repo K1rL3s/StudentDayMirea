@@ -26,7 +26,7 @@ async def open_user_by_deeplink(
     dialog_manager: DialogManager,
     users_repo: FromDishka[UsersRepo],
 ) -> None:
-    user_id = user_deeplink.lstrip(UserIdPrefix)
+    user_id = user_deeplink[len(UserIdPrefix):]
     if not user_id.isdigit():
         raise CancelHandler
 

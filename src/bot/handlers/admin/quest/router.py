@@ -23,7 +23,7 @@ async def view_quest_by_deeplink(
     dialog_manager: DialogManager,
     quest_repo: FromDishka[QuestsRepo],
 ) -> None:
-    quest_id = QuestId(quest_deeplink.lstrip(QuestIdPrefix))
+    quest_id = QuestId(quest_deeplink[len(QuestIdPrefix):])
 
     if await quest_repo.get_by_id(quest_id):
         await dialog_manager.start(

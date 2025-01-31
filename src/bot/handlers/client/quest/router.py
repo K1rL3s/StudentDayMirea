@@ -28,7 +28,7 @@ async def start_quest_by_deeplink(
     dialog_manager: DialogManager,
     quests_service: FromDishka[QuestsService],
 ) -> None:
-    quest_id = QuestId(quest_deeplink.lstrip(QuestIdPrefix))
+    quest_id = QuestId(quest_deeplink[len(QuestIdPrefix):])
     if quest_id == FINAL_QUEST_ID:
         return
 
