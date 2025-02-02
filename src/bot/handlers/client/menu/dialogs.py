@@ -25,7 +25,7 @@ menu_dialog = Dialog(
         Format("Баланс: {balance} <b>Пятаков</b>\n"),
         Format("Ты - <u>{role}</u>", when=IsWithRole()),
         Group(
-            Button(Const("🛍️ Магазин"), id="shop", on_click=on_shop),
+            # Button(Const("🛍️ Магазин"), id="shop", on_click=on_shop),
             Button(Const("🧺 Корзина"), id="cart", on_click=on_cart),
             Button(
                 Const("💸 Перевод"),
