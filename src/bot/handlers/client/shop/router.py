@@ -13,15 +13,15 @@ from database.repos.products import ProductsRepo
 router = Router(name=__file__)
 
 
-@router.message(Command(SlashCommand.SHOP))
+# @router.message(Command(SlashCommand.SHOP))
 async def open_shop_handler(message: Message, dialog_manager: DialogManager) -> None:
     await dialog_manager.start(state=ShopStates.list)
 
 
-@router.message(
-    CommandStart(deep_link=True, magic=F.args.startswith(ProductIdPrefix)),
-    MagicData(F.command.args.as_("product_deeplink")),
-)
+# @router.message(
+#     CommandStart(deep_link=True, magic=F.args.startswith(ProductIdPrefix)),
+#     MagicData(F.command.args.as_("product_deeplink")),
+# )
 async def open_product_by_deeplink(
     message: Message,
     product_deeplink: str,
